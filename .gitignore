@@ -1,0 +1,19 @@
+node_modules/
+.next/
+out/
+dist/
+.env
+.env*.local
+.vercel
+*.log
+.DS_Store
+tsconfig.tsbuildinfo
+
+# Cache turbo/npm lokal
+.npm_cache/
+.pnpm-store/
+coverage/
+
+# Jangan pernah commit berkas token
+*.pem
+.env.production

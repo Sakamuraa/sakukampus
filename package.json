@@ -1,0 +1,33 @@
+{
+  "name": "sakukampus",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Katalog beasiswa Indonesia + pemeriksa kelayakan berbasis golongan UKT tiap kampus",
+  "license": "MIT",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "seed:ukt": "node --experimental-strip-types scripts/build-ukt-seed.mjs",
+    "seed:link": "node scripts/link-ptkin.mjs",
+    "seed:rules": "node scripts/normalize-ukt-rules.mjs",
+    "fixture:kma": "node scripts/extract-kma-lines.mjs"
+  },
+  "dependencies": {
+    "next": "^16.3.5",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.2.0",
+    "typescript": "^5.7.0",
+    "unpdf": "^1.8.1",
+    "vitest": "^3.2.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

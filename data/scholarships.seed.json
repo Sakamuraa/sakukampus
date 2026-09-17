@@ -1,0 +1,563 @@
+{
+  "_meta": {
+    "generated_at": "2026-09-17T09:30:00Z",
+    "note": "Setiap entri WAJIB punya source_url + last_verified_at. Syarat UKT pada beasiswa nasional dinyatakan dalam RUPIAH (ukt_max_idr), bukan nomor golongan — lihat lib/eligibility/engine.ts dan plan §5.",
+    "normalized_at": "2026-09-17T09:51:20.920Z",
+    "normalized_count": 0
+  },
+  "scholarships": [
+    {
+      "slug": "stf-uin-jakarta-2026",
+      "name": "Beasiswa Social Trust Fund (STF) UIN Jakarta 2026",
+      "provider": "Social Trust Fund UIN Syarif Hidayatullah Jakarta",
+      "tier": "kampus",
+      "scope": "kampus:201001",
+      "coverage": "ukt_penuh",
+      "benefit_summary": "Bantuan UKT 1 tahun, capacity building, mentoring, pengalaman volunteer, peluang perpanjangan",
+      "jenjang": [
+        "S1"
+      ],
+      "url_pendaftaran": "https://uinjkt.ac.id/id/pendaftaran-beasiswa-stf-uin-jakarta-2026-",
+      "source_url": "https://uinjkt.ac.id/id/pendaftaran-beasiswa-stf-uin-jakarta-2026-",
+      "source_kind": "resmi",
+      "confidence": 95,
+      "last_verified_at": "2026-09-17T00:00:00Z",
+      "ukt_max_golongan": 4,
+      "ukt_scope_note": "prioritas",
+      "academic_year": "2026/2027",
+      "stages": [
+        {
+          "name": "pendaftaran",
+          "opens_at": "2026-07-17T00:00:00Z",
+          "closes_at": "2026-08-04T23:59:00Z"
+        },
+        {
+          "name": "pengumuman_berkas",
+          "opens_at": "2026-08-06T00:00:00Z"
+        },
+        {
+          "name": "wawancara",
+          "opens_at": "2026-08-10T00:00:00Z",
+          "closes_at": "2026-08-12T23:59:00Z"
+        },
+        {
+          "name": "pengumuman",
+          "opens_at": "2026-08-18T00:00:00Z"
+        }
+      ],
+      "rule": {
+        "all": [
+          {
+            "fact": "jenjang",
+            "op": "in",
+            "value": [
+              "S1"
+            ],
+            "label": "Mahasiswa S1"
+          },
+          {
+            "fact": "semester",
+            "op": "between",
+            "value": [
+              3,
+              7
+            ],
+            "label": "Semester 3–7"
+          },
+          {
+            "fact": "ipk",
+            "op": "gte",
+            "value": 3.5,
+            "label": "IPK minimal 3,50"
+          },
+          {
+            "fact": "ukt_kelompok",
+            "op": "lte",
+            "value": 4,
+            "label": "Prioritas UKT golongan 1–4",
+            "soft": true,
+            "onlyWhen": {
+              "scope": "kampus:201001"
+            }
+          },
+          {
+            "fact": "penerima_beasiswa_lain",
+            "op": "eq",
+            "value": false,
+            "label": "Tidak sedang menerima beasiswa lain"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "kip-kuliah-2026",
+      "name": "Kartu Indonesia Pintar (KIP) Kuliah 2026",
+      "provider": "Kementerian Pendidikan Tinggi, Sains, dan Teknologi",
+      "tier": "pemerintah",
+      "scope": "nasional",
+      "coverage": "ukt_penuh+allowance",
+      "benefit_summary": "Bebas UKT + bantuan biaya hidup bulanan; plafon biaya pendidikan mengikuti akreditasi prodi",
+      "jenjang": [
+        "S1",
+        "D4",
+        "D3"
+      ],
+      "url_pendaftaran": "https://kip-kuliah.kemdiktisaintek.go.id/",
+      "source_url": "https://kip-kuliah.kemdiktisaintek.go.id/",
+      "source_kind": "resmi",
+      "confidence": 95,
+      "last_verified_at": "2026-09-17T00:00:00Z",
+      "ukt_max_idr": 2400000,
+      "ukt_scope_note": "wajib",
+      "academic_year": "2026",
+      "stages": [
+        {
+          "name": "pendaftaran_akun",
+          "opens_at": "2026-02-03T00:00:00Z",
+          "closes_at": "2026-10-31T23:59:00Z"
+        },
+        {
+          "name": "mandiri_ptn_pts",
+          "opens_at": "2026-06-15T00:00:00Z",
+          "closes_at": "2026-10-31T23:59:00Z"
+        }
+      ],
+      "rule": {
+        "all": [
+          {
+            "fact": "jenjang",
+            "op": "in",
+            "value": [
+              "S1",
+              "D4",
+              "D3"
+            ],
+            "label": "Jenjang S1/D4/D3"
+          },
+          {
+            "fact": "ukt_nominal",
+            "op": "lte",
+            "value": 2400000,
+            "label": "UKT ≤ Rp2.400.000 (prodi akreditasi C)"
+          },
+          {
+            "fact": "desil_dtsen",
+            "op": "lte",
+            "value": 4,
+            "label": "Terdata DTSEN desil ≤ 4"
+          }
+        ],
+        "any": [
+          {
+            "fact": "pemegang_kip",
+            "op": "eq",
+            "value": true,
+            "label": "Pemegang KIP Pendidikan Menengah"
+          },
+          {
+            "fact": "desil_dtsen",
+            "op": "lte",
+            "value": 4,
+            "label": "Desil DTSEN ≤ 4"
+          },
+          {
+            "fact": "panti_sosial",
+            "op": "eq",
+            "value": true,
+            "label": "Dari panti sosial/panti asuhan"
+          },
+          {
+            "fact": "penghasilan_di_bawah_ump",
+            "op": "eq",
+            "value": true,
+            "label": "Penghasilan orang tua di bawah UMP + SKTM"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "bright-scholarship-2026",
+      "name": "Bright Scholarship 2026 (YBM BRILiaN)",
+      "provider": "Yayasan Baitul Maal BRILiaN",
+      "tier": "swasta",
+      "scope": "nasional",
+      "coverage": "ukt_penuh+allowance",
+      "benefit_summary": "Pelunasan UKT penuh, living allowance bulanan, fasilitas asrama, pembinaan karakter, peluang student exchange",
+      "jenjang": [
+        "S1",
+        "D4"
+      ],
+      "url_pendaftaran": "https://brilianscholarship.id/bright/pendaftaran",
+      "source_url": "https://uinjkt.ac.id/id/pendaftaran-bright-scholarship-2026",
+      "source_kind": "resmi",
+      "confidence": 90,
+      "last_verified_at": "2026-09-17T00:00:00Z",
+      "needs_test": true,
+      "academic_year": "2026/2027",
+      "stages": [
+        {
+          "name": "pendaftaran",
+          "opens_at": "2026-07-01T00:00:00Z",
+          "closes_at": "2026-07-31T23:59:00Z"
+        }
+      ],
+      "rule": {
+        "all": [
+          {
+            "fact": "jenjang",
+            "op": "in",
+            "value": [
+              "S1",
+              "D4"
+            ],
+            "label": "Jenjang S1/D4"
+          },
+          {
+            "fact": "semester",
+            "op": "lte",
+            "value": 1,
+            "label": "Mahasiswa baru semester 1"
+          },
+          {
+            "fact": "pt_mitra",
+            "op": "eq",
+            "value": true,
+            "label": "Kampus termasuk PT mitra YBM BRILiaN"
+          },
+          {
+            "fact": "kondisi_ekonomi_lemah",
+            "op": "eq",
+            "value": true,
+            "label": "Kondisi ekonomi kurang mampu (dokumen pendukung)"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "djarum-beasiswa-plus-2026",
+      "name": "Djarum Beasiswa Plus 2026/2027",
+      "provider": "Djarum Foundation",
+      "tier": "swasta",
+      "scope": "nasional",
+      "coverage": "partial",
+      "benefit_summary": "Bantuan biaya pendidikan + pelatihan soft skills, competition challenges, jejaring nasional",
+      "jenjang": [
+        "S1",
+        "D4"
+      ],
+      "url_pendaftaran": "https://djarumbeasiswaplus.org/",
+      "source_url": "https://djarumbeasiswaplus.org/our-program/regulation-djarum-beasiswa-plus",
+      "source_kind": "resmi",
+      "confidence": 90,
+      "last_verified_at": "2026-09-17T00:00:00Z",
+      "academic_year": "2026/2027",
+      "stages": [
+        {
+          "name": "pendaftaran",
+          "opens_at": "2026-04-08T00:00:00Z",
+          "closes_at": "2026-06-10T23:59:00Z"
+        },
+        {
+          "name": "seleksi_administrasi",
+          "opens_at": "2026-06-11T00:00:00Z",
+          "closes_at": "2026-06-19T23:59:00Z"
+        },
+        {
+          "name": "tes_online",
+          "opens_at": "2026-07-01T00:00:00Z",
+          "closes_at": "2026-07-14T23:59:00Z"
+        },
+        {
+          "name": "tes_offline_wawancara",
+          "opens_at": "2026-07-20T00:00:00Z",
+          "closes_at": "2026-09-26T23:59:00Z"
+        },
+        {
+          "name": "pengumuman",
+          "opens_at": "2026-10-01T00:00:00Z"
+        }
+      ],
+      "rule": {
+        "all": [
+          {
+            "fact": "jenjang",
+            "op": "in",
+            "value": [
+              "S1",
+              "D4"
+            ],
+            "label": "Jenjang S1/D4"
+          },
+          {
+            "fact": "semester",
+            "op": "eq",
+            "value": 4,
+            "label": "Sedang menempuh semester IV"
+          },
+          {
+            "fact": "ipk",
+            "op": "gte",
+            "value": 3,
+            "label": "IPK minimal 3,00"
+          },
+          {
+            "fact": "aktif_organisasi",
+            "op": "eq",
+            "value": true,
+            "label": "Aktif berorganisasi"
+          },
+          {
+            "fact": "penerima_beasiswa_lain",
+            "op": "eq",
+            "value": false,
+            "label": "Tidak sedang menerima beasiswa lain"
+          },
+          {
+            "fact": "pt_mitra",
+            "op": "eq",
+            "value": true,
+            "label": "Kampus termasuk PT mitra Djarum"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "bib-s1-unggulan-keagamaan-2026",
+      "name": "Beasiswa Indonesia Bangkit — S1 Unggulan Keagamaan 2026",
+      "provider": "Kementerian Agama RI × LPDP",
+      "tier": "pemerintah",
+      "scope": "nasional",
+      "coverage": "ukt_penuh+allowance",
+      "benefit_summary": "Pembiayaan penuh studi sarjana dalam/luar negeri bagi lulusan MA/SMA sederajat berprestasi di lingkungan Kemenag",
+      "jenjang": [
+        "S1"
+      ],
+      "url_pendaftaran": "https://beasiswalpdp-terintegrasi.kemenkeu.go.id/",
+      "source_url": "https://beasiswalpdp-terintegrasi.kemenkeu.go.id/",
+      "source_kind": "resmi",
+      "confidence": 85,
+      "last_verified_at": "2026-09-17T00:00:00Z",
+      "academic_year": "2026/2027",
+      "stages": [
+        {
+          "name": "pendaftaran",
+          "opens_at": "2026-04-01T00:00:00Z",
+          "closes_at": "2026-05-31T23:59:00Z"
+        },
+        {
+          "name": "seleksi_administrasi",
+          "opens_at": "2026-06-01T00:00:00Z",
+          "closes_at": "2026-06-15T23:59:00Z"
+        },
+        {
+          "name": "assessment",
+          "opens_at": "2026-07-01T00:00:00Z"
+        },
+        {
+          "name": "wawancara",
+          "opens_at": "2026-07-03T00:00:00Z",
+          "closes_at": "2026-07-20T23:59:00Z"
+        },
+        {
+          "name": "pengumuman",
+          "opens_at": "2026-07-27T00:00:00Z"
+        }
+      ],
+      "rule": {
+        "all": [
+          {
+            "fact": "jenjang",
+            "op": "in",
+            "value": [
+              "S1"
+            ],
+            "label": "Program sarjana"
+          },
+          {
+            "fact": "afiliasi_kemenag",
+            "op": "eq",
+            "value": true,
+            "label": "Dari lembaga di bawah Kemenag (PTKIN/MA)"
+          },
+          {
+            "fact": "ipk",
+            "op": "gte",
+            "value": 3,
+            "label": "IPK minimal 3,00"
+          },
+          {
+            "fact": "skor_bahasa",
+            "op": "exists",
+            "label": "Sertifikat TOEFL/IELTS/TOAFL sesuai ketentuan"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "beasiswa-blu-uin-jakarta",
+      "name": "Beasiswa Badan Layanan Umum (BLU) UIN Jakarta",
+      "provider": "UIN Syarif Hidayatullah Jakarta",
+      "tier": "kampus",
+      "scope": "kampus:201001",
+      "coverage": "partial",
+      "benefit_summary": "Dukungan finansial internal untuk mahasiswa beberapa fakultas di lingkungan UIN Jakarta",
+      "jenjang": [
+        "S1"
+      ],
+      "url_pendaftaran": "https://uinjkt.ac.id/id/beasiswa-dan-bantuan-biaya-pendidikan",
+      "source_url": "https://uinjkt.ac.id/id/beasiswa-dan-bantuan-biaya-pendidikan",
+      "source_kind": "resmi",
+      "confidence": 80,
+      "last_verified_at": "2026-09-17T00:00:00Z",
+      "academic_year": "2026/2027",
+      "stages": [],
+      "rule": {
+        "all": [
+          {
+            "fact": "jenjang",
+            "op": "in",
+            "value": [
+              "S1"
+            ],
+            "label": "Mahasiswa S1"
+          },
+          {
+            "fact": "fakultas",
+            "op": "in",
+            "value": [
+              "Fakultas Ushuluddin",
+              "Fakultas Dirasat Islamiyah",
+              "Fakultas Syariah dan Hukum",
+              "Fakultas Adab dan Humaniora"
+            ],
+            "label": "Fakultas tertentu di lingkungan UIN Jakarta"
+          },
+          {
+            "fact": "ukt_kelompok",
+            "op": "lte",
+            "value": 4,
+            "label": "Prioritas UKT golongan 1–4",
+            "soft": true,
+            "onlyWhen": {
+              "scope": "kampus:201001"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "slug": "student-achievement-awards-uin-2026",
+      "name": "Student Achievement Awards (SAA) 2026 UIN Jakarta",
+      "provider": "UIN Syarif Hidayatullah Jakarta",
+      "tier": "kampus",
+      "scope": "kampus:201001",
+      "coverage": "non_ukt",
+      "benefit_summary": "Apresiasi prestasi mahasiswa: penghargaan dan pembinaan lanjutan",
+      "jenjang": [
+        "S1"
+      ],
+      "url_pendaftaran": "https://uinjkt.ac.id/id/student-achievement-awards-saa-2026",
+      "source_url": "https://uinjkt.ac.id/id/student-achievement-awards-saa-2026",
+      "source_kind": "resmi",
+      "confidence": 85,
+      "last_verified_at": "2026-09-17T00:00:00Z",
+      "academic_year": "2026",
+      "stages": [
+        {
+          "name": "pendaftaran",
+          "opens_at": "2026-07-20T00:00:00Z"
+        }
+      ],
+      "rule": {
+        "all": [
+          {
+            "fact": "jenjang",
+            "op": "in",
+            "value": [
+              "S1"
+            ],
+            "label": "Mahasiswa aktif S1"
+          },
+          {
+            "fact": "surat_aktif_fakultas",
+            "op": "eq",
+            "value": true,
+            "label": "Surat keterangan aktif dari fakultas"
+          },
+          {
+            "fact": "prestasi",
+            "op": "exists",
+            "label": "Punya prestasi akademik/non-akademik"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "beasiswa-prestasi-stf-professor-husni-rahim",
+      "name": "Beasiswa Prestasi & Professor Husni Rahim Scholarship (PHRS)",
+      "provider": "Social Trust Fund UIN Syarif Hidayatullah Jakarta",
+      "tier": "kampus",
+      "scope": "kampus:201001",
+      "coverage": "ukt_penuh",
+      "benefit_summary": "Bantuan UKT plus program pengembangan kapasitas bagi mahasiswa berprestasi",
+      "jenjang": [
+        "S1"
+      ],
+      "url_pendaftaran": "https://uinjkt.ac.id/id/pendaftaran-beasiswa-stf-uin-jakarta-2026-",
+      "source_url": "https://uinjkt.ac.id/id/pendaftaran-beasiswa-stf-uin-jakarta-2026-",
+      "source_kind": "resmi",
+      "confidence": 90,
+      "last_verified_at": "2026-09-17T00:00:00Z",
+      "academic_year": "2026/2027",
+      "stages": [
+        {
+          "name": "pendaftaran",
+          "opens_at": "2026-07-17T00:00:00Z",
+          "closes_at": "2026-08-04T23:59:00Z"
+        }
+      ],
+      "rule": {
+        "all": [
+          {
+            "fact": "jenjang",
+            "op": "in",
+            "value": [
+              "S1"
+            ],
+            "label": "Mahasiswa S1"
+          },
+          {
+            "fact": "semester",
+            "op": "between",
+            "value": [
+              3,
+              7
+            ],
+            "label": "Semester 3–7"
+          },
+          {
+            "fact": "ipk",
+            "op": "gte",
+            "value": 3.5,
+            "label": "IPK minimal 3,50"
+          },
+          {
+            "fact": "prestasi",
+            "op": "exists",
+            "label": "Memiliki prestasi akademik/non-akademik"
+          },
+          {
+            "fact": "ukt_kelompok",
+            "op": "lte",
+            "value": 4,
+            "label": "Prioritas UKT golongan 1–4",
+            "soft": true,
+            "onlyWhen": {
+              "scope": "kampus:201001"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
