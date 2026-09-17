@@ -2,8 +2,8 @@
 
 Katalog beasiswa Indonesia + pemeriksa kelayakan berdasarkan **golongan UKT kampus masing-masing**.
 
-Web app Next.js (App Router), deploy di Vercel. Data diambil dari sumber resmi dan setiap fakta
-menempel pada `source_url` + `last_verified_at` — tidak ada angka tanpa asal.
+Web app Next.js (App Router). Data diambil dari sumber resmi dan setiap fakta
+menempel pada `source_url` + `last_verified_at`, tidak ada angka tanpa asal.
 
 ---
 
@@ -31,24 +31,24 @@ yang adil, itu bug.
 4. Data yang belum ada menghasilkan verdict **`perlu_data`**, tidak pernah "tidak lolos".
 
 Aturan ini ditegakkan kode: `lib/eligibility/engine.ts`, dan diuji di
-`lib/match.test.ts` — termasuk satu tes regresi yang membandingkan golongan yang sama di dua
+`lib/match.test.ts`, termasuk satu tes regresi yang membandingkan golongan yang sama di dua
 kampus dan menuntut hasil berbeda.
 
 ---
 
 ## Sumber data
 
-| Data | Sumber | Kendala yang sudah ditangani |
-|---|---|---|
-| Katalog kampus (3.690 PT) | `api-pddikti.kemdiktisaintek.go.id` | butuh header `Origin` yang tepat; `page` diabaikan server → enumerasi via shard kata kunci |
-| Nominal UKT per golongan (58 PTKIN) | KMA 204/2026, PDF 82 halaman | text layer PDF tidak konsisten → parser berbasis koordinat |
-| Jadwal & syarat beasiswa | pengumuman resmi (KIP Kuliah, Djarum, YBR BRILiaN, STF UIN, BIB Kemenag–LPDP) | sebagian host tidak bisa diakses dari server → `r.jina.ai` |
+| Data | Sumber |
+|---|---|
+| Katalog kampus (3.690 PT) | `api-pddikti.kemdiktisaintek.go.id` |
+| Nominal UKT per golongan (58 PTKIN) | KMA 204/2026, PDF 82 halaman |
+| Jadwal & syarat beasiswa | pengumuman resmi (KIP Kuliah, Djarum, YBR BRILiaN, STF UIN, BIB Kemenag–LPDP) |
 
 Keterbatasan diakui terbuka di halaman `/data` di dalam aplikasi, bukan hanya di README.
 
 ---
 
-## Menjalankan
+## Quick Start
 
 ```bash
 npm install
@@ -56,9 +56,6 @@ npm test        # 61 tes: parser KMA, engine, pencocokan, data
 npm run typecheck
 npm run dev     # http://localhost:3000
 ```
-
-**Build tidak dilakukan di mesin lokal.** Semua kompilasi terjadi di Vercel; di sini hanya
-`vitest` dan `tsc --noEmit`.
 
 ---
 
@@ -110,7 +107,7 @@ scripts/
 ## Data pribadi
 
 Tanpa login. Profil (IPK, golongan UKT, kondisi finansial) hanya dipakai untuk menghitung di
-server dan tidak dikirim ke pihak ketiga. Tidak ada pendaftaran yang diproses di sini — semua
+server dan tidak dikirim ke pihak ketiga. Tidak ada pendaftaran yang diproses di sini, semua
 tautan mengarah ke situs resmi penyelenggara.
 
 ## Lisensi
