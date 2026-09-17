@@ -5,6 +5,13 @@ Katalog beasiswa Indonesia + pemeriksa kelayakan berdasarkan **golongan UKT kamp
 Web app Next.js (App Router). Data diambil dari sumber resmi dan setiap fakta
 menempel pada `source_url` + `last_verified_at`, tidak ada angka tanpa asal.
 
+
+## Tujuan
+Kenapa aplikasi ini dibuat? 
+Aplikasi SatuKampus ini dibuat untuk membantu para mahasiswa mendapatkan informasi beasiswa se-Indonesia dengan mudah.
+
+Dan tujuan lainnya yaitu untuk memenuhi tugas mata kuliah Rekayasa Perangkat Lunak, Teknik Informatika 3C yang diampu oleh pak Muhammad Sobri, S.Kom.,M.Kom.,Ph.D.
+
 ---
 
 ## Kenapa ini bukan sekadar daftar beasiswa
