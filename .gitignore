@@ -19,3 +19,5 @@ coverage/
 .env.production.agents/
 skills-lock.json
 .agents/
+.agents/
+skills-lock.json
