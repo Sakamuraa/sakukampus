@@ -81,14 +81,14 @@ a { color: inherit; text-decoration: none; }
 .nav-link:hover { background: var(--surface-2); color: var(--ink); }
 .nav-link[data-active="true"] { background: var(--surface-2); color: var(--accent); }
 
-/* Mobile tab bar */
-.tabbar {
-  position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
-  background: rgba(18, 21, 28, 0.95); backdrop-filter: blur(16px);
-  border-top: 1px solid var(--line);
-  padding-bottom: env(safe-area-inset-bottom);
+/* Desktop: show topnav, hide tabbar */
+@media (min-width: 1024px) {
+  .tabbar { display: none; }
 }
-@media (min-width: 1024px) { .tabbar { display: none; } }
+/* Mobile: hide topnav, show tabbar */
+@media (max-width: 1023px) {
+  .topnav { display: none; }
+}
 .tabbar-inner { display: flex; height: 56px; }
 .tab {
   flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
