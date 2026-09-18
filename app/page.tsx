@@ -27,19 +27,19 @@ export default function Home() {
   );
 
   return (
-    <>
+    <div className="wrap">
       {/* ------------------------------------------------------------- hero */}
-      <div className="wrap" style={{ paddingTop: 32, paddingBottom: 20 }}>
-        <div className="row" style={{ alignItems: 'center', gap: 28 }}>
+      <div style={{ paddingTop: 32, paddingBottom: 8 }}>
+        <div className="row" style={{ alignItems: 'center', gap: 24 }}>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <h1 style={{ fontSize: 26, lineHeight: 1.2, letterSpacing: '-0.025em', margin: '0 0 10px', fontWeight: 640 }}>
+            <h1 style={{ fontSize: 26, lineHeight: 1.2, margin: '0 0 10px' }}>
               Golongan 4 di kampusmu belum tentu sama artinya dengan golongan 4 di kampus lain.
             </h1>
-            <p className="lede" style={{ margin: '0 0 22px', maxWidth: '48ch' }}>
+            <p className="lede" style={{ margin: '0 0 22px' }}>
               SakuKampus menilai kelayakan beasiswamu dari nominal rupiah UKT yang benar-benar kamu
               bayar.
             </p>
-            <div className="chips" style={{ marginTop: 0 }}>
+            <div className="chips" style={{ margin: 0 }}>
               <Link href="/cek" className="btn">
                 Cek kelayakanku
                 <ArrowRight size={15} aria-hidden="true" />
@@ -50,18 +50,18 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Real figures from KMA — two-column comparison card */}
+          {/* Real figures from KMA — two-column comparison */}
           {a && b && (
-            <div className="card" style={{ flex: '0 0 auto', minWidth: 260, maxWidth: 340 }}>
+            <div className="card" style={{ flex: '0 0 auto', minWidth: 240, maxWidth: 300 }}>
               <p className="tiny" style={{ margin: '0 0 12px', fontWeight: 600, color: 'var(--ink)' }}>
                 Prodi Teknik Informatika, golongan 2
               </p>
               <div className="ukt-grid" style={{ marginBottom: 10 }}>
-                <div className="ukt-cell" data-active="false">
+                <div className="ukt-cell">
                   <b>UIN Jakarta</b>
                   <span className="v mono">{rp(a.gol[1])}</span>
                 </div>
-                <div className="ukt-cell" data-active="false">
+                <div className="ukt-cell">
                   <b>UIN Malang</b>
                   <span className="v mono">{rp(b.gol[1])}</span>
                 </div>
@@ -80,17 +80,17 @@ export default function Home() {
           title="Cara penilaiannya"
           note="Empat aturan yang berlaku di seluruh aplikasi ini, bukan hanya di halaman penjelasan."
         />
-        <div className="grouped">
+        <div className="card" style={{ margin: 0, padding: 0 }}>
           {[
             {
               n: '1',
               t: 'Beasiswa nasional dinilai dengan plafon rupiah',
-              d: 'Syarat ditulis sebagai "UKT maksimal Rp2.400.000", bukan "golongan 1 sampai 4".',
+              d: "Syarat ditulis sebagai 'UKT maksimal Rp2.400.000', bukan 'golongan 1 sampai 4'.",
             },
             {
               n: '2',
               t: 'Nomor golongan hanya sah untuk beasiswa satu kampus',
-              d: 'Beasiswa internal UIN Jakarta boleh menyebut golongan, karena hanya berlaku di sana.',
+              d: "Beasiswa internal UIN Jakarta boleh menyebut golongan, karena hanya berlaku di sana.",
             },
             {
               n: '3',
@@ -103,13 +103,36 @@ export default function Home() {
               d: 'Kami tidak memberi vonis dari data yang belum kamu isi.',
             },
           ].map((row) => (
-            <div key={row.n} className="card-tight row">
-              <span className="badge" style={{ flexShrink: 0, borderRadius: '50%', width: 24, height: 24, padding: 0, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, background: 'var(--surface-2)', color: 'var(--ink-dim)' }}>
+            <div
+              key={row.n}
+              className="card-tight row"
+              style={{ borderBottom: '1px solid var(--line)' }}
+            >
+              <span
+                style={{
+                  flexShrink: 0,
+                  width: 24,
+                  height: 24,
+                  borderRadius: '50%',
+                  background: 'var(--surface-2)',
+                  border: '1px solid var(--line)',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: 11,
+                  fontWeight: 600,
+                  color: 'var(--ink-dim)',
+                }}
+              >
                 {row.n}
               </span>
               <div>
-                <p style={{ margin: '0 0 4px', fontWeight: 600, fontSize: 14 }}>{row.t}</p>
-                <p className="tiny" style={{ margin: 0, lineHeight: 1.5 }}>{row.d}</p>
+                <p style={{ margin: '0 0 4px', fontWeight: 600, fontSize: 14 }}>
+                  {row.t}
+                </p>
+                <p className="tiny" style={{ margin: 0, lineHeight: 1.5 }}>
+                  {row.d}
+                </p>
               </div>
             </div>
           ))}
@@ -123,19 +146,33 @@ export default function Home() {
             title="Sedang dibuka"
             note={`Per ${tanggal(now)}. Tenggat lengkap ada di halaman jadwal.`}
             action={
-              <Link className="tiny" href="/jadwal" style={{ fontWeight: 600, color: 'var(--accent)' }}>
+              <Link
+                className="tiny"
+                href="/jadwal"
+                style={{ fontWeight: 600, color: 'var(--accent)', textDecoration: 'none' }}
+              >
                 Semua jadwal
               </Link>
             }
           />
-          <div className="chips" style={{ margin: 0, overflowX: 'auto', paddingBottom: 2 }}>
+          <div
+            className="chips"
+            style={{
+              margin: 0,
+              overflowX: 'auto',
+              paddingBottom: 2,
+              scrollbarWidth: 'none',
+            }}
+          >
             {buka.map(({ s }) => (
-              <article key={s.slug} className="card" style={{ minWidth: 260, flex: '0 0 auto' }}>
+              <article key={s.slug} className="card" style={{ minWidth: 250, flex: '0 0 auto' }}>
                 <div className="row-between">
                   <h3 style={{ margin: 0, flex: 1, minWidth: 0 }}>{s.name}</h3>
                   <span className="badge badge-ok">Buka</span>
                 </div>
-                <p className="tiny" style={{ margin: '6px 0 0' }}>{s.provider}</p>
+                <p className="tiny" style={{ margin: '6px 0 0' }}>
+                  {s.provider}
+                </p>
                 {s.ukt_max_golongan !== undefined && (
                   <p className="tiny" style={{ margin: '8px 0 0', color: 'var(--ink)' }}>
                     Prioritas golongan 1 sampai {s.ukt_max_golongan} di kampus ini
@@ -144,7 +181,7 @@ export default function Home() {
                 {s.ukt_max_idr !== undefined && (
                   <p className="tiny" style={{ margin: '4px 0 0', color: 'var(--ink)' }}>
                     Syarat UKT maksimal{' '}
-                    <span className="mono" style={{ fontWeight: 600, color: 'var(--ink)' }}>
+                    <span className="mono" style={{ fontWeight: 600 }}>
                       {rp(s.ukt_max_idr)}
                     </span>
                   </p>
@@ -152,7 +189,15 @@ export default function Home() {
                 <Link
                   href="/cek"
                   className="tiny"
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 12, fontWeight: 600, color: 'var(--accent)', textDecoration: 'none' }}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 4,
+                    marginTop: 12,
+                    fontWeight: 600,
+                    color: 'var(--accent)',
+                    textDecoration: 'none',
+                  }}
                 >
                   Cek syaratku
                   <ArrowRight size={12} aria-hidden="true" />
@@ -171,17 +216,37 @@ export default function Home() {
         />
         <div className="grid-2">
           {[
-            { k: 'Kampus terindeks', v: institutions.length.toLocaleString('id-ID'), s: 'PDDikti' },
-            { k: 'Kampus dengan UKT per golongan', v: denganUkt.toLocaleString('id-ID'), s: 'KMA 204/2026' },
-            { k: 'Baris prodi berdata UKT', v: Number(seedsMeta.ukt.prodi).toLocaleString('id-ID'), s: 'KMA 204/2026' },
-            { k: 'Beasiswa dengan jadwal dan syarat', v: scholarships.length.toLocaleString('id-ID'), s: 'Pengumuman resmi' },
+            {
+              k: 'Kampus terindeks',
+              v: institutions.length.toLocaleString('id-ID'),
+              s: 'PDDikti',
+            },
+            {
+              k: 'Kampus dengan UKT per golongan',
+              v: denganUkt.toLocaleString('id-ID'),
+              s: 'KMA 204/2026',
+            },
+            {
+              k: 'Baris prodi berdata UKT',
+              v: Number(seedsMeta.ukt.prodi).toLocaleString('id-ID'),
+              s: 'KMA 204/2026',
+            },
+            {
+              k: 'Beasiswa dengan jadwal dan syarat',
+              v: scholarships.length.toLocaleString('id-ID'),
+              s: 'Pengumuman resmi',
+            },
           ].map((row) => (
             <div key={row.k} className="card-tight row-between">
               <div>
                 <p style={{ margin: 0, fontWeight: 600, fontSize: 14 }}>{row.k}</p>
-                <p className="tiny" style={{ margin: '2px 0 0' }}>{row.s}</p>
+                <p className="tiny" style={{ margin: '2px 0 0' }}>
+                  {row.s}
+                </p>
               </div>
-              <span className="mono" style={{ fontSize: 18, fontWeight: 620 }}>{row.v}</span>
+              <span className="mono" style={{ fontSize: 18, fontWeight: 620 }}>
+                {row.v}
+              </span>
             </div>
           ))}
         </div>
@@ -199,8 +264,11 @@ export default function Home() {
       {/* ----------------------------------------------------------- CTA */}
       <Section tight>
         <div className="card">
-          <h2 style={{ margin: '0 0 6px', fontSize: 17 }}>Kampusmu belum ada data UKT-nya?</h2>
-          <p className="tiny" style={{ margin: '0 0 16px', maxWidth: '58ch', lineHeight: 1.55 }}>
+          <h2 style={{ margin: '0 0 8px' }}>Kampusmu belum ada data UKT-nya?</h2>
+          <p
+            className="tiny"
+            style={{ margin: '0 0 18px', maxWidth: '58ch', lineHeight: 1.55 }}
+          >
             Isi nominal UKT yang kamu bayar sekarang. Perhitungannya jalan, hanya ditandai belum
             diverifikasi supaya kamu tahu bedanya.
           </p>
@@ -209,6 +277,6 @@ export default function Home() {
           </Link>
         </div>
       </Section>
-    </>
+    </div>
   );
 }
