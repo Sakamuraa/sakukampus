@@ -18,3 +18,4 @@ coverage/
 *.pem
 .env.production.agents/
 skills-lock.json
+.agents/
