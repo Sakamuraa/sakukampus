@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { institutionsByKode, scholarships, seedsMeta } from '@/lib/data';
-import { matchAll, stageStatus, type Profile } from '@/lib/match';
+import { matchAll, type Profile } from '@/lib/match';
 
 export const dynamic = 'force-dynamic';
 
@@ -78,15 +78,8 @@ export async function POST(req: Request) {
         ? `Nominal UKT diambil dari KMA 204/2026 (TA ${seedsMeta.ukt.academic_year}).`
         : 'Kampus ini belum punya data UKT terverifikasi; hasil dihitung dari nominal yang kamu masukkan.',
     },
-    hasil: hasil.map((h) => ({
-      ...h,
-      // status jadwal dihitung sekali di server supaya klien tidak perlu tahu
-      // struktur stage.
-      stage_status: stageStatus(
-        scholarships.find((s) => s.slug === h.slug)!,
-        now,
-      ),
-    })) as unknown as ReturnType<typeof matchAll>,
+    // stageStatus + displayState sudah ikut dari matchOne; tidak dihitung ulang.
+    hasil,
   };
 
   return NextResponse.json({ status: 'success', data });

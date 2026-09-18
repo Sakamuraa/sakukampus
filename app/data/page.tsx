@@ -1,145 +1,176 @@
 import type { Metadata } from 'next';
 import { institutions, scholarships, seedsMeta } from '@/lib/data';
+import { Section, Caveat, tanggal } from '@/components/ui';
 
 export const revalidate = 600;
 
 export const metadata: Metadata = {
-  title: 'Status data & sumber',
+  title: 'Status data dan sumber',
   description:
-    'Dari mana setiap angka di SakuKampus berasal: katalog kampus, tabel UKT, dan jadwal beasiswa — lengkap dengan tanggal dan catatan keterbatasannya.',
+    'Asal setiap angka di SakuKampus: katalog kampus, tabel UKT, dan jadwal beasiswa, lengkap dengan tanggal dan keterbatasannya.',
 };
 
-const tgl = (s: string) => new Date(s).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const n = (x: unknown) => Number(x).toLocaleString('id-ID');
 
 export default function DataPage() {
   const denganUkt = institutions.filter((i) => i.ukt);
   const tanpaUkt = institutions.length - denganUkt.length;
+  const lengkap = Number(seedsMeta.ukt.prodiGolonganLengkap);
+  const totalProdi = Number(seedsMeta.ukt.prodi);
+  const sebagian = totalProdi - lengkap;
 
   return (
     <>
-      <h1>Status data &amp; sumber</h1>
-      <p className="lede">
-        Aplikasi ini tidak meminta kamu percaya begitu saja. Setiap bagian di bawah menyebutkan asal
-        datanya, kapan terakhir diambil, dan apa yang belum lengkap.
-      </p>
-
-      <div className="card">
-        <h3>Katalog kampus</h3>
-        <p className="tiny" style={{ marginTop: 6 }}>
-          Sumber: <span className="mono">{seedsMeta.institutions.source as string}</span>
+      <Section tight>
+        <h1 className="h1" style={{ fontSize: 'clamp(1.5rem, 4.5vw, 2.1rem)' }}>
+          Status data dan sumber
+        </h1>
+        <p className="lede" style={{ marginTop: 10, maxWidth: '56ch' }}>
+          Halaman ini menyebutkan asal setiap angka di aplikasi, kapan terakhir diambil, dan apa
+          yang masih belum lengkap.
         </p>
-        <div className="grid-2" style={{ marginTop: 10 }}>
-          <div className="ukt-cell">
-            <b>Kampus terindeks</b>
-            <div className="v mono">{n(seedsMeta.institutions.count)}</div>
-          </div>
-          <div className="ukt-cell">
-            <b>Diambil</b>
-            <div className="v" style={{ fontSize: 14 }}>{tgl(seedsMeta.institutions.generated_at as string)}</div>
+      </Section>
+
+      {/* ------------------------------------------------- katalog kampus */}
+      <Section tight>
+        <h2 className="h2">Katalog kampus</h2>
+        <div className="grid-rows" style={{ marginTop: 14 }}>
+          <Row k="Kampus terindeks" v={n(seedsMeta.institutions.count)} />
+          <Row k="Diambil" v={tanggal(seedsMeta.institutions.generated_at as string)} />
+          <Row k="Sumber" v="api-pddikti.kemdiktisaintek.go.id" mono />
+        </div>
+        <p className="small muted" style={{ margin: '12px 0 0', maxWidth: '66ch' }}>
+          API PDDikti tidak berdokumentasi resmi dan mensyaratkan header <code>Origin</code> yang
+          tepat. Paginasi di sisi server juga diabaikan, jadi katalog disusun lewat penelusuran per
+          kata kunci. Hasilnya disimpan sebagai berkas di repositori supaya situs tetap jalan walau
+          API itu berubah.
+        </p>
+      </Section>
+
+      {/* ------------------------------------------------------------ UKT */}
+      <Section tight>
+        <h2 className="h2">Nominal UKT per golongan</h2>
+        <div className="grid-rows" style={{ marginTop: 14 }}>
+          <Row k="Dekrit" v={String(seedsMeta.ukt.decree)} />
+          <Row k="Tahun akademik" v={String(seedsMeta.ukt.academic_year)} />
+          <Row k="PTKIN tercakup" v={n(seedsMeta.ukt.ptkin)} />
+          <Row k="Baris prodi" v={n(seedsMeta.ukt.prodi)} />
+          <Row k="Golongan lengkap 1 sampai 7" v={n(lengkap)} />
+          <Row k="Kampus dengan data UKT" v={n(denganUkt.length)} emphasised />
+        </div>
+
+        <div style={{ marginTop: 16, display: 'grid', gap: 12 }}>
+          <div
+            className="card"
+            style={{
+              display: 'grid',
+              gap: 8,
+              background: 'var(--color-accent-soft)',
+              borderColor: 'transparent',
+            }}
+          >
+            <p style={{ margin: 0, fontWeight: 620, color: 'var(--color-ok)' }}>
+              Nomor golongan tidak sebanding antar kampus
+            </p>
+            <p className="small" style={{ margin: 0, color: 'var(--color-ok)', maxWidth: '66ch' }}>
+              Golongan 2 di UIN Jakarta setara Rp4.270.000, sementara di UIN Malang Rp1.653.000.
+              Karena itu beasiswa lintas kampus dinilai memakai plafon rupiah, dan nomor golongan
+              hanya dipakai untuk beasiswa yang memang terikat satu kampus.
+            </p>
           </div>
         </div>
-        <p className="tiny" style={{ marginTop: 10 }}>
-          Metode: {seedsMeta.institutions.method as string}
-        </p>
-        <div className="notice" style={{ marginTop: 12 }}>
-          API PDDikti tidak berdokumentasi resmi dan mensyaratkan header <span className="mono">Origin</span> yang
-          tepat. Katalog disimpan sebagai berkas di repositori, jadi situs tetap jalan walau API itu berubah.
-        </div>
-      </div>
+      </Section>
 
-      <div className="card">
-        <h3>Nominal UKT per golongan</h3>
-        <p className="tiny" style={{ marginTop: 6 }}>
-          Sumber: <span className="mono">{seedsMeta.ukt.source_url as string}</span>
-        </p>
-        <div className="grid-2" style={{ marginTop: 10 }}>
-          <div className="ukt-cell">
-            <b>Dekrit</b>
-            <div className="v" style={{ fontSize: 14 }}>{seedsMeta.ukt.decree as string}</div>
-          </div>
-          <div className="ukt-cell">
-            <b>Tahun akademik</b>
-            <div className="v" style={{ fontSize: 14 }}>{seedsMeta.ukt.academic_year as string}</div>
-          </div>
-          <div className="ukt-cell">
-            <b>PTKIN</b>
-            <div className="v mono">{n(seedsMeta.ukt.ptkin)}</div>
-          </div>
-          <div className="ukt-cell">
-            <b>Baris prodi</b>
-            <div className="v mono">{n(seedsMeta.ukt.prodi)}</div>
-          </div>
-          <div className="ukt-cell">
-            <b>Golongan lengkap 1–7</b>
-            <div className="v mono">{n(seedsMeta.ukt.prodiGolonganLengkap)}</div>
-          </div>
-          <div className="ukt-cell">
-            <b>Kampus dengan UKT</b>
-            <div className="v mono">{denganUkt.length}</div>
-          </div>
+      {/* -------------------------------------------------------- beasiswa */}
+      <Section tight>
+        <h2 className="h2">Beasiswa</h2>
+        <div className="grid-rows" style={{ marginTop: 14 }}>
+          <Row k="Entri" v={n(scholarships.length)} />
+          <Row
+            k="Dari sumber resmi penyelenggara"
+            v={n(scholarships.filter((s) => s.source_kind === 'resmi').length)}
+          />
+          <Row
+            k="Dari agregator"
+            v={n(scholarships.filter((s) => s.source_kind === 'agregator').length)}
+          />
+          <Row
+            k="Pemeriksaan terakhir"
+            v={tanggal(scholarships[0]?.last_verified_at ?? new Date().toISOString())}
+          />
         </div>
-        <p className="tiny" style={{ marginTop: 12 }}>
-          <strong>Nomor golongan tidak sebanding antar kampus.</strong> Golongan 2 di UIN Jakarta
-          setara Rp4.270.000, sementara di UIN Malang Rp1.653.000. Karena itu beasiswa nasional
-          dinilai memakai plafon rupiah, dan nomor golongan hanya dipakai untuk beasiswa yang memang
-          terikat satu kampus.
+        <p className="small muted" style={{ margin: '12px 0 0', maxWidth: '66ch' }}>
+          Data dari agregator tidak pernah menimpa data dari sumber resmi, dan selalu ditandai dengan
+          tingkat keyakinan yang lebih rendah pada kartunya.
         </p>
-      </div>
+      </Section>
 
-      <div className="card">
-        <h3>Beasiswa</h3>
-        <div className="grid-2" style={{ marginTop: 10 }}>
-          <div className="ukt-cell">
-            <b>Entri</b>
-            <div className="v mono">{n(scholarships.length)}</div>
-          </div>
-          <div className="ukt-cell">
-            <b>Sumber resmi</b>
-            <div className="v mono">{n(scholarships.filter((s) => s.source_kind === 'resmi').length)}</div>
-          </div>
-          <div className="ukt-cell">
-            <b>Agregator</b>
-            <div className="v mono">{n(scholarships.filter((s) => s.source_kind === 'agregator').length)}</div>
-          </div>
-          <div className="ukt-cell">
-            <b>Terverifikasi</b>
-            <div className="v" style={{ fontSize: 14 }}>{tgl(scholarships[0]?.last_verified_at ?? new Date().toISOString())}</div>
-          </div>
+      {/* ------------------------------------------------------ keterbatasan */}
+      <Section tight>
+        <h2 className="h2">Yang masih belum lengkap</h2>
+        <p className="small muted" style={{ margin: '8px 0 14px', maxWidth: '60ch' }}>
+          Disebutkan terbuka supaya kamu tahu batas keandalan tiap angka, bukan supaya kamu percaya
+          begitu saja.
+        </p>
+
+        <div style={{ display: 'grid', gap: 12 }}>
+          <Caveat>
+            {n(tanpaUkt)} dari {n(institutions.length)} kampus belum punya tabel UKT terverifikasi.
+            Untuk kampus itu kamu bisa mengisi nominal UKT sendiri, dan hasilnya ditandai belum
+            diverifikasi.
+          </Caveat>
+          <Caveat>
+            {n(sebagian)} dari {n(totalProdi)} baris prodi hanya mencantumkan sebagian golongan di
+            dekrit, umumnya di PTKIN kecil. Sel yang tidak ada dibiarkan kosong, bukan diisi angka
+            karangan.
+          </Caveat>
+          <Caveat>
+            Sebagian blok PTKIN di dekrit memakai nama yang berbeda dari katalog PDDikti, sehingga
+            belum semuanya terpasang otomatis. Blok itu tetap tersimpan dan ditandai belum
+            terpasangkan.
+          </Caveat>
         </div>
-        <p className="tiny" style={{ marginTop: 12 }}>
-          Data dari agregator tidak pernah menimpa data dari sumber resmi, dan ditandai dengan tingkat
-          keyakinan lebih rendah.
-        </p>
-      </div>
+      </Section>
 
-      <div className="card">
-        <h3>Yang belum lengkap — dikatakan terang-terangan</h3>
-        <ul className="reasons">
-          <li data-ok="false">
-            <span className="m">×</span>
-            <span>
-              {n(tanpaUkt)} dari {n(institutions.length)} kampus belum punya tabel UKT terverifikasi.
-              Untuk kampus-kampus itu, kamu bisa mengisi nominal UKT sendiri dan hasilnya ditandai
-              “belum diverifikasi”.
-            </span>
-          </li>
-          <li data-ok="false">
-            <span className="m">×</span>
-            <span>
-              Sebagian baris UKT hanya mencantumkan sebagian golongan di dekrit (terjadi pada PTKIN
-              kecil). Nilai yang tidak ada dibiarkan kosong, tidak dikarang.
-            </span>
-          </li>
-          <li data-ok="false">
-            <span className="m">×</span>
-            <span>
-              Untuk beberapa kampus, nama pada dekrit UKT berbeda dengan nama pada katalog sehingga
-              belum terpasang otomatis.
-            </span>
-          </li>
-        </ul>
-      </div>
+      {/* ------------------------------------------------------------- api */}
+      <Section tight>
+        <h2 className="h2">API publik</h2>
+        <p className="small muted" style={{ margin: '8px 0 14px', maxWidth: '60ch' }}>
+          Semua data yang dipakai halaman ini tersedia lewat API yang sama, tanpa kunci dan tanpa
+          pembatasan khusus di luar pembatasan laju per alamat IP.
+        </p>
+        <div className="grid-rows">
+          {[
+            ['/api/v1/institutions', 'Cari kampus, atau ambil detail satu kampus beserta tabel UKT'],
+            ['/api/v1/scholarships', 'Katalog beasiswa dengan jadwal dan syarat'],
+            ['/api/v1/calendar', 'Semua tenggat, terurut'],
+            ['/api/v1/meta/sources', 'Halaman ini dalam bentuk JSON'],
+            ['/api/v1/eligibility/check', 'Periksa kelayakan, metode POST'],
+          ].map(([path, desc]) => (
+            <div
+              key={path}
+              className="grid-row"
+              style={{ gridTemplateColumns: '1fr', gap: 4 }}
+            >
+              <code className="num small" style={{ fontWeight: 600 }}>
+                {path}
+              </code>
+              <span className="small muted">{desc}</span>
+            </div>
+          ))}
+        </div>
+      </Section>
     </>
+  );
+}
+
+function Row({ k, v, mono, emphasised }: { k: string; v: string; mono?: boolean; emphasised?: boolean }) {
+  return (
+    <div className="grid-row" data-emph={emphasised || undefined}>
+      <span className="muted">{k}</span>
+      <span className={mono ? 'num small' : 'num'} style={{ fontWeight: 600, textAlign: 'right' }}>
+        {v}
+      </span>
+    </div>
   );
 }

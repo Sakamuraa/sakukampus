@@ -52,6 +52,19 @@ export type Candidate = {
   uktRequirement: string | null;
   /** true bila UKT user diambil dari input manual (belum terverifikasi). */
   uktUnverified: boolean;
+  /**
+   * Keadaan jadwal beasiswa saat ini. Dibawa di dalam Candidate supaya klien
+   * tidak perlu tahu struktur `stages` dan supaya label tidak pernah berbeda
+   * antara halaman satu dan halaman lain.
+   */
+  stageStatus: StageStatus;
+  /**
+   * Label yang benar-benar ditampilkan. Berbeda dari `verdict` hanya pada satu
+   * hal: beasiswa yang pendaftarannya SUDAH TUTUP tidak pernah dilabeli
+   * "perlu data" — menawarkan "lengkapi data" untuk pintu yang sudah tertutup
+   * itu menyesatkan.
+   */
+  displayState: DisplayState;
 };
 
 export type Profile = {
@@ -136,6 +149,16 @@ export function nextDeadline(s: ScholarshipSeed, now: number): number | null {
 
 export type StageStatus = 'buka' | 'tutup' | 'akan_datang' | 'tanpa_jadwal';
 
+/**
+ * Label tampilan. `tutup` hanya muncul kalau jadwal pendaftaran sudah lewat;
+ * selain itu sama dengan verdict.
+ */
+export type DisplayState = 'lolos' | 'perlu_data' | 'tidak' | 'tutup';
+
+export function displayState(verdict: Candidate['verdict'], status: StageStatus): DisplayState {
+  return status === 'tutup' ? 'tutup' : verdict;
+}
+
 export function stageStatus(s: ScholarshipSeed, now: number): StageStatus {
   const opens = s.stages
     .map((st) => (st.opens_at ? Date.parse(st.opens_at) : NaN))
@@ -168,6 +191,8 @@ export function matchOne(
     uktRequirement = `Prioritas golongan 1–${s.ukt_max_golongan}`;
   }
 
+  const status = stageStatus(s, now);
+
   return {
     slug: s.slug,
     name: s.name,
@@ -184,6 +209,8 @@ export function matchOne(
     confidence: s.confidence,
     uktRequirement,
     uktUnverified: unverified,
+    stageStatus: status,
+    displayState: displayState(result.verdict, status),
   };
 }
 
@@ -193,11 +220,15 @@ export function matchAll(
   input: MatchInput,
   now = Date.now(),
 ): Candidate[] {
-  const order = { lolos: 0, perlu_data: 1, tidak: 2 } as const;
+  // Yang tutup selalu di belakang, apa pun verdict-nya: tidak ada gunanya
+  // menaruh pintu yang sudah tertutup di atas pintu yang masih terbuka.
+  const order = { lolos: 0, perlu_data: 1, tidak: 2, tutup: 3 } as const;
   return scholarships
     .map((s) => matchOne(s, input, now))
     .sort((a, b) => {
-      if (order[a.verdict] !== order[b.verdict]) return order[a.verdict] - order[b.verdict];
+      if (order[a.displayState] !== order[b.displayState]) {
+        return order[a.displayState] - order[b.displayState];
+      }
       if (b.score !== a.score) return b.score - a.score;
       const da = a.deadline ?? Infinity;
       const db = b.deadline ?? Infinity;

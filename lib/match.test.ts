@@ -6,6 +6,7 @@ import {
   matchAll,
   matchOne,
   buildFacts,
+  displayState,
   nextDeadline,
   stageStatus,
   simulateGolongan,
@@ -109,10 +110,10 @@ describe('matchAll — perilaku verdict', () => {
     expect(stf.reasons.find((r) => r.label.includes('Prioritas'))?.ok).toBe(false);
   });
 
-  it('urutan: lolos dulu, lalu perlu_data, lalu tidak', () => {
+  it('urutan: lolos, lalu perlu_data, lalu tidak, dan yang tutup paling belakang', () => {
     const hasil = matchAll(seed.scholarships, TI_LOKAL, NOW);
-    const rank = { lolos: 0, perlu_data: 1, tidak: 2 } as const;
-    const seq = hasil.map((c) => rank[c.verdict]);
+    const rank = { lolos: 0, perlu_data: 1, tidak: 2, tutup: 3 } as const;
+    const seq = hasil.map((c) => rank[c.displayState]);
     expect(seq).toEqual([...seq].sort((a, b) => a - b));
   });
 
@@ -165,6 +166,73 @@ describe('jadwal', () => {
     const blu = seed.scholarships.find((s) => s.slug === 'beasiswa-blu-uin-jakarta')!;
     expect(stageStatus(blu, NOW)).toBe('tanpa_jadwal');
     expect(nextDeadline(blu, NOW)).toBeNull();
+  });
+});
+
+describe('displayState: beasiswa yang sudah tutup tidak pernah "perlu data"', () => {
+  it('verdict perlu_data + jadwal tutup -> label tutup', () => {
+    expect(displayState('perlu_data', 'tutup')).toBe('tutup');
+  });
+
+  it('verdict lolos + jadwal tutup -> tetap tutup (pintunya sudah tertutup)', () => {
+    expect(displayState('lolos', 'tutup')).toBe('tutup');
+  });
+
+  it('selama jadwal masih buka, label sama dengan verdict', () => {
+    expect(displayState('perlu_data', 'buka')).toBe('perlu_data');
+    expect(displayState('lolos', 'buka')).toBe('lolos');
+    expect(displayState('tidak', 'akan_datang')).toBe('tidak');
+  });
+
+  it('tanpa jadwal tetap memakai verdict: tidak ada pintu yang bisa disebut tertutup', () => {
+    expect(displayState('perlu_data', 'tanpa_jadwal')).toBe('perlu_data');
+  });
+
+  it('Djarum (tutup 26 Sep 2026) tidak pernah dilabeli perlu data', () => {
+    const dj = seed.scholarships.find((s) => s.slug === 'djarum-beasiswa-plus-2026')!;
+    // Profil sengaja kosong supaya engine menjawab perlu_data.
+    const sesudahTutup = Date.parse('2026-11-01T00:00:00Z');
+    const c = matchOne(
+      dj,
+      { kodePt: '201001', ptkin: JAKARTA, prodi: 'Teknik Informatika', kelompok: 3, profile: {} },
+      sesudahTutup,
+    );
+    expect(c.verdict).toBe('perlu_data');
+    expect(c.stageStatus).toBe('tutup');
+    expect(c.displayState).toBe('tutup');
+  });
+
+  it('setiap Candidate membawa stageStatus dan displayState', () => {
+    const hasil = matchAll(seed.scholarships, {
+      kodePt: '201001',
+      ptkin: JAKARTA,
+      prodi: 'Teknik Informatika',
+      kelompok: 3,
+      profile: { jenjang: 'S1' },
+    }, NOW);
+    for (const c of hasil) {
+      expect(['buka', 'tutup', 'akan_datang', 'tanpa_jadwal']).toContain(c.stageStatus);
+      expect(['lolos', 'perlu_data', 'tidak', 'tutup']).toContain(c.displayState);
+      if (c.stageStatus === 'tutup') expect(c.displayState).toBe('tutup');
+      else expect(c.displayState).toBe(c.verdict);
+    }
+  });
+
+  it('yang tutup selalu di urutan paling belakang', () => {
+    // 1 Nov 2026: KIP masih buka (tutup 31 Okt), Djarum dan STF sudah tutup.
+    const hasil = matchAll(seed.scholarships, {
+      kodePt: '201001',
+      ptkin: JAKARTA,
+      prodi: 'Teknik Informatika',
+      kelompok: 3,
+      profile: { jenjang: 'S1', semester: 4, ipk: 3.3 },
+    }, Date.parse('2026-10-30T00:00:00Z'));
+
+    const posisiTutup = hasil.map((c, i) => (c.displayState === 'tutup' ? i : -1)).filter((i) => i >= 0);
+    const posisiTerbuka = hasil.map((c, i) => (c.displayState !== 'tutup' ? i : -1)).filter((i) => i >= 0);
+    if (posisiTutup.length && posisiTerbuka.length) {
+      expect(Math.min(...posisiTutup)).toBeGreaterThan(Math.max(...posisiTerbuka));
+    }
   });
 });
 

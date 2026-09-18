@@ -77,12 +77,29 @@ describe('POST /api/v1/eligibility/check', () => {
     expect(j.data.hasil.some((h: { verdict: string }) => h.verdict === 'lolos')).toBe(true);
   });
 
-  it('tiap hasil menyertakan status jadwal', async () => {
+  it('tiap hasil membawa status jadwal dan label tampilan', async () => {
     const r = await postCheck(req('http://x', { method: 'POST', body: body() }));
     const j = await r.json();
     for (const h of j.data.hasil) {
-      expect(['buka', 'tutup', 'akan_datang', 'tanpa_jadwal']).toContain(h.stage_status);
+      expect(['buka', 'tutup', 'akan_datang', 'tanpa_jadwal']).toContain(h.stageStatus);
+      expect(['lolos', 'perlu_data', 'tidak', 'tutup']).toContain(h.displayState);
+      // Inti perbaikan: yang tutup tidak pernah tampil sebagai perlu data.
+      if (h.stageStatus === 'tutup') expect(h.displayState).toBe('tutup');
     }
+  });
+
+  it('beasiswa yang tutup tidak dilabeli perlu data walau datanya kurang', async () => {
+    const r = await postCheck(
+      req('http://x', {
+        method: 'POST',
+        // Profil hampir kosong -> engine akan menjawab perlu_data untuk hampir semua.
+        body: JSON.stringify({ kode_pt: '201001', prodi: 'Teknik Informatika', kelompok: 3, profil: {} }),
+      }),
+    );
+    const j = await r.json();
+    const perluData = j.data.hasil.filter((h: { displayState: string }) => h.displayState === 'perlu_data');
+    expect(perluData.length).toBeGreaterThan(0);
+    for (const h of perluData) expect(h.stageStatus).not.toBe('tutup');
   });
 
   it('kampus tanpa data UKT: tetap jalan lewat nominal manual, ditandai belum terverifikasi', async () => {
