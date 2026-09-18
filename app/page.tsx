@@ -34,7 +34,7 @@ export default function Home() {
           <div style={{ display: 'grid', gap: 32, alignItems: 'center' }}>
             <div>
               <h1 className="hero-title">
-                Golongan 4 di kampusmu belum tentu sama artinya dengan golongan 4 di kampus lain.
+                UKT riil. Beasiswa cocok.
               </h1>
               <p className="hero-sub">
                 SakuKampus menilai kelayakan beasiswamu dari nominal rupiah UKT yang benar-benar kamu bayar.

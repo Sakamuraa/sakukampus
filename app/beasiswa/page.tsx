@@ -8,7 +8,16 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: 'Katalog beasiswa',
-  description: 'Beasiswa kampus, pemerintah, dan swasta untuk mahasiswa Indonesia.',
+  description:
+    '8 beasiswa kampus, pemerintah, dan swasta untuk mahasiswa Indonesia. Syarat UKT ditulis dalam rupiah sesuai dekrit KMA 204/2026. Filter per jenjang dan status pendaftaran.',
+  alternates: {
+    canonical: '/beasiswa',
+  },
+  openGraph: {
+    title: 'Katalog Beasiswa — SakuKampus',
+    url: '/beasiswa',
+    description: 'Filter 8 beasiswa berdasarkan jenjang (S1/D3/D4/S2) dan status (buka/tertutup).',
+  },
 };
 
 const TIERS = ['kampus', 'pemerintah', 'swasta'] as const;

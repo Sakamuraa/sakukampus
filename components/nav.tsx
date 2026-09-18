@@ -26,7 +26,7 @@ export function TopNav() {
     <header className="topnav">
       <div className="topnav-inner">
         <Link href="/" className="wordmark" aria-label="SakuKampus">
-          <img src="/logo.png" alt="SakuKampus" className="wordmark-mark" style={{ width: 26, height: 26, borderRadius: 7, objectFit: 'contain' }} />
+          <Logo />
           SakuKampus
         </Link>
 

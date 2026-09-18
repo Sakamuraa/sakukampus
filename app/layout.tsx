@@ -2,10 +2,8 @@ import type { Metadata, Viewport } from 'next';
 import { Plus_Jakarta_Sans, IBM_Plex_Mono } from 'next/font/google';
 import './globals.css';
 import { TopNav, TabBar } from '@/components/nav';
+import Logo from '@/components/ui/logo';
 
-/* Self-hosted through next/font so there is no render-blocking Google request,
-   no layout shift, and no third-party connection on a page students open on
-   metered mobile data. */
 const display = Plus_Jakarta_Sans({
   subsets: ['latin'],
   weight: ['200', '400', '500', '600', '700', '800'],
@@ -21,22 +19,57 @@ const numeric = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://sakukampus.onheil.fun'),
   title: {
-    default: 'SakuKampus: cek beasiswa pakai UKT kampusmu',
+    default: 'SakuKampus — Cek Beasiswa Pakai UKT Kampusmu',
     template: '%s · SakuKampus',
   },
   description:
-    'Katalog beasiswa kampus, pemerintah, dan swasta untuk seluruh perguruan tinggi Indonesia. Kelayakan dihitung dari nominal rupiah UKT kampusmu, bukan nomor golongan.',
-  metadataBase: new URL('https://sakukampus.onheil.fun'),
+    'Platform agregator beasiswa Indonesia. Nilai kelayakan dari nominal rupiah UKT kampusmu, bukan nomor golongan. Katalog 3.690+ kampus PDDikti.',
+  alternates: {
+    canonical: '/',
+    languages: {
+      'id-ID': '/',
+    },
+  },
   openGraph: {
     type: 'website',
     locale: 'id_ID',
+    url: '/',
     siteName: 'SakuKampus',
-    title: 'SakuKampus: cek beasiswa pakai UKT kampusmu',
-    description:
-      'Beasiswa kampus, pemerintah, dan swasta. Kelayakan dihitung dari rupiah UKT kampusmu.',
+    title: 'SakuKampus — Cek Beasiswa Pakai UKT Kampusmu',
+    description: 'Agregasi beasiswa kampus, pemerintah, dan swasta. Kelayakan dihitung dari rupiah UKT riil.',
+    images: [
+      {
+        url: '/og-home.png',
+        width: 1200,
+        height: 630,
+        alt: 'SakuKampus preview',
+      },
+    ],
   },
-  robots: { index: true, follow: true },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'SakuKampus — Cek Beasiswa Pakai UKT Kampusmu',
+    description: 'Agregasi beasiswa dari 3.690+ kampus Indonesia.',
+    images: ['/og-home.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    other: {
+      'viewport-width': 'device-width',
+    },
+  },
 };
 
 export const viewport: Viewport = {

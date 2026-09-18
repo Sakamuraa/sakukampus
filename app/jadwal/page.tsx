@@ -7,7 +7,16 @@ export const revalidate = 1800;
 
 export const metadata: Metadata = {
   title: 'Jadwal dan tenggat beasiswa',
-  description: 'Tahapan dan tenggat setiap beasiswa, diurutkan dari yang paling dekat.',
+  description:
+    'Pantau tenggat pendaftaran beasiswa terkini. Diurutkan berdasarkan countdown hari tersisa. Peringatan otomatis untuk tenggat <7 hari.',
+  alternates: {
+    canonical: '/jadwal',
+  },
+  openGraph: {
+    title: 'Jadwal Tenggat Beasiswa — SakuKampus',
+    url: '/jadwal',
+    description: 'Countdown tenggat pendaftaran beasiswa dari sumber resmi.',
+  },
 };
 
 const DEADLINE_STAGES = new Set(['pendaftaran', 'pendaftaran_akun', 'mandiri_ptn_pts']);

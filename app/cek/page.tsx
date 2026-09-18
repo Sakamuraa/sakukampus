@@ -4,7 +4,15 @@ import CekClient from './CekClient';
 export const metadata: Metadata = {
   title: 'Cek kelayakan beasiswa',
   description:
-    'Pilih kampus dan golongan UKT-mu, lihat beasiswa yang benar-benar cocok. Kelayakan dihitung dari nominal rupiah UKT kampusmu, lengkap dengan alasan per syarat.',
+    'Cek kelayakan beasiswa berdasarkan UKT riil kampusmu. Masukkan prodi dan golongan, lihat daftar beasiswa yang cocok dengan prioritas lolos/need data/sudah tutup.',
+  alternates: {
+    canonical: '/cek',
+  },
+  openGraph: {
+    title: 'Cek Kelayakan Beasiswa — SakuKampus',
+    url: '/cek',
+    description: 'Simulasi gratis: masukkan profil akademik untuk filter beasiswa yang cocok.',
+  },
 };
 
 export default function CekPage() {

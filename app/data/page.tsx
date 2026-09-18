@@ -6,7 +6,16 @@ export const revalidate = 600;
 
 export const metadata: Metadata = {
   title: 'Status data dan sumber',
-  description: 'Asal setiap angka di SakuKampus.',
+  description:
+    'Audit transparansi data SakuKampus. Sumber UKT dari KMA 204/2026, katalog kampus dari PDDikti, jadwal dari pengumuman resmi. Termasuk daftar API publik.',
+  alternates: {
+    canonical: '/data',
+  },
+  openGraph: {
+    title: 'Status Data & Sumber — SakuKampus',
+    url: '/data',
+    description: 'Transparansi asal data UKT, kampus, dan beasiswa.',
+  },
 };
 
 const n = (x: unknown) => Number(x).toLocaleString('id-ID');
