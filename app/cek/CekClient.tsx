@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { MagnifyingGlass } from '@phosphor-icons/react/dist/csr/MagnifyingGlass';
 import { SlidersHorizontal } from '@phosphor-icons/react/dist/csr/SlidersHorizontal';
 import { X } from '@phosphor-icons/react/dist/csr/X';
-import { CaretRight } from '@phosphor-icons/react/dist/csr/CaretRight';
 import { ArrowSquareOut } from '@phosphor-icons/react/dist/csr/ArrowSquareOut';
 import { Warning } from '@phosphor-icons/react/dist/csr/Warning';
 import { SealCheck } from '@phosphor-icons/react/dist/csr/SealCheck';
@@ -13,7 +12,6 @@ import type { Candidate, Profile } from '@/lib/match';
 import {
   Caveat,
   Reasons,
-  Section,
   rp,
   tanggal,
   STATE_LABEL,
@@ -48,13 +46,6 @@ type KampusDetail = {
 
 type Hasil = Candidate & { stageStatus: keyof typeof STAGE_LABEL };
 
-/* ---------------------------------------------------------------------------
-   Sorting into what the student needs to see first. Closed intakes go last:
-   there is nothing to complete for a door that has already shut, which is why
-   they must never be labelled "perlu data".
-   ------------------------------------------------------------------------- */
-/* Closed intakes go last: there is nothing to complete for a door that has
-   already shut, which is why they must never be labelled "perlu data". */
 const GROUP_ORDER = ['lolos', 'perlu_data', 'tidak', 'tutup'] as const;
 
 export default function CekClient() {
@@ -86,7 +77,6 @@ export default function CekClient() {
   const sheetRef = useRef<HTMLDialogElement>(null);
   const hasilRef = useRef<HTMLDivElement>(null);
 
-  /* ------------------------------------------------------------- kampus cari */
   useEffect(() => {
     const term = q.trim();
     if (term.length < 3) {
@@ -133,8 +123,6 @@ export default function CekClient() {
     setProdi(d?.prodi_terdaftar?.[0]?.nama ?? '');
   }
 
-  // Ganti prodi mengubah tabel UKT. Dalam satu kampus, Farmasi dan Teknik
-  // Informatika bisa berbeda jutaan rupiah, jadi tabelnya wajib ikut berubah.
   useEffect(() => {
     if (!kampus || kampus.ukt_model !== 'ptkin_kma' || !prodi) return;
     if (kampus.prodi_contoh === prodi) return;
@@ -143,13 +131,10 @@ export default function CekClient() {
       const d = await muatKampus(kampus.kode, prodi);
       if (!batal) setKampus(d);
     })();
-    return () => {
-      batal = true;
-    };
+    return () => { batal = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [prodi, kampus?.kode]);
 
-  /* ------------------------------------------------------------ sheet kontrol */
   const bukaSheet = () => sheetRef.current?.showModal();
   const tutupSheet = () => sheetRef.current?.close();
 
@@ -166,8 +151,6 @@ export default function CekClient() {
   const uktSiap = kelompok !== null || manual.trim().length > 0;
   const bisaCek = Boolean(kampus) && uktSiap;
 
-  // Ringkasan pilihan untuk tombol: mahasiswa harus bisa melihat apa yang akan
-  // dinilai tanpa membuka sheet lagi.
   const ringkasPilihan = useMemo(() => {
     if (!kampus) return null;
     const bagian: string[] = [];
@@ -180,7 +163,6 @@ export default function CekClient() {
     return bagian.join(' · ');
   }, [kampus, prodi, kelompok, manual]);
 
-  /* -------------------------------------------------------------------- cek */
   async function cek() {
     if (!kampus) return;
     setMemuat(true);
@@ -190,8 +172,6 @@ export default function CekClient() {
 
     const profil: Profile = {
       jenjang,
-      // Fakultas ikut dari prodi yang dipilih. Satu pertanyaan lebih sedikit
-      // yang harus dijawab mahasiswa, dan jawabannya lebih akurat.
       fakultas: prodiTerpilih?.fakultas ?? undefined,
       ipk: ipk ? Number(ipk) : undefined,
       semester: semester ? Number(semester) : undefined,
@@ -239,665 +219,417 @@ export default function CekClient() {
     })).filter((g) => g.items.length > 0);
   }, [hasil]);
 
-  const totalTutup = hasil?.filter((h) => h.displayState === 'tutup').length ?? 0;
+  const totalTutup = hasil?.filter((h) => h.stageStatus === 'tutup').length ?? 0;
 
   return (
-    <>
-      {/* --------------------------------------------------------------- intro */}
-      <Section tight>
-        <h1 className="h1" style={{ fontSize: 'clamp(1.5rem, 4.5vw, 2.1rem)' }}>
-          Cek kelayakan beasiswa
-        </h1>
-        <p className="lede" style={{ marginTop: 10, maxWidth: '52ch' }}>
-          Pilih kampus dan golongan UKT-mu. Kolom lain boleh dikosongkan, dan hasilnya akan jujur
-          berkata perlu data.
-        </p>
-      </Section>
-
-      {/* ------------------------------------------------------------ langkah 1 */}
-      <Section tight>
-        <div className="flex items-center gap-2" style={{ marginBottom: 12 }}>
-          <span className="badge badge-ok">1</span>
-          <h2 className="h3">Kampusmu</h2>
-        </div>
-
-        <div className="field" style={{ position: 'relative' }}>
-          <label className="label" htmlFor="cari">
-            Cari nama kampus
-          </label>
-          <div style={{ position: 'relative' }}>
-            <MagnifyingGlass
-              size={17}
-              aria-hidden="true"
-              style={{
-                position: 'absolute',
-                left: 13,
-                top: '50%',
-                transform: 'translateY(-50%)',
-                color: 'var(--color-ink-faint)',
-                pointerEvents: 'none',
-              }}
-            />
-            <input
-              id="cari"
-              className="input"
-              style={{ paddingLeft: 38 }}
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-              placeholder="UIN Syarif Hidayatullah"
-              autoComplete="off"
-              inputMode="search"
-              enterKeyHint="search"
-              aria-describedby="cari-hint"
-            />
-          </div>
-          <p className="hint" id="cari-hint">
-            Ketik minimal tiga huruf. Katalognya berasal dari PDDikti, dan cakupannya bisa dilihat
-            di halaman status data.
+    <div className="wrap">
+      <main>
+        {/* Header */}
+        <section className="hero" style={{ paddingBottom: 28 }}>
+          <h1 className="hero-title" style={{ fontSize: 'clamp(22px, 4vw, 32px)' }}>
+            Cek kelayakan beasiswa
+          </h1>
+          <p className="hero-sub">
+            Pilih kampus dan golongan UKT-mu. Kolom lain boleh dikosongkan, hasilnya akan jujur berkata perlu data.
           </p>
-        </div>
+        </section>
 
-        {mencari && (
-          <div style={{ marginTop: 10 }}>
-            {[0, 1, 2].map((i) => (
-              <div key={i} className="skeleton" style={{ height: 54, marginBottom: 8 }} />
-            ))}
+        {/* Step 1: Search campus */}
+        <section className="section" style={{ paddingTop: 0 }}>
+          <div className="section-head">
+            <span className="section-title">Langkah 1 — Kampus</span>
           </div>
-        )}
 
-        {!mencari && kandidat.length > 0 && (
-          <div className="grouped" style={{ marginTop: 10 }} role="list">
-            {kandidat.map((k) => (
-              <button
-                key={k.kode}
-                type="button"
-                role="listitem"
-                onClick={() => pilihKampus(k)}
+          <div className="field" style={{ position: 'relative', maxWidth: 480 }}>
+            <label htmlFor="cari" className="label">Cari nama kampus</label>
+            <div style={{ position: 'relative' }}>
+              <MagnifyingGlass
+                size={17}
+                aria-hidden="true"
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 12,
-                  width: '100%',
-                  textAlign: 'left',
-                  padding: '13px 15px',
-                  background: 'transparent',
-                  border: 0,
-                  color: 'inherit',
-                  font: 'inherit',
-                  cursor: 'pointer',
+                  position: 'absolute', left: 13, top: '50%', transform: 'translateY(-50%)',
+                  color: 'var(--ink-faint)', pointerEvents: 'none',
                 }}
-              >
-                <span style={{ flex: 1, minWidth: 0 }}>
-                  <span
-                    style={{ display: 'block', fontSize: '0.9375rem', fontWeight: 560 }}
-                  >
-                    {k.nama}
-                  </span>
-                  <span className="small faint" style={{ display: 'block', marginTop: 2 }}>
-                    {k.kode} · {k.jenis.toLowerCase()}
-                    {k.punya_ukt
-                      ? ` · ${k.jumlah_prodi} prodi berdata UKT`
-                      : ' · UKT belum terverifikasi'}
-                  </span>
-                </span>
-                <CaretRight size={15} aria-hidden="true" style={{ flexShrink: 0, opacity: 0.5 }} />
-              </button>
-            ))}
-          </div>
-        )}
-
-        {!mencari && q.trim().length >= 3 && kandidat.length === 0 && (
-          <p className="small muted" style={{ marginTop: 12 }}>
-            Tidak ada kampus yang cocok. Coba ejaan lain, atau nama kotanya.
-          </p>
-        )}
-      </Section>
-
-      {/* ------------------------------------------------------------ kampus terpilih */}
-      {kampus && (
-        <Section tight>
-          <div
-            className="card"
-            style={{
-              display: 'grid',
-              gap: 4,
-              borderColor: kampus.ukt_model === 'ptkin_kma' ? 'var(--color-accent)' : undefined,
-            }}
-          >
-            <div className="flex items-start justify-between gap-3">
-              <div style={{ minWidth: 0 }}>
-                <h2 className="h3">{kampus.nama}</h2>
-                <p className="small faint" style={{ margin: '3px 0 0' }}>
-                  {kampus.kode} · {kampus.jenis.toLowerCase()}
-                </p>
-              </div>
-              {kampus.ukt_model === 'ptkin_kma' ? (
-                <span className="badge badge-ok">
-                  <SealCheck size={12} weight="fill" aria-hidden="true" />
-                  UKT terverifikasi
-                </span>
-              ) : (
-                <span className="badge badge-warn">UKT manual</span>
-              )}
+              />
+              <input
+                id="cari"
+                className="input"
+                style={{ paddingLeft: 38 }}
+                value={q}
+                onChange={(e) => setQ(e.target.value)}
+                placeholder="UIN Syarif Hidayatullah"
+                autoComplete="off"
+                inputMode="search"
+                enterKeyHint="search"
+              />
             </div>
-            <p className="small muted" style={{ margin: '10px 0 0' }}>
-              {kampus.ukt_note}
-            </p>
-          </div>
-        </Section>
-      )}
-
-      {/* --------------------------------------------------------- langkah 2 (sheet) */}
-      {kampus && (
-        <Section tight>
-          <div className="flex items-center gap-2" style={{ marginBottom: 12 }}>
-            <span className="badge badge-ok">2</span>
-            <h2 className="h3">
-              {kampus.ukt_model === 'ptkin_kma' ? 'Prodi dan golongan UKT' : 'Nominal UKT-mu'}
-            </h2>
+            <p className="hint">Ketik minimal tiga huruf. Katalog dari PDDikti.</p>
           </div>
 
-          {kampus.ukt_model !== 'ptkin_kma' && (
-            <div style={{ marginBottom: 14 }}>
-              <Caveat>
-                Kampus ini belum punya tabel UKT terverifikasi. Isi nominal UKT per semester yang
-                kamu bayar sekarang, dan hasilnya akan ditandai belum diverifikasi.
-              </Caveat>
+          {mencari && (
+            <div style={{ marginTop: 12 }}>
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="skeleton" style={{ height: 52, marginBottom: 8 }} />
+              ))}
             </div>
           )}
 
-          <button type="button" className="btn btn-quiet btn-block" onClick={bukaSheet}>
-            <SlidersHorizontal size={16} aria-hidden="true" />
-            {ringkasPilihan ?? 'Atur pilihan'}
-          </button>
-        </Section>
-      )}
+          {!mencari && kandidat.length > 0 && (
+            <div className="grouped" style={{ marginTop: 12 }} role="list">
+              {kandidat.map((k) => (
+                <button
+                  key={k.kode}
+                  type="button"
+                  role="listitem"
+                  onClick={() => pilihKampus(k)}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 12,
+                    width: '100%', textAlign: 'left', padding: '14px 16px',
+                    background: 'transparent', border: 'none', color: 'inherit',
+                    cursor: 'pointer', borderBottom: '1px solid var(--line)',
+                  }}
+                >
+                  <span style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontWeight: 600, fontSize: 14 }}>{k.nama}</div>
+                    <div className="tiny faint" style={{ marginTop: 3 }}>
+                      {k.kode} · {k.jenis.toLowerCase()}
+                      {' · '}
+                      {k.punya_ukt ? `${k.jumlah_prodi} prodi berdata UKT` : 'UKT belum terverifikasi'}
+                    </div>
+                  </span>
+                  <span style={{ color: 'var(--ink-faint)' }}>›</span>
+                </button>
+              ))}
+            </div>
+          )}
 
-      {/* ------------------------------------------------------------ langkah 3 */}
-      {kampus && (
-        <Section tight>
-          <div className="flex items-center gap-2" style={{ marginBottom: 12 }}>
-            <span className="badge" style={{ background: 'var(--color-sunken)' }}>
-              3
-            </span>
-            <h2 className="h3">Kondisi akademik dan finansial</h2>
-          </div>
-          <p className="small muted" style={{ margin: '0 0 14px', maxWidth: '56ch' }}>
-            Semuanya opsional. Yang kamu kosongkan akan muncul sebagai perlu data, bukan sebagai
-            penolakan.
-          </p>
+          {!mencari && q.trim().length >= 3 && kandidat.length === 0 && (
+            <p className="tiny faint" style={{ marginTop: 12 }}>Tidak ada kampus yang cocok.</p>
+          )}
+        </section>
 
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="field">
-              <label className="label" htmlFor="jenjang">
-                Jenjang
-              </label>
-              <select
-                id="jenjang"
-                className="select"
-                value={jenjang}
-                onChange={(e) => setJenjang(e.target.value)}
-              >
-                {['S1', 'D4', 'D3', 'S2'].map((x) => (
-                  <option key={x}>{x}</option>
-                ))}
-              </select>
+        {/* Selected campus */}
+        {kampus && (
+          <section className="section-tight">
+            <div className="card" style={{
+              borderColor: kampus.ukt_model === 'ptkin_kma' ? 'var(--accent)' : undefined,
+              borderWidth: kampus.ukt_model === 'ptkin_kma' ? 2 : 1,
+            }}>
+              <div className="row-between">
+                <div>
+                  <h3 style={{ margin: 0, fontSize: 16 }}>{kampus.nama}</h3>
+                  <p className="tiny faint" style={{ margin: '3px 0 0' }}>
+                    {kampus.kode} · {kampus.jenis.toLowerCase()}
+                  </p>
+                </div>
+                {kampus.ukt_model === 'ptkin_kma' ? (
+                  <span className="badge badge-ok"><SealCheck size={12} weight="fill" /> Terverifikasi</span>
+                ) : (
+                  <span className="badge badge-warn">Manual</span>
+                )}
+              </div>
+              <p className="tiny faint" style={{ margin: '10px 0 0' }}>{kampus.ukt_note}</p>
+            </div>
+          </section>
+        )}
+
+        {/* Step 2: UKT selection */}
+        {kampus && (
+          <section className="section-tight">
+            <div className="section-head">
+              <span className="section-title">Langkah 2 — UKT</span>
             </div>
 
-            <div className="field">
-              <label className="label" htmlFor="semester">
-                Semester sekarang
-              </label>
-              <input
-                id="semester"
-                className="input"
-                value={semester}
-                onChange={(e) => setSemester(e.target.value.replace(/\D/g, '').slice(0, 2))}
-                inputMode="numeric"
-                enterKeyHint="next"
-                placeholder="5"
-              />
-            </div>
+            {kampus.ukt_model !== 'ptkin_kma' && (
+              <div className="notice" style={{ marginBottom: 14, fontSize: 13 }}>
+                Kampus ini belum punya tabel UKT terverifikasi. Isi nominal UKT per semester yang kamu bayar.
+              </div>
+            )}
 
-            <div className="field">
-              <label className="label" htmlFor="ipk">
-                IPK
-              </label>
-              <input
-                id="ipk"
-                className="input"
-                value={ipk}
-                onChange={(e) => setIpk(e.target.value.replace(/[^\d.]/g, '').slice(0, 4))}
-                inputMode="decimal"
-                enterKeyHint="next"
-                placeholder="3.62"
-              />
-            </div>
-
-            <div className="field">
-              <label className="label" htmlFor="desil">
-                Desil DTSEN, kalau tahu
-              </label>
-              <input
-                id="desil"
-                className="input"
-                value={desil}
-                onChange={(e) => setDesil(e.target.value.replace(/\D/g, '').slice(0, 2))}
-                inputMode="numeric"
-                enterKeyHint="done"
-                placeholder="1 sampai 10"
-              />
-              <p className="hint">Tertera di kartu KIP atau surat keterangan desil kampusmu.</p>
-            </div>
-
-            <div className="field">
-              <label className="label" htmlFor="lain">
-                Sedang menerima beasiswa lain?
-              </label>
-              <select
-                id="lain"
-                className="select"
-                value={beasiswaLain}
-                onChange={(e) => setBeasiswaLain(e.target.value)}
-              >
-                <option value="">Belum dijawab</option>
-                <option value="tidak">Tidak</option>
-                <option value="ya">Ya</option>
-              </select>
-            </div>
-
-            <div className="field">
-              <label className="label" htmlFor="kip">
-                Pemegang KIP Pendidikan Menengah?
-              </label>
-              <select
-                id="kip"
-                className="select"
-                value={kip}
-                onChange={(e) => setKip(e.target.value)}
-              >
-                <option value="">Belum dijawab</option>
-                <option value="tidak">Tidak</option>
-                <option value="ya">Ya</option>
-              </select>
-            </div>
-          </div>
-        </Section>
-      )}
-
-      {/* ---------------------------------------------------------------- CTA */}
-      {kampus && (
-        <div className="cta-bar">
-          <div className="shell" style={{ padding: 0 }}>
             <button
               type="button"
-              className="btn btn-block"
+              className="btn btn-ghost"
+              onClick={bukaSheet}
+              style={{ width: '100%', justifyContent: 'flex-start', gap: 10, textAlign: 'left', padding: '14px 16px' }}
+            >
+              <SlidersHorizontal size={18} />
+              <span>{ringkasPilihan ?? 'Atur pilihan UKT'}</span>
+            </button>
+          </section>
+        )}
+
+        {/* Step 3: Academic profile */}
+        {kampus && (
+          <section className="section-tight">
+            <div className="section-head">
+              <span className="section-title">Langkah 3 — Profil akademik</span>
+            </div>
+            <p className="tiny faint" style={{ marginBottom: 16 }}>Semua opsional. Yang kosong akan muncul sebagai perlu data.</p>
+
+            <div className="grid-2" style={{ gap: 14 }}>
+              <div className="field">
+                <label className="label" htmlFor="jenjang">Jenjang</label>
+                <select id="jenjang" className="select" value={jenjang} onChange={(e) => setJenjang(e.target.value)}>
+                  {['S1', 'D4', 'D3', 'S2'].map((x) => <option key={x}>{x}</option>)}
+                </select>
+              </div>
+
+              <div className="field">
+                <label className="label" htmlFor="semester">Semester</label>
+                <input id="semester" className="input" value={semester}
+                  onChange={(e) => setSemester(e.target.value.replace(/\D/g, '').slice(0, 2))}
+                  inputMode="numeric" placeholder="5" />
+              </div>
+
+              <div className="field">
+                <label className="label" htmlFor="ipk">IPK</label>
+                <input id="ipk" className="input" value={ipk}
+                  onChange={(e) => setIpk(e.target.value.replace(/[^\d.]/g, '').slice(0, 4))}
+                  inputMode="decimal" placeholder="3.62" />
+              </div>
+
+              <div className="field">
+                <label className="label" htmlFor="desil">Desil DTSEN</label>
+                <input id="desil" className="input" value={desil}
+                  onChange={(e) => setDesil(e.target.value.replace(/\D/g, '').slice(0, 2))}
+                  inputMode="numeric" placeholder="1–10" />
+                <p className="hint">Tertera di kartu KIP atau surat keterangan kampus.</p>
+              </div>
+
+              <div className="field">
+                <label className="label" htmlFor="lain">Beasiswa lain?</label>
+                <select id="lain" className="select" value={beasiswaLain} onChange={(e) => setBeasiswaLain(e.target.value)}>
+                  <option value="">Belum dijawab</option>
+                  <option value="tidak">Tidak</option>
+                  <option value="ya">Ya</option>
+                </select>
+              </div>
+
+              <div className="field">
+                <label className="label" htmlFor="kip">Pemegang KIP?</label>
+                <select id="kip" className="select" value={kip} onChange={(e) => setKip(e.target.value)}>
+                  <option value="">Belum dijawab</option>
+                  <option value="tidak">Tidak</option>
+                  <option value="ya">Ya</option>
+                </select>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Check button */}
+        {kampus && (
+          <section className="section-tight" style={{ paddingBottom: 0 }}>
+            <button
+              type="button"
+              className="btn"
               onClick={cek}
               disabled={!bisaCek || memuat}
+              style={{ width: '100%', padding: '15px 20px', fontSize: 15, justifyContent: 'center' }}
             >
-              {memuat ? 'Menghitung…' : 'Lihat beasiswa yang cocok'}
+              {memuat ? (
+                <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span className="skeleton" style={{ width: 16, height: 16, borderRadius: '50%', margin: 0 }} />
+                  Menghitung...
+                </span>
+              ) : 'Cek kelayakan beasiswa'}
             </button>
             {!bisaCek && (
-              <p className="hint" style={{ marginTop: 8, textAlign: 'center' }}>
+              <p className="hint" style={{ marginTop: 10, textAlign: 'center' }}>
                 Pilih golongan UKT atau isi nominalnya dulu.
               </p>
             )}
-          </div>
-        </div>
-      )}
+          </section>
+        )}
 
-      {galat && (
-        <Section tight>
-          <Caveat>{galat}</Caveat>
-        </Section>
-      )}
+        {/* Error */}
+        {galat && (
+          <section className="section-tight">
+            <div className="notice">{galat}</div>
+          </section>
+        )}
 
-      {/* ------------------------------------------------------------- memuat */}
-      {memuat && (
-        <Section tight>
-          {[86, 112, 98].map((h, i) => (
-            <div key={i} className="skeleton" style={{ height: h, marginBottom: 12 }} />
-          ))}
-        </Section>
-      )}
+        {/* Loading skeletons */}
+        {memuat && (
+          <section className="section-tight">
+            {[86, 112, 98].map((h, i) => (
+              <div key={i} className="skeleton" style={{ height: h, marginBottom: 12 }} />
+            ))}
+          </section>
+        )}
 
-      {/* -------------------------------------------------------------- hasil */}
-      {hasil && (
-        <div ref={hasilRef}>
-          <Section tight>
-            <div className="flex items-baseline justify-between gap-3" style={{ flexWrap: 'wrap' }}>
-              <h2 className="h2">
-                {hasil.length} beasiswa diperiksa
-              </h2>
-              <Link href="/beasiswa" className="small" style={{ fontWeight: 600 }}>
-                Lihat katalog lengkap
-              </Link>
-            </div>
+        {/* Results */}
+        {hasil && (
+          <div ref={hasilRef}>
+            <section className="section">
+              <div className="row-between" style={{ marginBottom: 16 }}>
+                <h2 style={{ fontSize: 18, fontWeight: 600 }}>{hasil.length} beasiswa diperiksa</h2>
+                <Link href="/beasiswa" className="tiny" style={{ color: 'var(--accent)', fontWeight: 600, textDecoration: 'none' }}>
+                  Lihat katalog lengkap →
+                </Link>
+              </div>
 
-            {uktInfo && (
-              <div
-                className="grid-rows"
-                style={{ marginTop: 14 }}
-                role="group"
-                aria-label="UKT yang dipakai"
-              >
-                <div className="grid-row">
-                  <span className="muted">UKT yang dipakai</span>
-                  <span className="num" style={{ fontWeight: 600 }}>
-                    {rp(uktInfo.dipakai)}
-                  </span>
+              {uktInfo && (
+                <div className="card" style={{ padding: 14, marginBottom: 16 }}>
+                  <div className="row-between">
+                    <span className="tiny faint">UKT yang dipakai</span>
+                    <span className="num" style={{ fontWeight: 600, fontSize: 16 }}>{rp(uktInfo.dipakai)}</span>
+                  </div>
+                  <div className="row-between" style={{ marginTop: 8 }}>
+                    <span className="tiny faint">Sumber</span>
+                    <span className="tiny">{uktInfo.sumber === 'kma' ? 'KMA 204/2026' : uktInfo.sumber === 'manual' ? 'Input kamu' : '—'}</span>
+                  </div>
                 </div>
-                <div className="grid-row">
-                  <span className="muted">Sumber</span>
-                  <span>
-                    {uktInfo.sumber === 'kma'
-                      ? 'KMA 204/2026'
-                      : uktInfo.sumber === 'manual'
-                        ? 'Input kamu, belum diverifikasi'
-                        : 'Tidak ada'}
-                  </span>
-                </div>
-              </div>
-            )}
+              )}
 
-            {totalTutup > 0 && (
-              <p className="small faint" style={{ marginTop: 12 }}>
-                {totalTutup} beasiswa pendaftarannya sudah tutup, jadi dikelompokkan terpisah di
-                bawah dan tidak dihitung sebagai perlu data.
-              </p>
-            )}
-          </Section>
-
-          {terkelompok?.map(({ state, items }) => (
-            <Section key={state} tight>
-              <SectionHeadInline
-                title={STATE_LABEL[state]}
-                count={items.length}
-                tone={state}
-              />
-              <div className="grid gap-4 md:grid-cols-2">
-                {items.map((h) => (
-                  <article key={h.slug} className="card">
-                    <div className="flex items-start justify-between gap-3">
-                      <div style={{ minWidth: 0 }}>
-                        <h3 className="h3">{h.name}</h3>
-                        <p className="small muted" style={{ margin: '4px 0 0' }}>
-                          {h.provider}
-                        </p>
-                      </div>
-                      <StateBadge state={h.displayState} />
-                    </div>
-
-                    <div
-                      className="flex flex-wrap gap-2"
-                      style={{ marginTop: 12, alignItems: 'center' }}
-                    >
-                      <span className="badge">{TIER_LABEL[h.tier] ?? h.tier}</span>
-                      <span className="badge">
-                        {h.stageStatus === 'buka' ? 'Sedang dibuka' : STAGE_LABEL[h.stageStatus]}
-                      </span>
-                    </div>
-
-                    {h.uktRequirement && (
-                      <p className="small" style={{ margin: '12px 0 0' }}>
-                        Syarat UKT: {/* Angka rupiah selalu tabular supaya kolomnya lurus. */}
-                        <span className="num">{h.uktRequirement}</span>
-                        {h.uktUnverified && (
-                          <span className="faint"> · dihitung dari input manualmu</span>
-                        )}
-                      </p>
-                    )}
-
-                    <div style={{ marginTop: 10, paddingTop: 4 }}>
-                      <Reasons reasons={h.reasons} />
-                    </div>
-
-                    {h.missing.length > 0 && (
-                      <p className="small muted" style={{ margin: '10px 0 0' }}>
-                        Lengkapi {h.missing.length} data untuk memastikan: {h.missing.join(', ')}.
-                      </p>
-                    )}
-
-                    <div
-                      className="flex flex-wrap items-center gap-x-4 gap-y-2"
-                      style={{ marginTop: 14 }}
-                    >
-                      {h.deadline !== null && (
-                        <span className="small faint">
-                          {h.displayState === 'tutup' ? 'Tutup' : 'Tenggat'} {tanggal(h.deadline)}
-                        </span>
-                      )}
-                      <span className="small faint">Diperiksa {tanggal(h.last_verified_at)}</span>
-                    </div>
-
-                    <div className="flex flex-wrap gap-2" style={{ marginTop: 14 }}>
-                      <a
-                        className="btn btn-quiet"
-                        href={h.source_url}
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        style={{ minHeight: 40, padding: '0 14px', fontSize: '0.875rem' }}
-                      >
-                        Sumber resmi
-                        <ArrowSquareOut size={14} aria-hidden="true" />
-                      </a>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </Section>
-          ))}
-        </div>
-      )}
-
-      {/* --------------------------------------------------------- sheet modal
-          Native <dialog>: focus trap, Esc, and backdrop come from the platform
-          instead of being reimplemented and getting the details wrong. */}
-      {kampus?.ukt_model === 'ptkin_kma' && (
-        <dialog ref={sheetRef} className="sheet" aria-labelledby="sheet-title">
-          <div className="sheet-head">
-            <div>
-              <h2 className="h3" id="sheet-title" style={{ margin: 0 }}>
-                Prodi dan golongan UKT
-              </h2>
-              <p className="tiny" style={{ margin: '3px 0 0', color: 'var(--ink-faint)' }}>
-                {kampus.nama}
-              </p>
-            </div>
-            <button
-              type="button"
-              className="btn btn-quiet"
-              onClick={tutupSheet}
-              style={{ minHeight: 32, padding: '0 10px', fontSize: 18, lineHeight: 1 }}
-              aria-label="Tutup"
-            >
-              ×
-            </button>
-          </div>
-
-          <div style={{ padding: '20px 20px calc(24px + env(safe-area-inset-bottom))', display: 'flex', flexDirection: 'column', gap: 20 }}>
-            {/* Prodi selector */}
-            <div className="field">
-              <label className="label" htmlFor="prodi-sheet">
-                Program studi
-              </label>
-              <select
-                id="prodi-sheet"
-                className="select"
-                value={prodi}
-                onChange={(e) => setProdi(e.target.value)}
-                style={{ background: 'var(--surface-2)', color: 'var(--ink)', borderColor: 'var(--line)', fontSize: 14, padding: '10px 12px' }}
-              >
-                {kampus.prodi_terdaftar.map((p) => (
-                  <option key={p.nama} value={p.nama}>
-                    {p.nama}
-                    {p.fakultas ? ` (${p.fakultas})` : ''}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Golongan selector */}
-            <div>
-              <span className="label" style={{ marginBottom: 10, display: 'block' }}>
-                Golongan UKT
-              </span>
-              <div
-                className="chip-rail"
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))',
-                  gap: 8,
-                }}
-              >
-                {kelompokOptions.map((u) => (
-                  <button
-                    key={u.kelompok}
-                    type="button"
-                    className="chip"
-                    data-on={kelompok === u.kelompok}
-                    onClick={() => {
-                      setKelompok(u.kelompok);
-                      setManual('');
-                    }}
-                    aria-pressed={kelompok === u.kelompok}
-                    style={{
-                      padding: '10px 12px',
-                      textAlign: 'left',
-                      fontSize: 12,
-                      transition: 'all .15s ease',
-                      border: `1px solid ${kelompok === u.kelompok ? 'var(--accent)' : 'var(--line)'}`,
-                      background: kelompok === u.kelompok ? 'var(--accent)' : 'var(--surface)',
-                      color: kelompok === u.kelompok ? 'var(--accent-ink)' : 'var(--ink-dim)',
-                    }}
-                  >
-                    <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 2 }}>
-                      {u.kelompok === 8 ? 'KIP Kuliah' : `Gol ${u.kelompok}`}
-                    </div>
-                    <div style={{ opacity: 0.8, fontSize: 11, fontFamily: 'monospace' }}>
-                      {u.nominal ? rp(u.nominal) : '—'}
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Selected info */}
-            {uktTerpilih && (
-              <div
-                style={{
-                  padding: '12px 14px',
-                  borderRadius: 'var(--radius-sm)',
-                  background: 'var(--surface-2)',
-                  border: '1px solid var(--line)',
-                }}
-              >
-                <p className="tiny" style={{ margin: 0, color: 'var(--ink-dim)' }}>
-                  UKT-mu: <span className="num" style={{ color: 'var(--accent)', fontWeight: 600 }}>{rp(uktTerpilih.nominal)}</span>
-                </p>
-                <p className="hint" style={{ margin: '4px 0 0' }}>
-                  Angka inilah yang dibandingkan dengan plafon rupiah beasiswa nasional.
-                </p>
-              </div>
-            )}
-
-            {/* Warning for null nominations */}
-            {kelompokOptions.some((u) => u.nominal === null) && (
-              <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
-                <Warning size={14} aria-hidden="true" style={{ flexShrink: 0, marginTop: 2, color: 'var(--warn)' }} />
-                <p className="hint" style={{ margin: 0 }}>
-                  Sebagian golongan tidak dicantumkan di dekrit untuk prodi ini, jadi ditandai tidak
-                  dicantumkan, bukan diisi angka karangan.
-                </p>
-              </div>
-            )}
-
-            {/* Save button */}
-            <button
-              type="button"
-              className="btn btn-block"
-              onClick={tutupSheet}
-              style={{ marginTop: 4, padding: '14px 16px', fontSize: 15 }}
-            >
-              Simpan pilihan
-            </button>
-          </div>
-        </dialog>
-      )}
-
-      {/* Sheet untuk kampus tanpa tabel UKT: hanya satu isian. */}
-      {kampus && kampus.ukt_model !== 'ptkin_kma' && (
-        <dialog ref={sheetRef} className="sheet" aria-labelledby="sheet-title2">
-          <div className="sheet-head">
-            <h2 className="h3" id="sheet-title2">
-              Nominal UKT-mu
-            </h2>
-            <button
-              type="button"
-              className="btn btn-quiet"
-              onClick={tutupSheet}
-              style={{ minHeight: 36, padding: '0 12px' }}
-              aria-label="Tutup"
-            >
-              <X size={16} aria-hidden="true" />
-            </button>
-          </div>
-          <div style={{ padding: '18px 18px calc(24px + env(safe-area-inset-bottom))' }}>
-            <div className="field">
-              <label className="label" htmlFor="manual-sheet">
-                Nominal UKT per semester, dalam rupiah
-              </label>
-              <input
-                id="manual-sheet"
-                className="input num"
-                value={manual}
-                onChange={(e) => setManual(e.target.value.replace(/[^\d]/g, '').slice(0, 12))}
-                inputMode="numeric"
-                enterKeyHint="done"
-                placeholder="3500000"
-              />
-              {manual && (
-                <p className="hint">
-                  Terbaca <span className="num">{rp(Number(manual))}</span>
+              {totalTutup > 0 && (
+                <p className="tiny faint" style={{ marginBottom: 16 }}>
+                  {totalTutup} beasiswa sudah tutup, dikelompokkan terpisah di bawah.
                 </p>
               )}
-            </div>
-            <button
-              type="button"
-              className="btn btn-block"
-              onClick={tutupSheet}
-              style={{ marginTop: 20 }}
-            >
-              Simpan
-            </button>
-          </div>
-        </dialog>
-      )}
-    </>
-  );
-}
+            </section>
 
-/* Heading for a verdict group. Count sits beside the label so the reader knows
-   how much is in a collapsed-looking group before reading it. */
-function SectionHeadInline({
-  title,
-  count,
-  tone,
-}: {
-  title: string;
-  count: number;
-  tone: string;
-}) {
-  const cls =
-    tone === 'lolos'
-      ? 'badge badge-ok'
-      : tone === 'perlu_data'
-        ? 'badge badge-warn'
-        : 'badge badge-off';
-  return (
-    <div className="flex items-center gap-2" style={{ marginBottom: 14 }}>
-      <span className={cls}>{title}</span>
-      <span className="small faint">{count} beasiswa</span>
+            {terkelompok?.map(({ state, items }) => (
+              <section key={state} className="section-tight" style={{ borderTop: '1px solid var(--line)' }}>
+                <div className="section-head">
+                  <span className={`badge ${state === 'lolos' ? 'badge-ok' : state === 'perlu_data' ? 'badge-warn' : 'badge-no'}`}>
+                    {STATE_LABEL[state]}
+                  </span>
+                  <span className="tiny faint">{items.length} beasiswa</span>
+                </div>
+                <div style={{ display: 'grid', gap: 12 }}>
+                  {items.map((h) => (
+                    <article key={h.slug} className="scholarship-card">
+                      <div className="scholarship-card-header">
+                        <div>
+                          <div className="scholarship-card-name">{h.name}</div>
+                          <div className="scholarship-card-provider">{h.provider}</div>
+                        </div>
+                        <StateBadge state={h.displayState} />
+                      </div>
+
+                      <div className="scholarship-card-tags">
+                        <span className="badge">{TIER_LABEL[h.tier] ?? h.tier}</span>
+                        <span className="badge">{h.stageStatus === 'buka' ? 'Sedang dibuka' : STAGE_LABEL[h.stageStatus]}</span>
+                      </div>
+
+                      {h.uktRequirement && (
+                        <p className="tiny" style={{ color: 'var(--ink-dim)', margin: '8px 0' }}>
+                          Syarat UKT:{' '}
+                          <span className="num" style={{ color: 'var(--ink)', fontWeight: 600 }}>{h.uktRequirement}</span>
+                          {h.uktUnverified && <span className="faint"> (manual)</span>}
+                        </p>
+                      )}
+
+                      <Reasons reasons={h.reasons} />
+
+                      {h.missing.length > 0 && (
+                        <p className="tiny faint" style={{ marginTop: 10 }}>
+                          Lengkapi: {h.missing.join(', ')}.
+                        </p>
+                      )}
+
+                      <div className="scholarship-card-actions">
+                        <a className="btn btn-sm" href={h.source_url} target="_blank" rel="noreferrer noopener">
+                          Sumber resmi <ArrowSquareOut size={12} />
+                        </a>
+                        {h.deadline !== null && (
+                          <span className="tiny faint">
+                            {h.displayState === 'tutup' ? 'Tutup' : 'Tenggat'} {tanggal(h.deadline)}
+                          </span>
+                        )}
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
+        )}
+
+        {/* Sheet modal - PTkin KMA */}
+        {kampus?.ukt_model === 'ptkin_kma' && (
+          <dialog ref={sheetRef} className="sheet" aria-labelledby="sheet-title">
+            <div className="sheet-head">
+              <div>
+                <h3 id="sheet-title" style={{ margin: 0, fontSize: 15 }}>Prodi dan golongan UKT</h3>
+                <p className="tiny faint" style={{ margin: '3px 0 0' }}>{kampus.nama}</p>
+              </div>
+              <button type="button" className="btn btn-quiet btn-sm" onClick={tutupSheet} style={{ padding: '6px 10px', fontSize: 18, lineHeight: 1 }}>×</button>
+            </div>
+            <div style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 18 }}>
+              <div className="field">
+                <label className="label" htmlFor="prodi-sheet">Program studi</label>
+                <select id="prodi-sheet" className="select" value={prodi} onChange={(e) => setProdi(e.target.value)}>
+                  {kampus.prodi_terdaftar.map((p) => (
+                    <option key={p.nama} value={p.nama}>{p.nama}{p.fakultas ? ` (${p.fakultas})` : ''}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="label" style={{ marginBottom: 10 }}>Golongan UKT</label>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: 8 }}>
+                  {kelompokOptions.map((u) => (
+                    <button key={u.kelompok} type="button"
+                      onClick={() => { setKelompok(u.kelompok); setManual(''); }}
+                      aria-pressed={kelompok === u.kelompok}
+                      style={{
+                        padding: '10px 12px', borderRadius: 8, border: `1px solid ${kelompok === u.kelompok ? 'var(--accent)' : 'var(--line)'}`,
+                        background: kelompok === u.kelompok ? 'var(--accent)' : 'var(--surface-2)',
+                        color: kelompok === u.kelompok ? 'var(--accent-ink)' : 'var(--ink-dim)',
+                        cursor: 'pointer', textAlign: 'left', transition: 'all .15s',
+                      }}
+                    >
+                      <div style={{ fontWeight: 600, fontSize: 13 }}>{u.kelompok === 8 ? 'KIP' : `Gol ${u.kelompok}`}</div>
+                      <div style={{ fontSize: 11, opacity: 0.8, fontFamily: 'monospace' }}>{u.nominal ? rp(u.nominal) : '—'}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {uktTerpilih && (
+                <div style={{ padding: 12, borderRadius: 8, background: 'var(--surface-2)', border: '1px solid var(--line)' }}>
+                  <p className="tiny" style={{ margin: 0, color: 'var(--ink-dim)' }}>
+                    UKT-mu: <span className="num" style={{ color: 'var(--accent)', fontWeight: 600 }}>{rp(uktTerpilih.nominal)}</span>
+                  </p>
+                </div>
+              )}
+
+              {kelompokOptions.some((u) => u.nominal === null) && (
+                <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                  <Warning size={14} style={{ flexShrink: 0, marginTop: 2, color: 'var(--warn)' }} aria-hidden="true" />
+                  <p className="hint" style={{ margin: 0 }}>Sebagian golongan tidak dicantumkan di dekrit.</p>
+                </div>
+              )}
+
+              <button type="button" className="btn btn-block" onClick={tutupSheet} style={{ padding: 14 }}>
+                Simpan pilihan
+              </button>
+            </div>
+          </dialog>
+        )}
+
+        {/* Sheet modal - manual UKT */}
+        {kampus && kampus.ukt_model !== 'ptkin_kma' && (
+          <dialog ref={sheetRef} className="sheet" aria-labelledby="sheet-title2">
+            <div className="sheet-head">
+              <h3 id="sheet-title2" style={{ margin: 0, fontSize: 15 }}>Nominal UKT-mu</h3>
+              <button type="button" className="btn btn-quiet btn-sm" onClick={tutupSheet} style={{ padding: '6px 10px', fontSize: 18 }}>×</button>
+            </div>
+            <div style={{ padding: 20 }}>
+              <div className="field">
+                <label className="label" htmlFor="manual-sheet">Nominal UKT per semester (rupiah)</label>
+                <input id="manual-sheet" className="input mono" value={manual}
+                  onChange={(e) => setManual(e.target.value.replace(/[^\d]/g, '').slice(0, 12))}
+                  inputMode="numeric" placeholder="3500000" />
+                {manual && <p className="hint">Terbaca <span className="num">{rp(Number(manual))}</span></p>}
+              </div>
+              <button type="button" className="btn btn-block" onClick={tutupSheet} style={{ marginTop: 16 }}>Simpan</button>
+            </div>
+          </dialog>
+        )}
+      </main>
     </div>
   );
 }

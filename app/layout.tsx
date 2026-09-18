@@ -74,15 +74,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <TopNav />
         <main id="isi">{children}</main>
         <footer>
-          <div className="shell" style={{ padding: '28px 20px 40px' }}>
-            <p className="small faint" style={{ margin: '0 0 8px', maxWidth: '68ch' }}>
+          <div className="wrap" style={{ paddingTop: 28, paddingBottom: 80 }}>
+            <p className="tiny faint" style={{ margin: '0 0 6px', maxWidth: '68ch' }}>
               Nominal UKT diambil dari Keputusan Menteri Agama (KMA 204/2026), katalog kampus dari
               PDDikti, jadwal beasiswa dari pengumuman resmi masing-masing penyelenggara. Setiap
               angka punya tautan sumbernya.
             </p>
-            <p className="small faint" style={{ margin: 0, maxWidth: '68ch' }}>
+            <p className="tiny faint" style={{ margin: '0 0 6px', maxWidth: '68ch' }}>
               SakuKampus tidak menyelenggarakan beasiswa dan tidak menerima pendaftaran. Semua
               tautan pendaftaran mengarah ke situs resmi penyelenggara.
+            </p>
+            <p className="tiny faint" style={{ margin: '12px 0 0', opacity: 0.7 }}>
+              C Kelompok TURUNKAN UKT, Teknik Informatika UIN Jakarta 2026
             </p>
           </div>
         </footer>

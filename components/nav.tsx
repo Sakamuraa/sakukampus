@@ -8,8 +8,6 @@ import { GraduationCap } from '@phosphor-icons/react/dist/csr/GraduationCap';
 import { CalendarDots } from '@phosphor-icons/react/dist/csr/CalendarDots';
 import { Database } from '@phosphor-icons/react/dist/csr/Database';
 
-/* Nav labels are short on purpose: five items must fit on ONE line at 1024px
-   (desktop) and inside five equal tabs at 320px (mobile). */
 const ITEMS = [
   { href: '/', label: 'Beranda', short: 'Beranda', Icon: House },
   { href: '/cek', label: 'Cek kelayakan', short: 'Cek', Icon: MagnifyingGlass },
@@ -26,20 +24,18 @@ export function TopNav() {
 
   return (
     <header className="topnav">
-      <div className="shell topnav-inner">
-        <Link href="/" className="wordmark" aria-label="SakuKampus, ke beranda">
-          <span className="wordmark-mark" aria-hidden="true">
-            SK
-          </span>
+      <div className="topnav-inner">
+        <Link href="/" className="wordmark" aria-label="SakuKampus">
+          <span className="wordmark-mark" aria-hidden="true">SK</span>
           SakuKampus
         </Link>
 
-        <nav className="topnav-links" aria-label="Navigasi utama">
+        <nav className="nav-links" aria-label="Navigasi utama">
           {ITEMS.map(({ href, label }) => (
             <Link
               key={href}
               href={href}
-              className="topnav-link"
+              className="nav-link"
               data-active={isActive(pathname, href)}
               aria-current={isActive(pathname, href) ? 'page' : undefined}
             >
@@ -52,8 +48,6 @@ export function TopNav() {
   );
 }
 
-/* Bottom tab bar, mobile only. Kept as a separate component so the desktop
-   header never renders it and the two never disagree about the active route. */
 export function TabBar() {
   const pathname = usePathname();
 
@@ -70,7 +64,7 @@ export function TabBar() {
               data-active={active}
               aria-current={active ? 'page' : undefined}
             >
-              <Icon size={22} weight={active ? 'fill' : 'regular'} aria-hidden="true" />
+              <Icon size={20} weight={active ? 'fill' : 'regular'} aria-hidden="true" />
               {short}
             </Link>
           );
