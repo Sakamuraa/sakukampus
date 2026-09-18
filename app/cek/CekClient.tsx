@@ -310,7 +310,7 @@ export default function CekClient() {
                       </div>
                       {h.uktRequirement && <p className="tiny" style={{ color: 'var(--ink-dim)', margin: '10px 0' }}>Syarat UKT: <span className="num" style={{ color: 'var(--ink)', fontWeight: 600 }}>{h.uktRequirement}</span>{h.uktUnverified && <span className="faint"> (manual)</span>}</p>}
                       <Reasons reasons={h.reasons} />
-                      {h.missing.length > 0 && <p className="tiny faint" style={{ marginTop: 10 }}>Lengkapi: {h.missing.join(', '}).</p>}
+                      {h.missing.length > 0 && <p className="tiny faint" style={{ marginTop: 10 }}>Lengkapi: {h.missing.join(', ')}.</p>}
                       <div className="scholarship-card-actions" style={{ marginTop: 16 }}>
                         <a className="btn btn-sm" href={h.source_url} target="_blank" rel="noreferrer noopener">Sumber resmi <ArrowSquareOut size={12} /></a>
                         {h.deadline !== null && <span className="tiny faint">{h.displayState === 'tutup' ? 'Tutup' : 'Tenggat'} {tanggal(h.deadline)}</span>}
