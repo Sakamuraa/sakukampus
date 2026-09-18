@@ -17,3 +17,4 @@ coverage/
 # Jangan pernah commit berkas token
 *.pem
 .env.production.agents/
+skills-lock.json
