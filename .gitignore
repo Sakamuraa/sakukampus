@@ -16,4 +16,4 @@ coverage/
 
 # Jangan pernah commit berkas token
 *.pem
-.env.production
+.env.production.agents/
