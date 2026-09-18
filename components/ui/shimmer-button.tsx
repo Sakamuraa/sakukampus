@@ -17,9 +17,10 @@ export function ShimmerButton({
   onClick,
   disabled,
   type = 'button',
+  style,
 }: ShimmerButtonProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
@@ -47,28 +48,42 @@ export function ShimmerButton({
       disabled={disabled}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`
-        relative overflow-hidden rounded-full px-8 py-3
-        font-semibold text-white
-        bg-transparent border border-white/20
-        transition-all duration-300 ease-out
-        ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105 hover:border-white/40'}
-        ${className}
-      `}
-      style={isHovered && !disabled ? {
-        background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(255,255,255,0.15) 0%, transparent 60%)`,
-      } : undefined}
+      className={className}
+      style={{
+        position: 'relative',
+        overflow: 'hidden',
+        borderRadius: 9999,
+        padding: '12px 32px',
+        fontWeight: 600,
+        fontSize: 14,
+        color: isHovered && !disabled ? '#fff' : 'var(--accent-ink)',
+        background: disabled
+          ? 'var(--surface-2)'
+          : isHovered
+            ? `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(255,255,255,0.2) 0%, transparent 60%), var(--accent)`
+            : 'var(--accent)',
+        border: 'none',
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        transition: 'all 0.3s ease',
+        transform: isHovered && !disabled ? 'translateY(-2px)' : 'none',
+        boxShadow: isHovered && !disabled ? '0 8px 24px rgba(245,166,35,0.3)' : 'none',
+        ...style,
+      }}
     >
       {/* Shimmer effect */}
       <span
-        className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
         style={{
-          background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
           backgroundSize: '200% 100%',
-          animation: 'shimmer 2s infinite',
+          opacity: isHovered ? 1 : 0,
+          transition: 'opacity 0.5s ease',
+          animation: isHovered ? 'shimmer 2s infinite' : 'none',
+          pointerEvents: 'none',
         }}
       />
-      <span className="relative z-10 flex items-center gap-2">{children}</span>
+      <span className="relative z-10 flex items-center gap-2" style={{ position: 'relative', zIndex: 1 }}>{children}</span>
       <style>{`
         @keyframes shimmer {
           0% { background-position: -200% 0; }
