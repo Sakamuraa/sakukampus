@@ -28,7 +28,6 @@ export function TopNav() {
       <div className="topnav-inner">
         <Link href="/" className="wordmark" aria-label="SakuKampus">
           <Logo />
-          SakuKampus
         </Link>
 
         <nav className="nav-links" aria-label="Navigasi utama">

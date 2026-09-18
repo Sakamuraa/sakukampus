@@ -1,13 +1,19 @@
 import Image from 'next/image';
 
-export default function Logo() {
+interface LogoProps {
+  className?: string;
+  style?: React.CSSProperties;
+}
+
+export default function Logo({ className = '', style }: LogoProps) {
   return (
     <Image
       src="/logo.png"
       alt="SakuKampus"
-      width={120}
-      height={40}
-      style={{ height: 'auto' }}
+      width={44}
+      height={24}
+      className={className}
+      style={{ height: 'auto', display: 'block', ...style }}
       priority
     />
   );
