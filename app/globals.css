@@ -327,6 +327,8 @@ footer {
   border-top: 1px solid var(--line); padding: 14px 20px; z-index: 40;
 }
 @media (min-width: 1024px) { .cta-bar { position: static; border: none; padding: 0; background: none; } }
+/* Hide CTA bar on mobile — tabbar already provides navigation */
+@media (max-width: 1023px) { .cta-bar { display: none; } }
 
 /* ============================================================
    REASONS
