@@ -85,7 +85,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               tautan pendaftaran mengarah ke situs resmi penyelenggara.
             </p>
             <p className="tiny faint" style={{ margin: '12px 0 0', opacity: 0.7 }}>
-              C Kelompok TURUNKAN UKT, Teknik Informatika UIN Jakarta 2026
+              © Kelompok TURUNKAN UKT, Teknik Informatika UIN Jakarta 2026
             </p>
           </div>
         </footer>
