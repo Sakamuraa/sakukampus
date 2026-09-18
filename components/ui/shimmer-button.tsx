@@ -8,6 +8,7 @@ interface ShimmerButtonProps {
   onClick?: () => void;
   disabled?: boolean;
   type?: 'button' | 'submit';
+  style?: React.CSSProperties;
 }
 
 export function ShimmerButton({

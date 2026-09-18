@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { MagnifyingGlass, X } from '@phosphor-icons/react/dist/csr';
+import { MagnifyingGlass, X } from '@phosphor-icons/react';
 
 interface AnimatedSearchInputProps {
   value: string;

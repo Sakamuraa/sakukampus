@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
-import { SlidersHorizontal, Warning, SealCheck, ArrowSquareOut } from '@phosphor-icons/react/dist/csr';
+import { SlidersHorizontal, Warning, SealCheck, ArrowSquareOut } from '@phosphor-icons/react';
 import { AnimatedSearchInput } from '@/components/ui/animated-search';
 import { GlassCard } from '@/components/ui/glass-card';
 import { ShimmerButton } from '@/components/ui/shimmer-button';

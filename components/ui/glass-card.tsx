@@ -3,6 +3,7 @@ interface GlassCardProps {
   className?: string;
   accent?: boolean;
   onClick?: () => void;
+  style?: React.CSSProperties;
 }
 
 export function GlassCard({ children, className = '', accent = false, onClick }: GlassCardProps) {
