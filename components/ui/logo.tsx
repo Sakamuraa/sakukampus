@@ -10,10 +10,10 @@ export default function Logo({ className = '', style }: LogoProps) {
     <Image
       src="/logo.png"
       alt="SakuKampus"
-      width={44}
-      height={24}
+      width={28}
+      height={28}
       className={className}
-      style={{ height: 'auto', display: 'block', ...style }}
+      style={{ height: 'auto', width: 'auto', display: 'block', objectFit: 'contain', ...style }}
       priority
     />
   );
