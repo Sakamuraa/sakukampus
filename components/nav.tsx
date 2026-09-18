@@ -7,6 +7,7 @@ import { MagnifyingGlass } from '@phosphor-icons/react/dist/csr/MagnifyingGlass'
 import { GraduationCap } from '@phosphor-icons/react/dist/csr/GraduationCap';
 import { CalendarDots } from '@phosphor-icons/react/dist/csr/CalendarDots';
 import { Database } from '@phosphor-icons/react/dist/csr/Database';
+import Logo from '@/components/ui/logo';
 
 const ITEMS = [
   { href: '/', label: 'Beranda', short: 'Beranda', Icon: House },
