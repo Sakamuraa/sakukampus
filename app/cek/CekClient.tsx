@@ -696,21 +696,27 @@ export default function CekClient() {
       {kampus?.ukt_model === 'ptkin_kma' && (
         <dialog ref={sheetRef} className="sheet" aria-labelledby="sheet-title">
           <div className="sheet-head">
-            <h2 className="h3" id="sheet-title">
-              Prodi dan golongan UKT
-            </h2>
+            <div>
+              <h2 className="h3" id="sheet-title" style={{ margin: 0 }}>
+                Prodi dan golongan UKT
+              </h2>
+              <p className="tiny" style={{ margin: '3px 0 0', color: 'var(--ink-faint)' }}>
+                {kampus.nama}
+              </p>
+            </div>
             <button
               type="button"
               className="btn btn-quiet"
               onClick={tutupSheet}
-              style={{ minHeight: 36, padding: '0 12px' }}
+              style={{ minHeight: 32, padding: '0 10px', fontSize: 18, lineHeight: 1 }}
               aria-label="Tutup"
             >
-              <X size={16} aria-hidden="true" />
+              ×
             </button>
           </div>
 
-          <div style={{ padding: '18px 18px calc(24px + env(safe-area-inset-bottom))' }}>
+          <div style={{ padding: '20px 20px calc(24px + env(safe-area-inset-bottom))', display: 'flex', flexDirection: 'column', gap: 20 }}>
+            {/* Prodi selector */}
             <div className="field">
               <label className="label" htmlFor="prodi-sheet">
                 Program studi
@@ -720,6 +726,7 @@ export default function CekClient() {
                 className="select"
                 value={prodi}
                 onChange={(e) => setProdi(e.target.value)}
+                style={{ background: 'var(--surface-2)', color: 'var(--ink)', borderColor: 'var(--line)', fontSize: 14, padding: '10px 12px' }}
               >
                 {kampus.prodi_terdaftar.map((p) => (
                   <option key={p.nama} value={p.nama}>
@@ -730,12 +737,19 @@ export default function CekClient() {
               </select>
             </div>
 
-            <div className="field" style={{ marginTop: 18 }}>
-              <span className="label">Golongan UKT</span>
-              {/* Rail: delapan pilihan golongan tidak mungkin muat di satu baris
-                  tanpa teks terpotong, dan dua baris chip mendorong tombol keluar
-                  dari layar. */}
-              <div className="rail" style={{ marginInline: -18, paddingInline: 18 }}>
+            {/* Golongan selector */}
+            <div>
+              <span className="label" style={{ marginBottom: 10, display: 'block' }}>
+                Golongan UKT
+              </span>
+              <div
+                className="chip-rail"
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))',
+                  gap: 8,
+                }}
+              >
                 {kelompokOptions.map((u) => (
                   <button
                     key={u.kelompok}
@@ -747,36 +761,63 @@ export default function CekClient() {
                       setManual('');
                     }}
                     aria-pressed={kelompok === u.kelompok}
-                    style={{ flexDirection: 'column', alignItems: 'flex-start', gap: 3 }}
+                    style={{
+                      padding: '10px 12px',
+                      textAlign: 'left',
+                      fontSize: 12,
+                      transition: 'all .15s ease',
+                      border: `1px solid ${kelompok === u.kelompok ? 'var(--accent)' : 'var(--line)'}`,
+                      background: kelompok === u.kelompok ? 'var(--accent)' : 'var(--surface)',
+                      color: kelompok === u.kelompok ? 'var(--accent-ink)' : 'var(--ink-dim)',
+                    }}
                   >
-                    <span>{u.kelompok === 8 ? 'KIP Kuliah' : `Golongan ${u.kelompok}`}</span>
-                    <span className="num" style={{ fontSize: '0.75rem', opacity: 0.85 }}>
-                      {rp(u.nominal)}
-                    </span>
+                    <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 2 }}>
+                      {u.kelompok === 8 ? 'KIP Kuliah' : `Gol ${u.kelompok}`}
+                    </div>
+                    <div style={{ opacity: 0.8, fontSize: 11, fontFamily: 'monospace' }}>
+                      {u.nominal ? rp(u.nominal) : '—'}
+                    </div>
                   </button>
                 ))}
               </div>
-              {uktTerpilih && (
-                <p className="hint" style={{ marginTop: 4 }}>
-                  UKT-mu <span className="num">{rp(uktTerpilih.nominal)}</span>. Angka inilah yang
-                  dibandingkan dengan plafon rupiah beasiswa nasional.
-                </p>
-              )}
             </div>
 
-            {kelompokOptions.some((u) => u.nominal === null) && (
-              <p className="hint" style={{ marginTop: 12 }}>
-                <Warning size={12} aria-hidden="true" style={{ verticalAlign: -1 }} /> Sebagian
-                golongan tidak dicantumkan di dekrit untuk prodi ini, jadi ditandai tidak
-                dicantumkan, bukan diisi angka karangan.
-              </p>
+            {/* Selected info */}
+            {uktTerpilih && (
+              <div
+                style={{
+                  padding: '12px 14px',
+                  borderRadius: 'var(--radius-sm)',
+                  background: 'var(--surface-2)',
+                  border: '1px solid var(--line)',
+                }}
+              >
+                <p className="tiny" style={{ margin: 0, color: 'var(--ink-dim)' }}>
+                  UKT-mu: <span className="num" style={{ color: 'var(--accent)', fontWeight: 600 }}>{rp(uktTerpilih.nominal)}</span>
+                </p>
+                <p className="hint" style={{ margin: '4px 0 0' }}>
+                  Angka inilah yang dibandingkan dengan plafon rupiah beasiswa nasional.
+                </p>
+              </div>
             )}
 
+            {/* Warning for null nominations */}
+            {kelompokOptions.some((u) => u.nominal === null) && (
+              <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                <Warning size={14} aria-hidden="true" style={{ flexShrink: 0, marginTop: 2, color: 'var(--warn)' }} />
+                <p className="hint" style={{ margin: 0 }}>
+                  Sebagian golongan tidak dicantumkan di dekrit untuk prodi ini, jadi ditandai tidak
+                  dicantumkan, bukan diisi angka karangan.
+                </p>
+              </div>
+            )}
+
+            {/* Save button */}
             <button
               type="button"
               className="btn btn-block"
               onClick={tutupSheet}
-              style={{ marginTop: 20 }}
+              style={{ marginTop: 4, padding: '14px 16px', fontSize: 15 }}
             >
               Simpan pilihan
             </button>
