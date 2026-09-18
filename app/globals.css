@@ -18,6 +18,25 @@
   --radius: 14px;
   --radius-sm: 9px;
   --max: 720px;
+
+  /* Alias dengan prefix --color- agar konsisten dengan komponen yang pakai
+     var(--color-*) dari codebase lama. */
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-sunken: var(--surface-2);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-dim);
+  --color-ink-faint: var(--ink-faint);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-no: var(--no);
+  --color-radius: var(--radius);
+  --color-radius-sm: var(--radius-sm);
+  --color-warn-soft: #2a2318;
+  --color-accent-soft: #1a1204;
 }
 
 * { box-sizing: border-box; }
