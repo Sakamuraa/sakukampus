@@ -179,6 +179,31 @@ export function matchOne(
   input: MatchInput,
   now: number,
 ): Candidate {
+  // Beasiswa scope kampus-only hanya berlaku untuk SATU kampus.
+  // Jika scope-nya "kampus:XXXX" tapi user memilih kampus lain, tolak langsung
+  // supaya tidak muncul di hasil dengan label menyesatkan "perlu data".
+  if (/^kampus:/.test(s.scope) && s.scope !== `kampus:${input.kodePt}`) {
+    return {
+      slug: s.slug,
+      name: s.name,
+      provider: s.provider,
+      tier: s.tier,
+      scope: s.scope,
+      verdict: 'tidak',
+      score: 0,
+      reasons: [{ label: `Hanya untuk ${s.scope.replace('kampus:', '')}`, ok: false, soft: false }],
+      missing: [],
+      deadline: null,
+      source_url: s.source_url,
+      last_verified_at: s.last_verified_at,
+      confidence: s.confidence,
+      uktRequirement: null,
+      uktUnverified: false,
+      stageStatus: stageStatus(s, now),
+      displayState: 'tutup',
+    };
+  }
+
   const { facts, unverified } = buildFacts(input);
   const result = check(s.rule, facts, { scope: s.scope });
 
