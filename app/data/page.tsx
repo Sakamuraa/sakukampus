@@ -1,10 +1,6 @@
-'use client';
-
 import type { Metadata } from 'next';
 import { institutions, scholarships, seedsMeta } from '@/lib/data';
-import { Section, tanggal } from '@/components/ui';
-import ApiDocModal from '@/components/ui/api-doc-modal';
-import { useState } from 'react';
+import DataPageClient from './DataPageClient';
 
 export const revalidate = 600;
 
@@ -39,7 +35,6 @@ export default function DataPage() {
   const lengkap = Number(seedsMeta.ukt.prodiGolonganLengkap);
   const totalProdi = Number(seedsMeta.ukt.prodi);
   const sebagian = totalProdi - lengkap;
-  const [showApiDocs, setShowApiDocs] = useState(false);
 
   return (
     <div className="wrap">
@@ -61,7 +56,7 @@ export default function DataPage() {
             <table className="data-table">
               <tbody>
                 <Row k="Kampus terindeks" v={n(seedsMeta.institutions.count)} />
-                <Row k="Diambil" v={tanggal(seedsMeta.institutions.generated_at as string)} />
+                <Row k="Diambil" v={seedsMeta.institutions.generated_at ? new Date(seedsMeta.institutions.generated_at as string).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '-'} />
                 <Row k="Sumber" v="api-pddikti.kemdiktisaintek.go.id" mono />
               </tbody>
             </table>
@@ -101,7 +96,7 @@ export default function DataPage() {
                 <Row k="Entri beasiswa" v={n(scholarships.length)} />
                 <Row k="Dari sumber resmi" v={n(scholarships.filter((s) => s.source_kind === 'resmi').length)} />
                 <Row k="Dari agregator" v={n(scholarships.filter((s) => s.source_kind === 'agregator').length)} />
-                <Row k="Pemeriksaan terakhir" v={tanggal(scholarships[0]?.last_verified_at ?? new Date().toISOString())} />
+                <Row k="Pemeriksaan terakhir" v={scholarships[0]?.last_verified_at ? new Date(scholarships[0].last_verified_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '-'} />
               </tbody>
             </table>
           </div>
@@ -124,55 +119,10 @@ export default function DataPage() {
 
           {/* API */}
           <div className="data-section" style={{ marginTop: 32 }}>
-            <div className="data-section-title" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span>API publik</span>
-              <button
-                onClick={() => setShowApiDocs(true)}
-                style={{
-                  padding: '6px 12px',
-                  borderRadius: 8,
-                  border: '1px solid var(--line)',
-                  background: 'var(--surface-2)',
-                  color: 'var(--ink-dim)',
-                  fontSize: 12,
-                  cursor: 'pointer',
-                  transition: 'all .15s',
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--accent)';
-                  (e.currentTarget as HTMLButtonElement).style.color = 'var(--accent)';
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--line)';
-                  (e.currentTarget as HTMLButtonElement).style.color = 'var(--ink-dim)';
-                }}
-              >
-                Lihat dokumentasi
-              </button>
-            </div>
-            <p className="tiny faint" style={{ marginBottom: 12 }}>Semua data tersedia lewat API tanpa kunci.</p>
-            <div className="grouped">
-              {[
-                ['/api/v1/institutions', 'Cari kampus atau ambil detail UKT'],
-                ['/api/v1/scholarships', 'Katalog beasiswa dengan jadwal dan syarat'],
-                ['/api/v1/calendar', 'Semua tenggat, terurut'],
-                ['/api/v1/meta/sources', 'Halaman ini dalam JSON'],
-                ['/api/v1/eligibility/check', 'Periksa kelayakan (POST)'],
-              ].map(([path, desc]) => (
-                <div key={path as string} className="grid-row" style={{ padding: '12px 16px', cursor: 'pointer' }}
-                  onClick={() => setShowApiDocs(true)}
-                >
-                  <code className="mono" style={{ fontSize: 13, color: 'var(--accent)', fontWeight: 500 }}>{path}</code>
-                  <span className="tiny faint">{desc}</span>
-                </div>
-              ))}
-            </div>
+            <DataPageClient />
           </div>
         </section>
       </main>
-
-      {/* API Docs Modal */}
-      {showApiDocs && <ApiDocModal onClose={() => setShowApiDocs(false)} />}
     </div>
   );
 }
