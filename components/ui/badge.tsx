@@ -1,25 +1,22 @@
 import { cn } from '@/lib/utils';
 
-interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: 'default' | 'secondary' | 'destructive' | 'outline';
-}
-
-const variantStyles: Record<string, string> = {
-  default: 'border-transparent bg-[var(--accent)] text-[#0a0c10]',
-  secondary: 'border-transparent bg-[var(--surface-2)] text-[var(--ink)]',
-  destructive: 'border-transparent bg-red-500 text-white',
-  outline: 'text-[var(--ink)]',
-};
-
-export function Badge({ className, variant = 'default', ...props }: BadgeProps) {
+function Badge({
+  className,
+  variant = 'default',
+  ...props
+}: React.ComponentProps<'div'> & { variant?: 'default' | 'secondary' | 'outline' }) {
   return (
     <div
       className={cn(
         'inline-flex items-center justify-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors',
-        variantStyles[variant],
+        variant === 'default' && 'border-transparent bg-[#f5a623] text-[#0a0c10]',
+        variant === 'secondary' && 'border-transparent bg-[#1a1e27] text-[#e8ecf4]',
+        variant === 'outline' && 'border-[#2a3040] text-[#9aa4b8]',
         className
       )}
       {...props}
     />
   );
 }
+
+export { Badge };

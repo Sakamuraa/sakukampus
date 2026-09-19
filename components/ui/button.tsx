@@ -1,49 +1,69 @@
 'use client';
 
-import type { ButtonHTMLAttributes, ForwardRefExoticComponent, RefAttributes } from 'react';
-import { forwardRef } from 'react';
-import { cn } from '@/lib/utils';
-
-const baseStyles = `
-  inline-flex items-center justify-center gap-2 
-  font-medium transition-all duration-200 
-  rounded-md focus-visible:outline-none 
-  focus-visible:ring-2 focus-visible:ring-offset-2 
-  disabled:pointer-events-none disabled:opacity-50
-`;
-
-const variantStyles: Record<string, string> = {
-  default: 'bg-[var(--accent)] text-[#0a0c10] hover:brightness-110 shadow-sm',
-  outline: 'border border-[var(--line)] bg-transparent hover:bg-[var(--surface-2)] hover:text-[var(--accent)]',
-  ghost: 'hover:bg-[var(--surface-2)] hover:text-[var(--accent)]',
-  destructive: 'bg-red-500 text-white hover:bg-red-600',
-  link: 'text-[var(--accent)] underline-offset-4 hover:underline',
-};
-
-const sizeStyles: Record<string, string> = {
-  default: 'h-10 px-4 py-2 text-sm',
-  sm: 'h-9 px-3 text-xs',
-  lg: 'h-11 px-8 text-base',
-  icon: 'h-10 w-10',
-};
+import type { ButtonHTMLAttributes } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'default' | 'outline' | 'ghost' | 'destructive' | 'link';
-  size?: 'default' | 'sm' | 'lg' | 'icon';
+  variant?: 'default' | 'outline' | 'ghost' | 'destructive';
+  size?: 'sm' | 'md' | 'lg';
 }
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = 'default', size = 'default', ...props }, ref) => {
-    return (
-      <button
-        ref={ref}
-        className={cn(baseStyles, variantStyles[variant], sizeStyles[size], className)}
-        {...props}
-      />
-    );
-  }
-);
-Button.displayName = 'Button';
-
-export { Button };
-export type { ButtonProps };
+export function Button({ 
+  className, 
+  variant = 'default', 
+  size = 'md', 
+  children, 
+  style,
+  disabled,
+  ...props 
+}: ButtonProps) {
+  const baseStyle: React.CSSProperties = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '0.5rem',
+    fontWeight: 600,
+    transition: 'all 0.2s ease',
+    cursor: disabled ? 'not-allowed' : 'pointer',
+    border: 'none',
+    borderRadius: '8px',
+    opacity: disabled ? 0.5 : 1,
+    pointerEvents: disabled ? 'none' : 'auto',
+    ...style,
+  };
+  
+  const variantStyles: Record<string, React.CSSProperties> = {
+    default: {
+      backgroundColor: '#f5a623',
+      color: '#0a0c10',
+    },
+    outline: {
+      backgroundColor: 'transparent',
+      color: '#e8ecf4',
+      border: '1px solid #2a3040',
+    },
+    ghost: {
+      backgroundColor: 'transparent',
+      color: '#9aa4b8',
+    },
+    destructive: {
+      backgroundColor: '#ef4444',
+      color: 'white',
+    },
+  };
+  
+  const sizeStyles: Record<string, React.CSSProperties> = {
+    sm: { padding: '0.375rem 0.75rem', fontSize: '0.75rem' },
+    md: { padding: '0.5rem 1rem', fontSize: '0.875rem' },
+    lg: { padding: '0.75rem 1.5rem', fontSize: '1rem' },
+  };
+  
+  return (
+    <button
+      disabled={disabled}
+      style={{ ...baseStyle, ...variantStyles[variant], ...sizeStyles[size] }}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+}

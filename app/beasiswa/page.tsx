@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 const TIERS = ['kampus', 'pemerintah', 'swasta'] as const;
-const STATUS_BADGE: Record<StageStatus, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
+const STATUS_BADGE: Record<StageStatus, { label: string; variant: 'default' | 'secondary' | 'outline' }> = {
   buka: { label: 'Buka', variant: 'default' },
   akan_datang: { label: 'Akan dibuka', variant: 'secondary' },
   tutup: { label: 'Tutup', variant: 'outline' },
