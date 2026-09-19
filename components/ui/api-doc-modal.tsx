@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { X, Copy } from '@phosphor-icons/react/dist/csr';
+import { X, Copy } from '@phosphor-icons/react';
 
 const API_DOCS = [
   {
