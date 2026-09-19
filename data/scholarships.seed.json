@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "generated_at": "2026-09-19T14:47:13.018Z",
+    "generated_at": "2026-09-19T16:40:06.355Z",
     "note": "Setiap entri WAJIB punya source_url + last_verified_at. Syarat UKT pada beasiswa nasional dinyatakan dalam RUPIAH (ukt_max_idr), bukan nomor golongan — lihat lib/eligibility/engine.ts dan plan §5.",
-    "normalized_at": "2026-09-17T09:51:20.920Z",
-    "normalized_count": 14
+    "normalized_at": "2026-09-19T16:40:06.355Z",
+    "normalized_count": 16
   },
   "scholarships": [
     {
@@ -21,7 +21,7 @@
       "source_url": "https://uinjkt.ac.id/id/pendaftaran-beasiswa-stf-uin-jakarta-2026-",
       "source_kind": "resmi",
       "confidence": 95,
-      "last_verified_at": "2026-09-17T00:00:00Z",
+      "last_verified_at": "2026-09-19T16:39:31.255Z",
       "ukt_max_golongan": 4,
       "ukt_scope_note": "prioritas",
       "academic_year": "2026/2027",
@@ -106,7 +106,7 @@
       "source_url": "https://kip-kuliah.kemdiktisaintek.go.id/",
       "source_kind": "resmi",
       "confidence": 95,
-      "last_verified_at": "2026-09-17T00:00:00Z",
+      "last_verified_at": "2026-09-19T16:39:31.255Z",
       "ukt_max_idr": 2400000,
       "ukt_scope_note": "wajib",
       "academic_year": "2026",
@@ -191,7 +191,7 @@
       "source_url": "https://uinjkt.ac.id/id/pendaftaran-bright-scholarship-2026",
       "source_kind": "resmi",
       "confidence": 90,
-      "last_verified_at": "2026-09-17T00:00:00Z",
+      "last_verified_at": "2026-09-19T16:39:31.255Z",
       "needs_test": true,
       "academic_year": "2026/2027",
       "stages": [
@@ -249,7 +249,7 @@
       "source_url": "https://djarumbeasiswaplus.org/our-program/regulation-djarum-beasiswa-plus",
       "source_kind": "resmi",
       "confidence": 90,
-      "last_verified_at": "2026-09-17T00:00:00Z",
+      "last_verified_at": "2026-09-19T16:39:31.255Z",
       "academic_year": "2026/2027",
       "stages": [
         {
@@ -336,7 +336,7 @@
       "source_url": "https://beasiswalpdp-terintegrasi.kemenkeu.go.id/",
       "source_kind": "resmi",
       "confidence": 85,
-      "last_verified_at": "2026-09-17T00:00:00Z",
+      "last_verified_at": "2026-09-19T16:39:31.255Z",
       "academic_year": "2026/2027",
       "stages": [
         {
@@ -408,7 +408,7 @@
       "source_url": "https://uinjkt.ac.id/id/beasiswa-dan-bantuan-biaya-pendidikan",
       "source_kind": "resmi",
       "confidence": 80,
-      "last_verified_at": "2026-09-17T00:00:00Z",
+      "last_verified_at": "2026-09-19T16:39:31.255Z",
       "academic_year": "2026/2027",
       "stages": [],
       "rule": {
@@ -460,7 +460,7 @@
       "source_url": "https://uinjkt.ac.id/id/student-achievement-awards-saa-2026",
       "source_kind": "resmi",
       "confidence": 85,
-      "last_verified_at": "2026-09-17T00:00:00Z",
+      "last_verified_at": "2026-09-19T16:39:31.255Z",
       "academic_year": "2026",
       "stages": [
         {
@@ -507,7 +507,7 @@
       "source_url": "https://uinjkt.ac.id/id/pendaftaran-beasiswa-stf-uin-jakarta-2026-",
       "source_kind": "resmi",
       "confidence": 90,
-      "last_verified_at": "2026-09-17T00:00:00Z",
+      "last_verified_at": "2026-09-19T16:39:31.255Z",
       "academic_year": "2026/2027",
       "stages": [
         {
@@ -575,7 +575,7 @@
       "source_url": "https://ybmbrilian.id/ybm-brilian-resmi-buka-pendaftaran-bright-scholarship-2026/",
       "source_kind": "resmi",
       "confidence": 92,
-      "last_verified_at": "2026-09-18T00:00:00Z",
+      "last_verified_at": "2026-09-19T16:39:31.255Z",
       "ukt_max_idr": null,
       "academic_year": "2026/2027",
       "stages": [
@@ -654,7 +654,7 @@
       "source_url": "https://djarumbeasiswaplus.org/our-program/regulation-djarum-beasiswa-plus",
       "source_kind": "resmi",
       "confidence": 95,
-      "last_verified_at": "2026-09-18T00:00:00Z",
+      "last_verified_at": "2026-09-19T16:39:31.255Z",
       "ukt_max_idr": null,
       "academic_year": "2026/2027",
       "stages": [
@@ -742,7 +742,7 @@
       "source_url": "https://ap.undip.ac.id/2026/06/03/beasiswa-pertamina-sobat-bumi-2026/",
       "source_kind": "resmi",
       "confidence": 90,
-      "last_verified_at": "2026-09-18T00:00:00Z",
+      "last_verified_at": "2026-09-19T16:39:31.255Z",
       "ukt_max_idr": null,
       "academic_year": "2026/2027",
       "stages": [
@@ -826,7 +826,7 @@
       "source_url": "https://uinjambi.ac.id/penerimaan-beasiswa-bank-indonesia-2026",
       "source_kind": "resmi",
       "confidence": 88,
-      "last_verified_at": "2026-09-18T00:00:00Z",
+      "last_verified_at": "2026-09-19T16:39:31.255Z",
       "ukt_max_idr": 5000000,
       "academic_year": "2026/2027",
       "stages": [
@@ -906,7 +906,7 @@
       "source_url": "https://lpdp.kemenkeu.go.id/en/beasiswa/pendaftaran-beasiswa",
       "source_kind": "resmi",
       "confidence": 94,
-      "last_verified_at": "2026-09-18T00:00:00Z",
+      "last_verified_at": "2026-09-19T16:39:31.255Z",
       "ukt_max_idr": null,
       "academic_year": "2026/2027",
       "stages": [
@@ -977,7 +977,7 @@
       "source_url": "https://www.idntimes.com/life/education/beasiswa-juni-2026-c1c2-01-k7db6-n3f87d",
       "source_kind": "agregator",
       "confidence": 75,
-      "last_verified_at": "2026-09-18T00:00:00Z",
+      "last_verified_at": "2026-09-19T16:39:31.255Z",
       "ukt_max_idr": 4000000,
       "academic_year": "2026/2027",
       "stages": [
@@ -1019,6 +1019,159 @@
           },
           {
             "fact": "panti_sosial",
+            "op": "eq",
+            "value": true,
+            "label": "Keluarga kurang mampu"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "astra1st-2026",
+      "name": "Beasiswa Astra1st 2026",
+      "provider": "PT Astra International Tbk",
+      "tier": "swasta",
+      "scope": "nasional",
+      "coverage": "ukt_penuh+allowance",
+      "benefit_summary": "Bantuan UKT penuh, tunjangan bulanan, program pengembangan leadership Astra.",
+      "jenjang": [
+        "S1"
+      ],
+      "url_pendaftaran": "https://career.astra.co.id/lowongan/lowongan-detail-page/14009/Astra1st%202026",
+      "source_url": "https://www.detik.com/edu/beasiswa/d-8468529/beasiswa-astra1st-2026-dibuka-mahasiswa-s1-cek",
+      "source_kind": "resmi",
+      "confidence": 90,
+      "last_verified_at": "2026-09-19T16:40:06.355Z",
+      "ukt_max_idr": null,
+      "academic_year": "2026/2027",
+      "stages": [
+        {
+          "name": "pendaftaran",
+          "opens_at": "2026-09-01T00:00:00Z",
+          "closes_at": "2026-10-31T23:59:00Z"
+        },
+        {
+          "name": "seleksi_berkas",
+          "opens_at": "2026-11-01T00:00:00Z",
+          "closes_at": "2026-11-15T23:59:00Z"
+        },
+        {
+          "name": "pengumuman",
+          "opens_at": "2026-11-20T00:00:00Z"
+        }
+      ],
+      "rule": {
+        "all": [
+          {
+            "fact": "jenjang",
+            "op": "in",
+            "value": [
+              "S1"
+            ],
+            "label": "Mahasiswa S1"
+          },
+          {
+            "fact": "semester",
+            "op": "between",
+            "value": [
+              4,
+              6
+            ],
+            "label": "Semester 4–6"
+          },
+          {
+            "fact": "ipk",
+            "op": "gte",
+            "value": 3,
+            "label": "IPK minimal 3.00"
+          },
+          {
+            "fact": "aktif_organisasi",
+            "op": "exists",
+            "value": true,
+            "label": "Aktif berorganisasi"
+          },
+          {
+            "fact": "penerima_beasiswa_lain",
+            "op": "eq",
+            "value": false,
+            "label": "Tidak menerima beasiswa lain"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "adaro-indonesia-2026",
+      "name": "Beasiswa PT Adaro Indonesia 2026/2027",
+      "provider": "PT Adaro Indonesia (YABN × YPKAAR)",
+      "tier": "swasta",
+      "scope": "nasional",
+      "coverage": "allowance",
+      "benefit_summary": "Bantuan dana pendidikan Rp850.000/bulan selama 1 tahun.",
+      "jenjang": [
+        "S1",
+        "D4"
+      ],
+      "url_pendaftaran": "https://simaster.ugm.ac.id/kemahasiswaan/beasiswa/detail/webRMwgoPDCQGKv_WuXmw",
+      "source_url": "https://fmipa.usu.ac.id/id/pengumuman/beasiswa-pt-adaro-indonesia-20262027-resmi-dibuka-mahasiswa-fmipa-berkesempatan-raih-bantuan-pendidikan",
+      "source_kind": "resmi",
+      "confidence": 92,
+      "last_verified_at": "2026-09-19T16:40:06.355Z",
+      "ukt_max_idr": null,
+      "academic_year": "2026/2027",
+      "stages": [
+        {
+          "name": "pendaftaran",
+          "opens_at": "2026-05-01T00:00:00Z",
+          "closes_at": "2026-05-30T23:59:00Z"
+        },
+        {
+          "name": "seleksi_berkas",
+          "opens_at": "2026-06-01T00:00:00Z",
+          "closes_at": "2026-06-05T23:59:00Z"
+        },
+        {
+          "name": "pengumuman",
+          "opens_at": "2026-06-10T00:00:00Z"
+        }
+      ],
+      "rule": {
+        "all": [
+          {
+            "fact": "warga_negara",
+            "op": "eq",
+            "value": true,
+            "label": "Warga Negara Indonesia (WNI)"
+          },
+          {
+            "fact": "jenjang",
+            "op": "in",
+            "value": [
+              "S1",
+              "D4"
+            ],
+            "label": "Mahasiswa S1/D4"
+          },
+          {
+            "fact": "semester",
+            "op": "gte",
+            "value": 3,
+            "label": "Minimal semester 3"
+          },
+          {
+            "fact": "ipk",
+            "op": "gte",
+            "value": 3,
+            "label": "IPK minimal 3.00"
+          },
+          {
+            "fact": "penerima_beasiswa_lain",
+            "op": "eq",
+            "value": false,
+            "label": "Tidak menerima beasiswa lain"
+          },
+          {
+            "fact": "kondisi_ekonomi_lemah",
             "op": "eq",
             "value": true,
             "label": "Keluarga kurang mampu"
