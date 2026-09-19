@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "generated_at": "2026-09-19T16:40:06.355Z",
+    "generated_at": "2026-09-19T16:41:47.768Z",
     "note": "Setiap entri WAJIB punya source_url + last_verified_at. Syarat UKT pada beasiswa nasional dinyatakan dalam RUPIAH (ukt_max_idr), bukan nomor golongan — lihat lib/eligibility/engine.ts dan plan §5.",
     "normalized_at": "2026-09-19T16:40:06.355Z",
-    "normalized_count": 16
+    "normalized_count": 18
   },
   "scholarships": [
     {
@@ -1172,6 +1172,133 @@
           },
           {
             "fact": "kondisi_ekonomi_lemah",
+            "op": "eq",
+            "value": true,
+            "label": "Keluarga kurang mampu"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "brilian-scholarship-2026",
+      "name": "BRILiaN Scholarship Program 2026",
+      "provider": "Yayasan Baitul Maal BRILiaN (Bank BRI)",
+      "tier": "swasta",
+      "scope": "nasional",
+      "coverage": "ukt_penuh",
+      "benefit_summary": "Bantuan UKT penuh untuk mahasiswa S1 semester 5-7 berprestasi.",
+      "jenjang": [
+        "S1"
+      ],
+      "url_pendaftaran": "https://www.kompas.tv/info-publik/444313/bri-buka-beasiswa-brilian-scholarship-program-ini-syarat-dan-cara-daftarnya",
+      "source_url": "https://undiksha.ac.id/beasiswa-bank-bri-brilian-scholarship",
+      "source_kind": "resmi",
+      "confidence": 88,
+      "last_verified_at": "2026-09-19T16:41:47.768Z",
+      "ukt_max_idr": 5000000,
+      "academic_year": "2026/2027",
+      "stages": [
+        {
+          "name": "pendaftaran",
+          "opens_at": "2026-09-01T00:00:00Z",
+          "closes_at": "2026-10-15T23:59:00Z"
+        },
+        {
+          "name": "pengumuman",
+          "opens_at": "2026-10-20T00:00:00Z"
+        }
+      ],
+      "rule": {
+        "all": [
+          {
+            "fact": "jenjang",
+            "op": "in",
+            "value": [
+              "S1"
+            ],
+            "label": "Mahasiswa S1"
+          },
+          {
+            "fact": "semester",
+            "op": "between",
+            "value": [
+              5,
+              7
+            ],
+            "label": "Semester 5–7"
+          },
+          {
+            "fact": "ipk",
+            "op": "gte",
+            "value": 3.25,
+            "label": "IPK minimal 3,25"
+          },
+          {
+            "fact": "penerima_beasiswa_lain",
+            "op": "eq",
+            "value": false,
+            "label": "Tidak menerima beasiswa lain"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "smart-scholarship-brilian-2026",
+      "name": "Smart Scholarship YBM BRILiaN 2026",
+      "provider": "Yayasan Baitul Maal BRILiaN (Bank BRI)",
+      "tier": "swasta",
+      "scope": "nasional",
+      "coverage": "full",
+      "benefit_summary": "Full scholarship untuk mahasiswa baru semester 1 dari keluarga kurang mampu.",
+      "jenjang": [
+        "S1",
+        "D4",
+        "D3"
+      ],
+      "url_pendaftaran": "https://brilianscholarship.id/smart/pendaftaran",
+      "source_url": "https://www.detik.com/edu/beasiswa/d-8160353/beasiswa-smart-scholarship-ybm-brilian-dibuka-mahasiswa-baru-cek",
+      "source_kind": "resmi",
+      "confidence": 85,
+      "last_verified_at": "2026-09-19T16:41:47.768Z",
+      "ukt_max_idr": null,
+      "academic_year": "2026/2027",
+      "stages": [
+        {
+          "name": "pendaftaran",
+          "opens_at": "2026-08-01T00:00:00Z",
+          "closes_at": "2026-09-30T23:59:00Z"
+        },
+        {
+          "name": "pengumuman",
+          "opens_at": "2026-10-05T00:00:00Z"
+        }
+      ],
+      "rule": {
+        "all": [
+          {
+            "fact": "warga_negara",
+            "op": "eq",
+            "value": true,
+            "label": "Warga Negara Indonesia (WNI)"
+          },
+          {
+            "fact": "jenjang",
+            "op": "in",
+            "value": [
+              "S1",
+              "D4",
+              "D3"
+            ],
+            "label": "Mahasiswa baru S1/D3/D4"
+          },
+          {
+            "fact": "semester",
+            "op": "eq",
+            "value": 1,
+            "label": "Semester 1"
+          },
+          {
+            "fact": "panti_sosial",
             "op": "eq",
             "value": true,
             "label": "Keluarga kurang mampu"

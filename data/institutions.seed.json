@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generated_at": "2026-09-19T14:56:56.787Z",
+    "generated_at": "2026-09-19T16:41:46.509Z",
     "source": "api-pddikti.kemdiktisaintek.go.id /pencarian/pt/{q}",
     "method": "shard kata kunci: 26 huruf (shard 2-karakter bila >=100) + tipe PT + provinsi/kota",
     "count": 3690,
