@@ -210,7 +210,7 @@ export function matchOne(
   // Beasiswa nasional WAJIB memakai rupiah; nomor golongan hanya sah bila
   // beasiswa itu memang terikat kampus yang sedang dilihat (§5 plan).
   let uktRequirement: string | null = null;
-  if (s.ukt_max_idr !== undefined) {
+  if (s.ukt_max_idr != null) {
     uktRequirement = `UKT ≤ Rp${s.ukt_max_idr.toLocaleString('id-ID')}`;
   } else if (s.ukt_max_golongan !== undefined && s.scope === `kampus:${input.kodePt}`) {
     uktRequirement = `Prioritas golongan 1–${s.ukt_max_golongan}`;
