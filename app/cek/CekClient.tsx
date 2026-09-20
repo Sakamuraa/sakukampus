@@ -326,11 +326,12 @@ export default function CekClient() {
         {/* Sheet modal */}
         {kampus?.ukt_model === 'ptkin_kma' && (
           <dialog ref={sheetRef} className="sheet" aria-labelledby="sheet-title">
-            <div className="sheet-head">
-              <div><h3 id="sheet-title" style={{ margin: 0, fontSize: 15 }}>Prodi dan golongan UKT</h3><p className="tiny faint" style={{ margin: '3px 0 0' }}>{kampus.nama}</p></div>
-              <button type="button" className="btn btn-quiet btn-sm" onClick={tutupSheet} style={{ padding: '6px 10px', fontSize: 18 }}>×</button>
-            </div>
-            <div style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 20 }}>
+            <div className="sheet-inner">
+              <div className="sheet-head">
+                <div><h3 id="sheet-title" style={{ margin: 0, fontSize: 15 }}>Prodi dan golongan UKT</h3><p className="tiny faint" style={{ margin: '3px 0 0' }}>{kampus.nama}</p></div>
+                <button type="button" className="btn btn-quiet btn-sm" onClick={tutupSheet} style={{ padding: '6px 10px', fontSize: 18 }}>×</button>
+              </div>
+              <div style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 20 }}>
               <div className="field">
                 <label className="label" htmlFor="prodi-sheet">Program studi</label>
                 <select id="prodi-sheet" className="select" value={prodi} onChange={(e) => setProdi(e.target.value)}>
@@ -352,20 +353,23 @@ export default function CekClient() {
               {uktTerpilih && <div style={{ padding: 14, borderRadius: 10, background: 'var(--surface-2)', border: '1px solid var(--line)' }}><p className="tiny" style={{ margin: 0, color: 'var(--ink-dim)' }}>UKT-mu: <span className="num" style={{ color: 'var(--accent)', fontWeight: 600, fontSize: 16 }}>{rp(uktTerpilih.nominal)}</span></p></div>}
               {kelompokOptions.some((u) => u.nominal === null) && <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}><Warning size={16} style={{ flexShrink: 0, marginTop: 2, color: 'var(--warn)' }} aria-hidden="true" /><p className="hint" style={{ margin: 0 }}>Sebagian golongan tidak dicantumkan di dekrit.</p></div>}
               <button type="button" className="btn btn-block" onClick={tutupSheet} style={{ padding: 16, marginTop: 8 }}>Simpan pilihan</button>
+              </div>
             </div>
           </dialog>
         )}
 
         {kampus && kampus.ukt_model !== 'ptkin_kma' && (
           <dialog ref={sheetRef} className="sheet" aria-labelledby="sheet-title2">
-            <div className="sheet-head"><h3 id="sheet-title2" style={{ margin: 0, fontSize: 15 }}>Nominal UKT-mu</h3><button type="button" className="btn btn-quiet btn-sm" onClick={tutupSheet} style={{ padding: '6px 10px', fontSize: 18 }}>×</button></div>
-            <div style={{ padding: 24 }}>
+            <div className="sheet-inner">
+              <div className="sheet-head"><h3 id="sheet-title2" style={{ margin: 0, fontSize: 15 }}>Nominal UKT-mu</h3><button type="button" className="btn btn-quiet btn-sm" onClick={tutupSheet} style={{ padding: '6px 10px', fontSize: 18 }}>×</button></div>
+              <div style={{ padding: 24 }}>
               <div className="field">
                 <label className="label" htmlFor="manual-sheet">Nominal UKT per semester (rupiah)</label>
                 <input id="manual-sheet" className="input mono" value={manual} onChange={(e) => setManual(e.target.value.replace(/[^\d]/g, '').slice(0, 12))} inputMode="numeric" placeholder="3500000" />
                 {manual && <p className="hint">Terbaca <span className="num">{rp(Number(manual))}</span></p>}
               </div>
               <button type="button" className="btn btn-block" onClick={tutupSheet} style={{ marginTop: 16, padding: 16 }}>Simpan</button>
+              </div>
             </div>
           </dialog>
         )}
