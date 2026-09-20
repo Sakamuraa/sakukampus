@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "generated_at": "2026-09-20T14:51:29.266Z",
+    "generated_at": "2026-09-20T15:55:35.232Z",
     "source": "api-pddikti.kemdiktisaintek.go.id /pencarian/pt/{q}",
     "method": "shard kata kunci: 26 huruf (shard 2-karakter bila >=100) + tipe PT + provinsi/kota",
-    "count": 3692,
+    "count": 3693,
     "note": "pddikti_unofficial=1; paginasi server diabaikan (page=N selalu 100 hasil sama) — enumerasi hanya via kata kunci"
   },
   "pt": [
@@ -14774,6 +14774,10 @@
     [
       "031045",
       "UNIVERSITAS BUDI LUHUR"
+    ],
+    [
+      "443006",
+      "SEKOLAH TINGGI PENYULUHAN PERTANIAN MANOKWARI"
     ]
   ]
 }
