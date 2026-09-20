@@ -140,7 +140,9 @@ export default function DataPage() {
           </Card>
 
           {/* API */}
-          <DataPageClient />
+          <div style={{ marginTop: 32 }}>
+            <DataPageClient />
+          </div>
         </section>
       </main>
     </div>
