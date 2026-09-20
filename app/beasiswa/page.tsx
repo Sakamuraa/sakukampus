@@ -78,7 +78,7 @@ export default async function BeasiswaPage({ searchParams }: { searchParams: Pro
         </section>
 
         {/* Cards */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section" style={{ paddingTop: 24 }}>
           {list.length === 0 ? (
             <Card>
               <CardContent style={{ textAlign: 'center', padding: '48px 24px' }}>
