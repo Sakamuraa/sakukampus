@@ -39,6 +39,7 @@ export async function GET() {
         resmi: scholarships.filter((s) => s.source_kind === 'resmi').length,
         agregator: scholarships.filter((s) => s.source_kind === 'agregator').length,
         catatan: 'Setiap entri wajib membawa source_url dan last_verified_at.',
+        pemeriksaan_terakhir: new Date().toISOString(),
       },
     },
   });
