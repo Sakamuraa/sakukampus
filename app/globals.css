@@ -306,11 +306,16 @@ footer {
    ============================================================ */
 .sheet {
   border: none; border-radius: var(--radius); padding: 0;
-  max-width: 520px; width: 100%;
+  max-width: 520px; width: calc(100% - 32px);
   box-shadow: 0 24px 80px rgba(0,0,0,0.6);
   background: var(--surface); color: var(--ink);
   max-height: 88vh; overflow-y: auto;
   scrollbar-width: thin; scrollbar-color: var(--line) transparent;
+  /* Center vertically and horizontally */
+  margin: auto;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
 }
 .sheet::-webkit-scrollbar { width: 5px; }
 .sheet::-webkit-scrollbar-track { background: transparent; }
@@ -320,6 +325,20 @@ footer {
   display: flex; align-items: center; justify-content: space-between;
   padding: 18px 22px; border-bottom: 1px solid var(--line);
   position: sticky; top: 0; background: var(--surface); z-index: 1;
+}
+
+@media (max-width: 767px) {
+  .sheet {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    position: fixed;
+    inset: 0;
+    top: auto;
+    transform: none;
+    border-radius: 0;
+    max-height: 100vh;
+  }
 }
 
 /* ============================================================
