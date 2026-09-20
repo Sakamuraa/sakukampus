@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "generated_at": "2026-09-19T16:41:46.509Z",
+    "generated_at": "2026-09-20T14:51:29.266Z",
     "source": "api-pddikti.kemdiktisaintek.go.id /pencarian/pt/{q}",
     "method": "shard kata kunci: 26 huruf (shard 2-karakter bila >=100) + tipe PT + provinsi/kota",
-    "count": 3690,
+    "count": 3692,
     "note": "pddikti_unofficial=1; paginasi server diabaikan (page=N selalu 100 hasil sama) — enumerasi hanya via kata kunci"
   },
   "pt": [
