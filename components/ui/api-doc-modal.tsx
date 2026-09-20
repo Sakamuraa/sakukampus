@@ -194,7 +194,7 @@ export default function ApiDocModal({ onClose }: { onClose: () => void }) {
       style={{
         position: 'fixed',
         inset: 0,
-        zIndex: 200,
+        zIndex: 9999,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -212,7 +212,7 @@ export default function ApiDocModal({ onClose }: { onClose: () => void }) {
         onClick={onClose}
       />
 
-      {/* Modal */}
+      {/* Modal container */}
       <div
         style={{
           position: 'relative',
@@ -240,24 +240,25 @@ export default function ApiDocModal({ onClose }: { onClose: () => void }) {
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            {!showSidebar && (
-              <button
-                onClick={() => setShowSidebar(true)}
-                style={{
-                  background: 'var(--surface-2)',
-                  border: '1px solid var(--line)',
-                  borderRadius: 8,
-                  padding: '6px 12px',
-                  color: 'var(--ink-dim)',
-                  fontSize: 12,
-                  cursor: 'pointer',
-                  display: 'none',
-                }}
-                className="mobile-menu-btn"
-              >
-                ☰ Menu
-              </button>
-            )}
+            {/* Mobile menu toggle */}
+            <button
+              onClick={() => setShowSidebar(!showSidebar)}
+              style={{
+                background: 'var(--surface-2)',
+                border: '1px solid var(--line)',
+                borderRadius: 8,
+                padding: '6px 12px',
+                color: 'var(--ink-dim)',
+                fontSize: 12,
+                cursor: 'pointer',
+                display: window.innerWidth < 768 ? 'flex' : 'none',
+                alignItems: 'center',
+                gap: 4,
+              }}
+              className="mobile-menu-btn"
+            >
+              ☰ Menu
+            </button>
             <div>
               <h3 style={{ margin: 0, fontSize: 16, fontWeight: 600 }}>API Dokumentasi</h3>
               <p style={{ margin: '2px 0 0', fontSize: 12, color: 'var(--ink-faint)' }}>
@@ -281,29 +282,39 @@ export default function ApiDocModal({ onClose }: { onClose: () => void }) {
           </button>
         </div>
 
-        {/* Content - Desktop: sidebar + main | Mobile: one or other */}
+        {/* Content */}
         <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
           {/* Sidebar - hidden on mobile by default */}
           <div
             style={{
-              width: showSidebar ? '100%' : '200px',
-              borderRight: '1px solid var(--line)',
+              width: showSidebar || window.innerWidth >= 768 ? '220px' : '0',
+              borderRight: showSidebar || window.innerWidth >= 768 ? '1px solid var(--line)' : 'none',
               overflowY: 'auto',
               flexShrink: 0,
-              display: showSidebar ? 'block' : 'block',
+              transition: 'all 0.2s ease',
+              background: showSidebar || window.innerWidth >= 768 ? 'var(--surface)' : 'transparent',
             }}
             className="api-sidebar"
           >
             <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--line)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--ink-faint)', textTransform: 'uppercase' }}>Endpoints</span>
+              <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--ink-faint)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Endpoints</span>
               {showSidebar && (
-                <button onClick={() => setShowSidebar(false)} style={{ background: 'none', border: 'none', color: 'var(--ink-faint)', cursor: 'pointer', fontSize: 18 }}>←</button>
+                <button 
+                  onClick={() => setShowSidebar(false)} 
+                  style={{ background: 'none', border: 'none', color: 'var(--ink-faint)', cursor: 'pointer', fontSize: 18, padding: '4px 8px' }}
+                >
+                  ←
+                </button>
               )}
             </div>
             {API_DOCS.map((api) => (
               <button
                 key={api.path}
-                onClick={() => { setSelected(api); setActiveMethod(0); if (window.innerWidth < 768) setShowSidebar(false); }}
+                onClick={() => { 
+                  setSelected(api); 
+                  setActiveMethod(0); 
+                  if (window.innerWidth < 768) setShowSidebar(false); 
+                }}
                 style={{
                   display: 'block',
                   width: '100%',
@@ -311,7 +322,6 @@ export default function ApiDocModal({ onClose }: { onClose: () => void }) {
                   background: selected === api ? 'var(--accent-dim)' : 'transparent',
                   border: 'none',
                   borderLeft: selected === api ? '3px solid var(--accent)' : '3px solid transparent',
-                  borderRight: selected === api ? 'none' : 'none',
                   textAlign: 'left',
                   cursor: 'pointer',
                   color: selected === api ? 'var(--accent)' : 'var(--ink-dim)',
@@ -321,7 +331,7 @@ export default function ApiDocModal({ onClose }: { onClose: () => void }) {
                 }}
               >
                 <div style={{ fontFamily: 'monospace', fontSize: 11, marginBottom: 4, opacity: 0.7 }}>{api.path}</div>
-                <div>{api.title}</div>
+                <div style={{ fontSize: 13 }}>{api.title}</div>
               </button>
             ))}
           </div>
@@ -388,8 +398,14 @@ export default function ApiDocModal({ onClose }: { onClose: () => void }) {
                             gap: 4,
                             transition: 'all 0.15s',
                           }}
-                          onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--accent)'; (e.currentTarget as HTMLButtonElement).style.color = 'var(--accent)'; }}
-                          onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--line)'; (e.currentTarget as HTMLButtonElement).style.color = 'var(--ink-faint)'; }}
+                          onMouseEnter={(e) => {
+                            (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--accent)';
+                            (e.currentTarget as HTMLButtonElement).style.color = 'var(--accent)';
+                          }}
+                          onMouseLeave={(e) => {
+                            (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--line)';
+                            (e.currentTarget as HTMLButtonElement).style.color = 'var(--ink-faint)';
+                          }}
                         >
                           <Copy size={12} />
                           {copied ? 'Disalin!' : 'Salin'}
@@ -444,17 +460,20 @@ export default function ApiDocModal({ onClose }: { onClose: () => void }) {
           from { opacity: 0; transform: translateY(-8px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        .api-sidebar {
-          @media (max-width: 767px) {
+        
+        /* Mobile responsive */
+        @media (max-width: 767px) {
+          .api-sidebar {
             position: absolute;
             inset: 0;
             z-index: 10;
             background: var(--surface);
           }
+          .mobile-menu-btn {
+            display: inline-flex !important;
+          }
         }
-        .mobile-menu-btn {
-          display: flex !important;
-        }
+        
         @media (min-width: 768px) {
           .mobile-menu-btn {
             display: none !important;

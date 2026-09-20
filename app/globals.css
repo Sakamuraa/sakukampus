@@ -59,6 +59,10 @@ a { color: inherit; text-decoration: none; }
   .wrap > aside { grid-column: 2; position: sticky; top: 80px; }
 }
 
+/* Data page cards spacing */
+.data-section { margin-bottom: 24px; }
+.data-section-title { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+
 /* ============================================================
    NAVIGATION
    ============================================================ */
