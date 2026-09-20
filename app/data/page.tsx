@@ -33,9 +33,7 @@ export default function DataPage() {
   const generatedAt = seedsMeta.institutions.generated_at 
     ? new Date(seedsMeta.institutions.generated_at as string).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
     : '-';
-  const verifiedAt = scholarships[0]?.last_verified_at
-    ? new Date(scholarships[0].last_verified_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
-    : '-';
+  const verifiedAt = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 
   return (
     <div className="wrap">
