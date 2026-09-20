@@ -83,7 +83,7 @@ const API_DOCS = [
   {
     path: '/api/v1/calendar',
     title: 'Kalender Tenggat',
-    description: 'Semua tenggat pendaftaran, terurutchronologis.',
+    description: 'Semua tenggat pendaftaran, terurut kronologis.',
     methods: [
       {
         method: 'GET',
@@ -113,7 +113,7 @@ const API_DOCS = [
           data: {
             institutions: { count: 3690, generated_at: '2026-09-19T14:56:56Z', source: 'PDDikti' },
             ukt: { decree: 'KMA 204/2026', academic_year: '2026/2027', ptkin: 58, prodi: 1550 },
-            scholarships: { count: 14, last_verified: '2026-09-19T14:47:13Z' }
+            scholarships: { count: 18, last_verified: '2026-09-19T14:47:13Z' }
           }
         }
       }
@@ -127,11 +127,7 @@ const API_DOCS = [
       {
         method: 'POST',
         desc: 'Cek beasiswa untuk Brawijaya (manual UKT)',
-        curl: `curl -X POST "https://sakukampus.onheil.fun/api/v1/eligibility/check" \\\n  -H "Content-Type: application/json" \\\n  -d '{
-    "kode_pt": "001019",
-    "nominal_manual": 3500000,
-    "profil": { "jenjang": "S1" }
-  }'`,
+        curl: 'curl -X POST "https://sakukampus.onheil.fun/api/v1/eligibility/check" \\\n  -H "Content-Type: application/json" \\\n  -d \'{"kode_pt": "001019", "nominal_manual": 3500000, "profil": {"jenjang": "S1"}}\'',
         response: {
           status: 'success',
           data: {
@@ -153,12 +149,7 @@ const API_DOCS = [
       {
         method: 'POST',
         desc: 'Cek untuk UIN Jakarta (golongan UKT)',
-        curl: `curl -X POST "https://sakukampus.onheil.fun/api/v1/eligibility/check" \\\n  -H "Content-Type: application/json" \\\n  -d '{
-    "kode_pt": "201001",
-    "prodi": "Teknik Informatika",
-    "kelompok": 2,
-    "profil": { "jenjang": "S1", "ipk": 3.5, "semester": 5 }
-  }'`,
+        curl: 'curl -X POST "https://sakukampus.onheil.fun/api/v1/eligibility/check" \\\n  -H "Content-Type: application/json" \\\n  -d \'{"kode_pt": "201001", "prodi": "Teknik Informatika", "kelompok": 2, "profil": {"jenjang": "S1", "ipk": 3.5, "semester": 5}}\'',
         response: {
           status: 'success',
           data: {
@@ -190,6 +181,7 @@ export default function ApiDocModal({ onClose }: { onClose: () => void }) {
   const [selected, setSelected] = useState(API_DOCS[0]);
   const [activeMethod, setActiveMethod] = useState(0);
   const [copied, setCopied] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(false);
 
   const copyCurl = (curl: string) => {
     navigator.clipboard.writeText(curl);
@@ -202,11 +194,11 @@ export default function ApiDocModal({ onClose }: { onClose: () => void }) {
       style={{
         position: 'fixed',
         inset: 0,
-        zIndex: 100,
+        zIndex: 200,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 20,
+        padding: 16,
       }}
     >
       {/* Backdrop */}
@@ -214,8 +206,8 @@ export default function ApiDocModal({ onClose }: { onClose: () => void }) {
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'rgba(0,0,0,0.7)',
-          backdropFilter: 'blur(4px)',
+          background: 'rgba(0,0,0,0.8)',
+          backdropFilter: 'blur(8px)',
         }}
         onClick={onClose}
       />
@@ -229,11 +221,11 @@ export default function ApiDocModal({ onClose }: { onClose: () => void }) {
           borderRadius: 16,
           maxWidth: 720,
           width: '100%',
-          maxHeight: '85vh',
+          maxHeight: '90vh',
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
-          boxShadow: '0 24px 80px rgba(0,0,0,0.5)',
+          boxShadow: '0 24px 80px rgba(0,0,0,0.6)',
         }}
       >
         {/* Header */}
@@ -244,11 +236,34 @@ export default function ApiDocModal({ onClose }: { onClose: () => void }) {
             justifyContent: 'space-between',
             padding: '16px 20px',
             borderBottom: '1px solid var(--line)',
+            flexShrink: 0,
           }}
         >
-          <div>
-            <h3 style={{ margin: 0, fontSize: 16, fontWeight: 600 }}>API Dokumentasi</h3>
-            <p className="tiny faint" style={{ margin: '2px 0 0' }}>Contoh penggunaan endpoint SakuKampus</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            {!showSidebar && (
+              <button
+                onClick={() => setShowSidebar(true)}
+                style={{
+                  background: 'var(--surface-2)',
+                  border: '1px solid var(--line)',
+                  borderRadius: 8,
+                  padding: '6px 12px',
+                  color: 'var(--ink-dim)',
+                  fontSize: 12,
+                  cursor: 'pointer',
+                  display: 'none',
+                }}
+                className="mobile-menu-btn"
+              >
+                ☰ Menu
+              </button>
+            )}
+            <div>
+              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 600 }}>API Dokumentasi</h3>
+              <p style={{ margin: '2px 0 0', fontSize: 12, color: 'var(--ink-faint)' }}>
+                Contoh penggunaan endpoint SakuKampus
+              </p>
+            </div>
           </div>
           <button
             onClick={onClose}
@@ -257,7 +272,7 @@ export default function ApiDocModal({ onClose }: { onClose: () => void }) {
               border: 'none',
               cursor: 'pointer',
               color: 'var(--ink-faint)',
-              fontSize: 20,
+              fontSize: 24,
               padding: 4,
               lineHeight: 1,
             }}
@@ -266,149 +281,153 @@ export default function ApiDocModal({ onClose }: { onClose: () => void }) {
           </button>
         </div>
 
-        {/* Content */}
+        {/* Content - Desktop: sidebar + main | Mobile: one or other */}
         <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
-          {/* Sidebar */}
+          {/* Sidebar - hidden on mobile by default */}
           <div
             style={{
-              width: 200,
+              width: showSidebar ? '100%' : '200px',
               borderRight: '1px solid var(--line)',
               overflowY: 'auto',
               flexShrink: 0,
+              display: showSidebar ? 'block' : 'block',
             }}
+            className="api-sidebar"
           >
-            {API_DOCS.map((api, i) => (
+            <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--line)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--ink-faint)', textTransform: 'uppercase' }}>Endpoints</span>
+              {showSidebar && (
+                <button onClick={() => setShowSidebar(false)} style={{ background: 'none', border: 'none', color: 'var(--ink-faint)', cursor: 'pointer', fontSize: 18 }}>←</button>
+              )}
+            </div>
+            {API_DOCS.map((api) => (
               <button
                 key={api.path}
-                onClick={() => { setSelected(api); setActiveMethod(0); }}
+                onClick={() => { setSelected(api); setActiveMethod(0); if (window.innerWidth < 768) setShowSidebar(false); }}
                 style={{
                   display: 'block',
                   width: '100%',
-                  padding: '12px 16px',
+                  padding: '14px 16px',
                   background: selected === api ? 'var(--accent-dim)' : 'transparent',
                   border: 'none',
-                  borderRight: selected === api ? `2px solid var(--accent)` : 'none',
+                  borderLeft: selected === api ? '3px solid var(--accent)' : '3px solid transparent',
+                  borderRight: selected === api ? 'none' : 'none',
                   textAlign: 'left',
                   cursor: 'pointer',
                   color: selected === api ? 'var(--accent)' : 'var(--ink-dim)',
                   fontSize: 13,
                   fontWeight: selected === api ? 600 : 400,
+                  transition: 'all 0.15s',
                 }}
               >
-                <div style={{ fontFamily: 'monospace', fontSize: 11, marginBottom: 2 }}>{api.path}</div>
+                <div style={{ fontFamily: 'monospace', fontSize: 11, marginBottom: 4, opacity: 0.7 }}>{api.path}</div>
                 <div>{api.title}</div>
               </button>
             ))}
           </div>
 
-          {/* Main */}
+          {/* Main content */}
           <div style={{ flex: 1, overflowY: 'auto', padding: 20 }}>
-            <p className="tiny" style={{ color: 'var(--ink-dim)', marginBottom: 16 }}>
+            <p style={{ color: 'var(--ink-dim)', marginBottom: 20, fontSize: 13, lineHeight: 1.5 }}>
               {selected.description}
             </p>
 
             {selected.methods.map((method, i) => (
-              <div key={i} style={{ marginBottom: 20 }}>
+              <div key={i} style={{ marginBottom: 24 }}>
                 <button
                   onClick={() => setActiveMethod(i)}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: 8,
-                    padding: '8px 12px',
+                    gap: 10,
+                    padding: '12px 16px',
                     background: activeMethod === i ? 'var(--surface-2)' : 'transparent',
-                    border: '1px solid var(--line)',
-                    borderRadius: 8,
+                    border: `1px solid ${activeMethod === i ? 'var(--line-strong)' : 'var(--line)'}`,
+                    borderRadius: 10,
                     cursor: 'pointer',
                     width: '100%',
                     textAlign: 'left',
                     color: 'inherit',
                     fontSize: 13,
+                    transition: 'all 0.15s',
                   }}
                 >
-                  <span
-                    style={{
-                      padding: '2px 6px',
-                      borderRadius: 4,
-                      background: method.method === 'POST' ? 'var(--ok-dim)' : 'var(--accent-dim)',
-                      color: method.method === 'POST' ? 'var(--ok)' : 'var(--accent)',
-                      fontWeight: 600,
-                      fontSize: 11,
-                    }}
-                  >
+                  <span style={{
+                    padding: '3px 8px',
+                    borderRadius: 6,
+                    background: method.method === 'POST' ? 'var(--ok-dim)' : 'var(--accent-dim)',
+                    color: method.method === 'POST' ? 'var(--ok)' : 'var(--accent)',
+                    fontWeight: 700,
+                    fontSize: 11,
+                    letterSpacing: '0.05em',
+                  }}>
                     {method.method}
                   </span>
-                  <span style={{ color: 'var(--ink)' }}>{method.desc}</span>
+                  <span style={{ color: 'var(--ink)', flex: 1 }}>{method.desc}</span>
+                  <span style={{ color: 'var(--ink-faint)', fontSize: 18 }}>›</span>
                 </button>
 
                 {activeMethod === i && (
-                  <div style={{ marginTop: 12 }}>
+                  <div style={{ marginTop: 12, animation: 'fadeIn 0.2s ease' }}>
                     {/* Curl */}
-                    <div style={{ position: 'relative' }}>
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          marginBottom: 6,
-                        }}
-                      >
-                        <span className="tiny" style={{ color: 'var(--ink-faint)' }}>cURL</span>
+                    <div style={{ marginBottom: 16 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                        <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--ink-faint)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>cURL</span>
                         <button
                           onClick={() => copyCurl(method.curl)}
                           style={{
                             background: 'transparent',
-                            border: 'none',
+                            border: '1px solid var(--line)',
+                            borderRadius: 6,
                             cursor: 'pointer',
                             color: 'var(--ink-faint)',
                             fontSize: 11,
+                            padding: '4px 10px',
                             display: 'flex',
                             alignItems: 'center',
                             gap: 4,
+                            transition: 'all 0.15s',
                           }}
+                          onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--accent)'; (e.currentTarget as HTMLButtonElement).style.color = 'var(--accent)'; }}
+                          onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--line)'; (e.currentTarget as HTMLButtonElement).style.color = 'var(--ink-faint)'; }}
                         >
                           <Copy size={12} />
                           {copied ? 'Disalin!' : 'Salin'}
                         </button>
                       </div>
-                      <pre
-                        style={{
-                          background: 'var(--surface-2)',
-                          border: '1px solid var(--line)',
-                          borderRadius: 8,
-                          padding: 14,
-                          fontSize: 12,
-                          fontFamily: 'IBM Plex Mono, monospace',
-                          color: 'var(--ink)',
-                          overflowX: 'auto',
-                          whiteSpace: 'pre-wrap',
-                          wordBreak: 'break-all',
-                          lineHeight: 1.5,
-                        }}
-                      >
+                      <pre style={{
+                        background: 'var(--surface-2)',
+                        border: '1px solid var(--line)',
+                        borderRadius: 10,
+                        padding: '14px 16px',
+                        fontSize: 12,
+                        fontFamily: '"IBM Plex Mono", monospace',
+                        color: 'var(--ink)',
+                        overflowX: 'auto',
+                        whiteSpace: 'pre-wrap',
+                        wordBreak: 'break-all',
+                        lineHeight: 1.6,
+                      }}>
                         {method.curl}
                       </pre>
                     </div>
 
                     {/* Response */}
-                    <div style={{ marginTop: 12 }}>
-                      <span className="tiny" style={{ color: 'var(--ink-faint)' }}>Response</span>
-                      <pre
-                        style={{
-                          background: 'var(--surface-2)',
-                          border: '1px solid var(--line)',
-                          borderRadius: 8,
-                          padding: 14,
-                          fontSize: 12,
-                          fontFamily: 'IBM Plex Mono, monospace',
-                          color: 'var(--ok)',
-                          overflowX: 'auto',
-                          whiteSpace: 'pre-wrap',
-                          wordBreak: 'break-all',
-                          lineHeight: 1.5,
-                          marginTop: 6,
-                        }}
-                      >
+                    <div>
+                      <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--ink-faint)', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: 8 }}>Response</span>
+                      <pre style={{
+                        background: 'var(--surface-2)',
+                        border: '1px solid var(--line)',
+                        borderRadius: 10,
+                        padding: '14px 16px',
+                        fontSize: 12,
+                        fontFamily: '"IBM Plex Mono", monospace',
+                        color: 'var(--ok)',
+                        overflowX: 'auto',
+                        whiteSpace: 'pre-wrap',
+                        wordBreak: 'break-all',
+                        lineHeight: 1.6,
+                      }}>
                         {JSON.stringify(method.response, null, 2)}
                       </pre>
                     </div>
@@ -419,6 +438,29 @@ export default function ApiDocModal({ onClose }: { onClose: () => void }) {
           </div>
         </div>
       </div>
+
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(-8px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .api-sidebar {
+          @media (max-width: 767px) {
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+            background: var(--surface);
+          }
+        }
+        .mobile-menu-btn {
+          display: flex !important;
+        }
+        @media (min-width: 768px) {
+          .mobile-menu-btn {
+            display: none !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }
