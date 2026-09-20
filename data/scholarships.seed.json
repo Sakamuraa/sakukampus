@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "generated_at": "2026-09-19T16:41:47.768Z",
+    "generated_at": "2026-09-20T14:48:42.627Z",
     "note": "Setiap entri WAJIB punya source_url + last_verified_at. Syarat UKT pada beasiswa nasional dinyatakan dalam RUPIAH (ukt_max_idr), bukan nomor golongan — lihat lib/eligibility/engine.ts dan plan §5.",
-    "normalized_at": "2026-09-19T16:40:06.355Z",
-    "normalized_count": 18
+    "normalized_at": "2026-09-20T14:48:42.627Z",
+    "normalized_count": 19
   },
   "scholarships": [
     {
@@ -1302,6 +1302,88 @@
             "op": "eq",
             "value": true,
             "label": "Keluarga kurang mampu"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "teladan-tanoto-foundation-2026",
+      "name": "Beasiswa TELADAN Tanoto Foundation 2026",
+      "provider": "Tanoto Foundation",
+      "tier": "swasta",
+      "scope": "nasional",
+      "coverage": "ukt_penuh+allowance+leadership",
+      "benefit_summary": "Bantuan UKT penuh, tunjangan hidup bulanan, program pengembangan kepemimpinan, jaringan alumni internasional.",
+      "jenjang": [
+        "S1"
+      ],
+      "url_pendaftaran": "https://www.tanotofoundation.org/teladan-2027/",
+      "source_url": "https://www.kompas.com/edu/read/2025/07/10/135830771/link-dan-syarat-daftar-beasiswa-teladan-tanoto-foundation-2026",
+      "source_kind": "resmi",
+      "confidence": 92,
+      "last_verified_at": "2026-09-20T14:48:42.627Z",
+      "ukt_max_idr": null,
+      "academic_year": "2026/2027",
+      "stages": [
+        {
+          "name": "pendaftaran",
+          "opens_at": "2026-07-01T00:00:00Z",
+          "closes_at": "2026-09-07T23:59:00Z"
+        },
+        {
+          "name": "seleksi_berkas",
+          "opens_at": "2026-09-08T00:00:00Z",
+          "closes_at": "2026-10-15T23:59:00Z"
+        },
+        {
+          "name": "wawancara",
+          "opens_at": "2026-10-16T00:00:00Z",
+          "closes_at": "2026-11-30T23:59:00Z"
+        },
+        {
+          "name": "pengumuman",
+          "opens_at": "2026-12-29T00:00:00Z"
+        }
+      ],
+      "rule": {
+        "all": [
+          {
+            "fact": "warga_negara",
+            "op": "eq",
+            "value": true,
+            "label": "Warga Negara Indonesia (WNI)"
+          },
+          {
+            "fact": "jenjang",
+            "op": "in",
+            "value": [
+              "S1"
+            ],
+            "label": "Mahasiswa S1 semester 1"
+          },
+          {
+            "fact": "semester",
+            "op": "eq",
+            "value": 1,
+            "label": "Semester 1"
+          },
+          {
+            "fact": "ipk_sma",
+            "op": "gte",
+            "value": 8,
+            "label": "Rata-rata rapor ≥ 8.0"
+          },
+          {
+            "fact": "aktif_organisasi",
+            "op": "exists",
+            "value": true,
+            "label": "Aktif berorganisasi/kepemimpinan"
+          },
+          {
+            "fact": "penerima_beasiswa_lain",
+            "op": "eq",
+            "value": false,
+            "label": "Tidak menerima beasiswa lain"
           }
         ]
       }
