@@ -92,8 +92,8 @@ export default async function BeasiswaPage({ searchParams }: { searchParams: Pro
           ) : (
             <div style={{ display: 'grid', gap: 16 }}>
               {list.map(({ s, st }) => (
-                <article key={s.slug}>
-                  <Card>
+                <article key={s.slug} className="scholarship-card">
+                  <Card style={{ borderColor: 'var(--line-strong)', boxShadow: 'none', background: 'var(--surface)' }}>
                     <CardHeader>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
                         <div style={{ minWidth: 0 }}>
