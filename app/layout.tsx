@@ -1,127 +1,124 @@
 import type { Metadata, Viewport } from 'next';
+import Link from 'next/link';
 import { Plus_Jakarta_Sans, IBM_Plex_Mono } from 'next/font/google';
 import './globals.css';
 import { TopNav, TabBar } from '@/components/nav';
-import Logo from '@/components/ui/logo';
 
 const display = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  weight: ['200', '400', '500', '600', '700', '800'],
-  variable: '--font-display',
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-plus-jakarta',
   display: 'swap',
 });
 
 const numeric = IBM_Plex_Mono({
   subsets: ['latin'],
   weight: ['400', '500', '600'],
-  variable: '--font-numeric',
+  variable: '--font-plex-mono',
   display: 'swap',
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://sakukampus.onheil.fun'),
   title: {
-    default: 'SakuKampus — Cek Beasiswa Pakai UKT Kampusmu',
+    default: 'SakuKampus — Cek kelayakan beasiswa dari UKT riil',
     template: '%s · SakuKampus',
   },
   description:
-    'Platform agregator beasiswa Indonesia. Nilai kelayakan dari nominal rupiah UKT kampusmu, bukan nomor golongan. Katalog 3.690+ kampus PDDikti.',
-  alternates: {
-    canonical: '/',
-    languages: {
-      'id-ID': '/',
-    },
-  },
+    'Katalog 3.693+ kampus PDDikti dan 19 beasiswa dengan syarat UKT dinyatakan dalam rupiah, bukan nomor golongan.',
+  alternates: { canonical: '/', languages: { 'id-ID': '/' } },
   openGraph: {
     type: 'website',
     locale: 'id_ID',
     url: '/',
     siteName: 'SakuKampus',
-    title: 'SakuKampus — Cek Beasiswa Pakai UKT Kampusmu',
-    description: 'Agregasi beasiswa kampus, pemerintah, dan swasta. Kelayakan dihitung dari rupiah UKT riil.',
-    images: [
-      {
-        url: '/og-home.png',
-        width: 1200,
-        height: 630,
-        alt: 'SakuKampus preview',
-      },
-    ],
+    title: 'SakuKampus — Cek kelayakan beasiswa dari UKT riil',
+    description: 'Kelayakan beasiswa dihitung dari nominal rupiah UKT kampusmu.',
+    images: [{ url: '/og-home.png', width: 1200, height: 630, alt: 'SakuKampus preview' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'SakuKampus — Cek Beasiswa Pakai UKT Kampusmu',
-    description: 'Agregasi beasiswa dari 3.690+ kampus Indonesia.',
+    title: 'SakuKampus — Cek kelayakan beasiswa dari UKT riil',
+    description: 'Kelayakan beasiswa dihitung dari nominal rupiah UKT kampusmu.',
     images: ['/og-home.png'],
   },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-  verification: {
-    other: {
-      'viewport-width': 'device-width',
-    },
-  },
+  robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
-  // Keyboard Android mengecilkan viewport, bukan menutupi isian. Tanpa ini,
-  // kolom pencarian kampus tertutup keyboard saat diketik.
+  // Android keyboard resizes the viewport instead of covering inputs.
   interactiveWidget: 'resizes-content',
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#f6f7f5' },
-    { media: '(prefers-color-scheme: dark)', color: '#0f1210' },
+    { media: '(prefers-color-scheme: light)', color: '#0a0c10' },
+    { media: '(prefers-color-scheme: dark)', color: '#0a0c10' },
   ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="id" className={`${display.variable} ${numeric.variable}`}>
-      <body>
+      <body className="min-h-dvh bg-bg text-ink antialiased">
         <a
           href="#isi"
-          className="small"
-          style={{
-            position: 'absolute',
-            left: -9999,
-            top: 0,
-            padding: 10,
-            background: 'var(--color-accent)',
-            color: 'var(--color-accent-ink)',
-            zIndex: 100,
-          }}
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-ctl focus:bg-accent focus:px-4 focus:py-2 focus:font-semibold focus:text-[#14100a]"
         >
           Lompat ke isi
         </a>
+
         <TopNav />
-        <main id="isi">{children}</main>
-        <footer>
-          <div className="wrap" style={{ paddingTop: 28, paddingBottom: 80 }}>
-            <p className="tiny faint" style={{ margin: '0 0 6px', maxWidth: '68ch' }}>
-              Nominal UKT diambil dari Keputusan Menteri Agama (KMA 204/2026), katalog kampus dari
-              PDDikti, jadwal beasiswa dari pengumuman resmi masing-masing penyelenggara. Setiap
-              angka punya tautan sumbernya.
+
+        <main id="isi" className="pb-24 lg:pb-0">
+          {children}
+        </main>
+
+        <footer className="border-t border-line pb-24 lg:pb-10">
+          <div className="wrap grid gap-6 pt-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr]">
+            <div className="flex items-start gap-2.5">
+              <img src="/logo.png" alt="" className="mt-0.5 h-6 w-6 rounded-md object-contain" />
+              <div>
+                <p className="text-[13.5px] font-bold text-ink">SakuKampus</p>
+                <p className="mt-1 max-w-[46ch] text-[13px] leading-relaxed text-ink-faint">
+                  Nominal UKT dari KMA 204/2026, katalog kampus dari PDDikti, jadwal dari
+                  pengumuman resmi penyelenggara.
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <p className="text-[12px] font-semibold tracking-[0.06em] text-ink-faint uppercase">
+                Produk
+              </p>
+              <ul className="mt-3 grid gap-2 text-[13.5px] text-ink-dim">
+                <li><Link href="/cek" className="press hover:text-accent">Cek kelayakan</Link></li>
+                <li><Link href="/beasiswa" className="press hover:text-accent">Katalog beasiswa</Link></li>
+                <li><Link href="/jadwal" className="press hover:text-accent">Jadwal tenggat</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <p className="text-[12px] font-semibold tracking-[0.06em] text-ink-faint uppercase">
+                Transparansi
+              </p>
+              <ul className="mt-3 grid gap-2 text-[13.5px] text-ink-dim">
+                <li><Link href="/data" className="press hover:text-accent">Status data</Link></li>
+                <li><Link href="/data" className="press hover:text-accent">API publik</Link></li>
+                <li><span className="text-ink-faint">Sumber &amp; metode</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="wrap mt-8 flex flex-col gap-2 border-t border-line pt-6 text-[12.5px] text-ink-faint sm:flex-row sm:items-center sm:justify-between">
+            <p>
+              SakuKampus tidak menyelenggarakan beasiswa. Semua tautan pendaftaran mengarah ke
+              situs resmi penyelenggara.
             </p>
-            <p className="tiny faint" style={{ margin: '0 0 6px', maxWidth: '68ch' }}>
-              SakuKampus tidak menyelenggarakan beasiswa dan tidak menerima pendaftaran. Semua
-              tautan pendaftaran mengarah ke situs resmi penyelenggara.
-            </p>
-            <p className="tiny faint" style={{ margin: '12px 0 0', opacity: 0.7 }}>
-              © Kelompok TURUNKAN UKT, Teknik Informatika UIN Jakarta 2026
-            </p>
+            <p>© 2026 Kelompok TURUNKAN UKT, UIN Jakarta</p>
           </div>
         </footer>
+
         <TabBar />
       </body>
     </html>

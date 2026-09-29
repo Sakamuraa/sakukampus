@@ -1,39 +1,89 @@
 import Link from 'next/link';
 import { ArrowRight } from '@phosphor-icons/react/dist/ssr/ArrowRight';
+import { ArrowUpRight } from '@phosphor-icons/react/dist/ssr/ArrowUpRight';
 import { institutions, scholarships, seedsMeta } from '@/lib/data';
 import { stageStatus } from '@/lib/match';
 import { rp, tanggal } from '@/components/ui';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Reveal, Stagger } from '@/components/motion/reveal';
 
 export const revalidate = 3600;
+
+const RULES = [
+  {
+    k: 'Nomor',
+    t: 'Golongan cuma berlaku di kampusnya sendiri',
+    d: 'Golongan 2 di UIN Jakarta Rp4.270.000, di UIN Malang Rp1.653.000. Angka yang sama, beban yang beda.',
+  },
+  {
+    k: 'Rupiah',
+    t: 'Beasiswa nasional dinilai pakai plafon rupiah',
+    d: 'Syarat ditulis sebagai “UKT maksimal Rp2.400.000”, bukan “golongan 1 sampai 4”.',
+  },
+  {
+    k: 'Catatan',
+    t: 'Kriteria prioritas tidak pernah menggugurkan',
+    d: 'Label prioritas dicatat sebagai informasi tambahan, bukan penentu lolos atau tidak.',
+  },
+  {
+    k: 'Jujur',
+    t: 'Data kurang dilaporkan sebagai kurang',
+    d: 'Kami tidak menebak dari data yang belum kamu isi. Hasilnya “perlu data”, bukan “tidak lolos”.',
+  },
+] as const;
 
 export default function Home() {
   const now = Date.now();
   const denganUkt = institutions.filter((i) => i.ukt).length;
+
+  const jakarta = institutions.find((i) => i.kode === '201001')?.ukt;
+  const malang = institutions.find((i) => i.kode === '201003')?.ukt;
+  const ti = (pt: typeof jakarta) => pt?.prodi.find((p) => p.prodi === 'Teknik Informatika');
+  const a = ti(jakarta);
+  const b = ti(malang);
+
   const buka = scholarships
     .map((s) => ({ s, st: stageStatus(s, now) }))
     .filter((x) => x.st === 'buka')
-    .slice(0, 4);
+    .slice(0, 3);
+
+  const stats = [
+    { v: institutions.length.toLocaleString('id-ID'), k: 'Kampus terindeks', s: 'PDDikti' },
+    { v: String(denganUkt), k: 'Kampus dengan UKT terverifikasi', s: 'KMA 204/2026' },
+    { v: Number(seedsMeta.ukt.prodi).toLocaleString('id-ID'), k: 'Baris prodi berdata', s: 'KMA 204/2026' },
+    { v: String(scholarships.length), k: 'Beasiswa dipantau', s: 'Pengumuman resmi' },
+  ];
 
   return (
-    <div className="wrap">
-      <main>
-        {/* Hero Section */}
-        <section className="hero">
-          <div style={{ display: 'grid', gap: 40, alignItems: 'center' }}>
-            <div>
-              <Badge variant="secondary" style={{ marginBottom: 16, fontSize: 12 }}>
-                Platform Beasiswa Mahasiswa Indonesia
+    <>
+      {/* ─────────────────────────────────────── HERO
+          Anti-center: copy left, live proof right. Asymmetric split. */}
+      <section className="border-b border-line">
+        <div className="wrap grid items-center gap-10 py-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:py-20">
+          <div>
+            <Reveal delay={0}>
+              <Badge variant="accent" className="mb-5">
+                Beasiswa untuk mahasiswa Indonesia
               </Badge>
-              <h1 className="hero-title">
-                UKT riil. Beasiswa cocok.
+            </Reveal>
+
+            <Reveal delay={0.06}>
+              <h1 className="max-w-[15ch] text-[clamp(2.1rem,6vw,3.6rem)] leading-[1.03] font-extrabold tracking-[-0.035em] text-ink">
+                Cek kelayakan dari <span className="text-accent">UKT riil</span>, bukan nomor golongan.
               </h1>
-              <p className="hero-sub" style={{ marginTop: 16 }}>
-                SakuKampus menilai kelayakan beasiswamu dari nominal rupiah UKT yang benar-benar kamu bayar — bukan sekadar nomor golongan.
+            </Reveal>
+
+            <Reveal delay={0.12}>
+              <p className="mt-5 max-w-[52ch] text-[17px] leading-relaxed text-ink-dim">
+                Masukkan kampus dan golonganmu. Kami bandingkan dengan plafon rupiah tiap beasiswa
+                dan laporkan apa yang sudah cocok, apa yang belum.
               </p>
-              <div className="hero-actions" style={{ marginTop: 24, display: 'flex', gap: 12 }}>
+            </Reveal>
+
+            <Reveal delay={0.18}>
+              <div className="mt-8 flex flex-wrap gap-3">
                 <Link href="/cek">
                   <Button size="lg">
                     Cek kelayakanku
@@ -41,194 +91,214 @@ export default function Home() {
                   </Button>
                 </Link>
                 <Link href="/beasiswa">
-                  <Button variant="outline" size="lg">
+                  <Button size="lg" variant="secondary">
                     Lihat katalog
                   </Button>
                 </Link>
               </div>
-            </div>
-
-            {/* Comparison visual */}
-            <ComparisonCard />
+            </Reveal>
           </div>
-        </section>
 
-        {/* How it works */}
-        <section className="section">
-          <div className="section-head">
-            <span className="section-title">Cara penilaiannya</span>
-          </div>
-          <div style={{ display: 'grid', gap: 12, gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
-            {[
-              { n: '1', t: 'Beasiswa nasional dinilai dengan plafon rupiah', d: "Syarat ditulis sebagai 'UKT maksimal Rp2.400.000', bukan 'golongan 1 sampai 4'." },
-              { n: '2', t: 'Nomor golongan hanya sah untuk beasiswa satu kampus', d: "Beasiswa internal UIN Jakarta boleh menyebut golongan, karena hanya berlaku di sana." },
-              { n: '3', t: 'Prioritas bukan syarat wajib', d: 'Kriteria bertanda prioritas dicatat sebagai catatan dan tidak pernah menggugurkan.' },
-              { n: '4', t: 'Data kurang berarti perlu data, bukan tidak lolos', d: 'Kami tidak memberi vonis dari data yang belum kamu isi.' },
-            ].map((row) => (
-              <Card key={row.n}>
-                <CardContent style={{ padding: '20px 24px' }}>
-                  <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
-                    <div style={{ 
-                      width: 32, 
-                      height: 32, 
-                      borderRadius: '50%', 
-                      background: 'var(--accent-dim)', 
-                      color: 'var(--accent)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontWeight: 700,
-                      fontSize: 14,
-                      flexShrink: 0
-                    }}>
-                      {row.n}
-                    </div>
-                    <div>
-                      <div style={{ fontWeight: 600, fontSize: 15, color: 'var(--ink)', marginBottom: 4 }}>
-                        {row.t}
-                      </div>
-                      <div className="tiny faint" style={{ lineHeight: 1.55 }}>
-                        {row.d}
-                      </div>
-                    </div>
+          {/* Live component preview — the real UI, not a fake screenshot. */}
+          {a && b && (
+            <Reveal delay={0.24} y={24}>
+              <div className="relative">
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute -inset-6 -z-10 rounded-full bg-accent/10 blur-3xl"
+                />
+                <Card className="overflow-hidden">
+                  <div className="flex items-center justify-between border-b border-line bg-surface-2 px-5 py-3.5">
+                    <p className="text-[12.5px] font-medium text-ink-dim">
+                      Teknik Informatika · Golongan 2
+                    </p>
+                    <Badge variant="ok">Data terverifikasi</Badge>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
 
-        {/* Open Scholarships */}
-        {buka.length > 0 && (
-          <section className="section-tight">
-            <div className="section-head">
+                  <div className="divide-y divide-line">
+                    {[
+                      { n: 'UIN Syarif Hidayatullah Jakarta', v: a.gol[1] },
+                      { n: 'UIN Maulana Malik Ibrahim Malang', v: b.gol[1] },
+                    ].map((r) => (
+                      <div key={r.n} className="flex items-baseline justify-between gap-4 px-5 py-4">
+                        <span className="text-[13.5px] text-ink-dim">{r.n}</span>
+                        <span className="num text-[17px] font-semibold text-ink">{rp(r.v)}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="flex items-start gap-3 border-t border-line bg-accent/8 px-5 py-4">
+                    <span className="mt-0.5 text-[12px] font-bold text-accent">2,6×</span>
+                    <p className="text-[13px] leading-relaxed text-ink-dim">
+                      Selisih untuk golongan yang sama. Nomor golongan tidak sebanding antar kampus.
+                    </p>
+                  </div>
+                </Card>
+              </div>
+            </Reveal>
+          )}
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────── RULES
+          Layout family: ruled definition list, not cards. */}
+      <section className="section-pad border-b border-line">
+        <div className="wrap">
+          <Reveal>
+            <h2 className="max-w-[20ch] text-[clamp(1.5rem,3vw,2.1rem)] leading-[1.15] font-bold tracking-[-0.03em] text-ink">
+              Cara kami menilainya
+            </h2>
+          </Reveal>
+
+          <div className="mt-8 border-t border-line">
+            <Stagger className="divide-y divide-line">
+              {RULES.map((r) => (
+                <div
+                  key={r.k}
+                  className="group grid gap-2 py-6 sm:grid-cols-[110px_1fr] sm:gap-8"
+                >
+                  <span className="num pt-1 text-[12px] font-semibold tracking-[0.1em] text-accent uppercase">
+                    {r.k}
+                  </span>
+                  <div>
+                    <p className="text-[16px] font-semibold text-ink">{r.t}</p>
+                    <p className="mt-1.5 max-w-[62ch] text-[14px] leading-relaxed text-ink-faint">
+                      {r.d}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </Stagger>
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────── OPEN CALLS
+          Layout family: horizontal rail. */}
+      {buka.length > 0 && (
+        <section className="section-pad border-b border-line">
+          <div className="wrap">
+            <Reveal className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <span className="section-title">Sedang dibuka</span>
-                <p className="tiny faint" style={{ marginTop: 3 }}>
-                  Per {tanggal(now)}. Tenggat lengkap di halaman jadwal.
+                <h2 className="text-[clamp(1.35rem,2.6vw,1.8rem)] font-bold tracking-[-0.025em] text-ink">
+                  Pendaftaran yang masih terbuka
+                </h2>
+                <p className="mt-2 text-[14px] text-ink-faint">
+                  Diperbarui {tanggal(now)} · lengkap di halaman jadwal
                 </p>
               </div>
-              <Link href="/jadwal" style={{ fontWeight: 600, color: 'var(--accent)', textDecoration: 'none', fontSize: 13 }}>
-                Semua jadwal →
+              <Link
+                href="/jadwal"
+                className="press inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-accent hover:underline"
+              >
+                Semua jadwal
+                <ArrowUpRight size={14} weight="bold" />
               </Link>
-            </div>
-            <div className="rail">
-              {buka.map(({ s }) => (
-                <article key={s.slug} className="card" style={{ minWidth: 280, maxWidth: 320, flex: '0 0 auto' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
-                    <h3 style={{ margin: 0, flex: 1, minWidth: 0, fontSize: 15, fontWeight: 600, color: 'var(--ink)' }}>{s.name}</h3>
-                    <span className="badge badge-ok" style={{ flexShrink: 0 }}>Buka</span>
-                  </div>
-                  <p className="tiny" style={{ margin: '0 0 8px', color: 'var(--ink-faint)' }}>{s.provider}</p>
-                  {s.ukt_max_idr !== undefined && (
-                    <p className="tiny" style={{ margin: '0 0 4px', color: 'var(--ink-dim)' }}>
-                      Plafon UKT <span className="mono" style={{ color: 'var(--ink)', fontWeight: 600 }}>{rp(s.ukt_max_idr)}</span>
-                    </p>
-                  )}
-                  {s.ukt_max_golongan !== undefined && (
-                    <p className="tiny" style={{ margin: '0 0 12px', color: 'var(--ink-dim)' }}>
-                      Prioritas gol. 1–{s.ukt_max_golongan}
-                    </p>
-                  )}
-                  <Link href="/cek" style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontWeight: 600, color: 'var(--accent)', textDecoration: 'none', fontSize: 13 }}>
-                    Cek syaratku <ArrowRight size={12} />
-                  </Link>
-                </article>
+            </Reveal>
+
+            <div className="mt-7 -mx-5 flex snap-x gap-4 overflow-x-auto px-5 pb-2 [scrollbar-width:thin] lg:mx-0 lg:overflow-visible lg:px-0">
+              {buka.map(({ s }, i) => (
+                <Reveal
+                  key={s.slug}
+                  delay={i * 0.06}
+                  className="w-[300px] shrink-0 snap-start lg:w-auto lg:flex-1"
+                >
+                  <Card interactive className="h-full">
+                    <CardContent className="flex h-full flex-col gap-3">
+                      <div className="flex items-start justify-between gap-3">
+                        <h3 className="text-[15px] leading-snug font-semibold text-ink">
+                          {s.name}
+                        </h3>
+                        <Badge variant="ok">Buka</Badge>
+                      </div>
+                      <p className="text-[13px] text-ink-faint">{s.provider}</p>
+
+                      {s.ukt_max_idr !== undefined && (
+                        <p className="num mt-auto pt-2 text-[13px] text-ink-dim">
+                          Plafon UKT{' '}
+                          <span className="font-semibold text-accent">{rp(s.ukt_max_idr)}</span>
+                        </p>
+                      )}
+                      {s.ukt_max_golongan !== undefined && (
+                        <p className="num mt-auto pt-2 text-[13px] text-ink-dim">
+                          Prioritas gol. 1–{s.ukt_max_golongan}
+                        </p>
+                      )}
+
+                      <Link
+                        href="/cek"
+                        className="press inline-flex items-center gap-1 text-[13px] font-semibold text-accent hover:underline"
+                      >
+                        Cek syaratku
+                        <ArrowRight size={13} weight="bold" />
+                      </Link>
+                    </CardContent>
+                  </Card>
+                </Reveal>
               ))}
             </div>
-          </section>
-        )}
-
-        {/* Stats */}
-        <section className="section-tight">
-          <div className="section-head">
-            <div>
-              <span className="section-title">Cakupan data</span>
-              <p className="tiny faint" style={{ marginTop: 3 }}>
-                Diperbarui setiap kali dekrit UKT atau jadwal baru terbit.
-              </p>
-            </div>
           </div>
-          <div style={{ display: 'grid', gap: 12, gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
-            {[
-              { k: 'Kampus terindeks', v: institutions.length.toLocaleString('id-ID'), s: 'PDDikti' },
-              { k: 'Kampus berdata UKT', v: denganUkt.toLocaleString('id-ID'), s: 'KMA 204/2026' },
-              { k: 'Baris prodi berdata', v: Number(seedsMeta.ukt.prodi).toLocaleString('id-ID'), s: 'KMA 204/2026' },
-              { k: 'Beasiswa tersimpan', v: scholarships.length.toLocaleString('id-ID'), s: 'Pengumuman resmi' },
-            ].map((row) => (
-              <Card key={row.k}>
-                <CardContent style={{ padding: '20px 24px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                    <div>
-                      <div className="stat-label">{row.k}</div>
-                      <div className="stat-source">{row.s}</div>
-                    </div>
-                    <div className="stat-value">{row.v}</div>
-                  </div>
-                </CardContent>
-              </Card>
+        </section>
+      )}
+
+      {/* ─────────────────────────────────────── COVERAGE
+          Layout family: display-number grid, no card chrome. */}
+      <section className="section-pad border-b border-line">
+        <div className="wrap">
+          <Reveal>
+            <h2 className="max-w-[22ch] text-[clamp(1.35rem,2.6vw,1.8rem)] font-bold tracking-[-0.025em] text-ink">
+              Data apa saja yang kami pegang
+            </h2>
+          </Reveal>
+
+          <Stagger className="mt-8 grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-4" gap={0.06}>
+            {stats.map((s) => (
+              <div key={s.k} className="border-t border-line-strong pt-4">
+                <p className="num text-[clamp(1.7rem,4vw,2.5rem)] leading-none font-bold text-ink">
+                  {s.v}
+                </p>
+                <p className="mt-2.5 text-[13.5px] leading-snug text-ink-dim">{s.k}</p>
+                <p className="mt-1 text-[12px] text-ink-faint">{s.s}</p>
+              </div>
             ))}
-          </div>
-        </section>
+          </Stagger>
 
-        {/* CTA */}
-        <section className="section-tight">
-          <Card style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap' }}>
-            <div>
-              <h2 style={{ margin: '0 0 8px', fontSize: 18 }}>Kampusmu belum ada data UKT?</h2>
-              <p className="tiny faint" style={{ margin: 0, maxWidth: '48ch' }}>
-                Isi nominal UKT yang kamu bayar. Perhitungannya jalan, hasilnya ditandai belum diverifikasi.
-              </p>
-            </div>
-            <Link href="/cek">
-              <Button>Mulai dari kampusku</Button>
-            </Link>
-          </Card>
-        </section>
-      </main>
-    </div>
-  );
-}
-
-function ComparisonCard() {
-  const jakarta = institutions.find((i) => i.kode === '201001')?.ukt;
-  const malang = institutions.find((i) => i.kode === '201003')?.ukt;
-  const ti = (pt: typeof jakarta) => pt?.prodi.find((p) => p.prodi === 'Teknik Informatika');
-  const a = ti(jakarta);
-  const b = ti(malang);
-
-  if (!a || !b) return null;
-
-  return (
-    <Card style={{ minWidth: 300 }}>
-      <CardHeader>
-        <CardTitle style={{ fontSize: 14 }}>Prodi Teknik Informatika · Golongan 2</CardTitle>
-        <CardDescription>Perbandingan nominal UKT antar kampus</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-          <div style={{ textAlign: 'center', padding: 16, background: 'var(--surface-2)', borderRadius: 8 }}>
-            <div className="tiny faint" style={{ marginBottom: 4 }}>UIN Jakarta</div>
-            <div className="mono" style={{ fontSize: 20, fontWeight: 700, color: 'var(--ink)' }}>
-              {rp(a.gol[1])}
-            </div>
-          </div>
-          <div style={{ textAlign: 'center', padding: 16, background: 'var(--surface-2)', borderRadius: 8 }}>
-            <div className="tiny faint" style={{ marginBottom: 4 }}>UIN Malang</div>
-            <div className="mono" style={{ fontSize: 20, fontWeight: 700, color: 'var(--ink)' }}>
-              {rp(b.gol[1])}
-            </div>
-          </div>
+          <Reveal delay={0.1}>
+            <p className="mt-8 max-w-[70ch] text-[13.5px] leading-relaxed text-ink-faint">
+              UKT terverifikasi penuh untuk {denganUkt} kampus PTKIN. {institutions.length - denganUkt}{' '}
+              kampus lain tetap bisa dipakai dengan nominal yang kamu isi sendiri, ditandai belum
+              diverifikasi.
+            </p>
+          </Reveal>
         </div>
-        <div style={{ marginTop: 16, padding: '12px 16px', background: 'var(--ok-dim)', borderRadius: 8, borderLeft: '3px solid var(--ok)' }}>
-          <div className="tiny" style={{ color: 'var(--ok)', fontWeight: 600 }}>
-            Selisih 2,6× untuk golongan yang sama
-          </div>
-          <div className="tiny faint" style={{ marginTop: 4 }}>
-            Penilaian memakai rupiah, bukan nomor golongan
-          </div>
+      </section>
+
+      {/* ─────────────────────────────────────── CTA BAND */}
+      <section className="section-pad">
+        <div className="wrap">
+          <Reveal>
+            <div className="relative overflow-hidden rounded-card border border-accent/25 bg-accent/8 px-6 py-9 sm:px-10 sm:py-12">
+              <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <h2 className="max-w-[24ch] text-[clamp(1.3rem,2.4vw,1.7rem)] leading-tight font-bold tracking-[-0.025em] text-ink">
+                    Kampusmu belum ada di tabel UKT?
+                  </h2>
+                  <p className="mt-2 max-w-[54ch] text-[14.5px] leading-relaxed text-ink-dim">
+                    Isi nominal yang kamu bayar sendiri. Perhitungannya tetap jalan, hasilnya
+                    ditandai belum diverifikasi.
+                  </p>
+                </div>
+                <Link href="/cek" className="shrink-0">
+                  <Button size="lg">
+                    Cek kelayakanku
+                    <ArrowRight size={16} weight="bold" />
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </Reveal>
         </div>
-      </CardContent>
-    </Card>
+      </section>
+    </>
   );
 }

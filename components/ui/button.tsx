@@ -1,69 +1,45 @@
-'use client';
+import { cn } from '@/lib/utils';
 
-import type { ButtonHTMLAttributes } from 'react';
+type Variant = 'primary' | 'secondary' | 'ghost' | 'danger';
+type Size = 'sm' | 'md' | 'lg';
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'default' | 'outline' | 'ghost' | 'destructive';
-  size?: 'sm' | 'md' | 'lg';
-}
+const VARIANTS: Record<Variant, string> = {
+  /* One accent, locked across the whole product. */
+  primary:
+    'bg-accent text-[#14100a] hover:bg-[#ffb739] shadow-[0_1px_0_rgba(255,255,255,0.25)_inset,0_6px_20px_-8px_rgba(245,166,35,0.6)]',
+  secondary:
+    'bg-surface-2 text-ink border border-line hover:border-line-strong hover:bg-surface-3',
+  ghost: 'text-ink-dim hover:text-ink hover:bg-surface-2',
+  danger: 'bg-[#3a1518] text-[#ff8f8f] border border-[#5c2226] hover:bg-[#4a1a1e]',
+};
 
-export function Button({ 
-  className, 
-  variant = 'default', 
-  size = 'md', 
-  children, 
-  style,
-  disabled,
-  ...props 
-}: ButtonProps) {
-  const baseStyle: React.CSSProperties = {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '0.5rem',
-    fontWeight: 600,
-    transition: 'all 0.2s ease',
-    cursor: disabled ? 'not-allowed' : 'pointer',
-    border: 'none',
-    borderRadius: '8px',
-    opacity: disabled ? 0.5 : 1,
-    pointerEvents: disabled ? 'none' : 'auto',
-    ...style,
-  };
-  
-  const variantStyles: Record<string, React.CSSProperties> = {
-    default: {
-      backgroundColor: '#f5a623',
-      color: '#0a0c10',
-    },
-    outline: {
-      backgroundColor: 'transparent',
-      color: '#e8ecf4',
-      border: '1px solid #2a3040',
-    },
-    ghost: {
-      backgroundColor: 'transparent',
-      color: '#9aa4b8',
-    },
-    destructive: {
-      backgroundColor: '#ef4444',
-      color: 'white',
-    },
-  };
-  
-  const sizeStyles: Record<string, React.CSSProperties> = {
-    sm: { padding: '0.375rem 0.75rem', fontSize: '0.75rem' },
-    md: { padding: '0.5rem 1rem', fontSize: '0.875rem' },
-    lg: { padding: '0.75rem 1.5rem', fontSize: '1rem' },
-  };
-  
+const SIZES: Record<Size, string> = {
+  sm: 'h-8 px-3 text-[13px] gap-1.5',
+  md: 'h-10 px-4 text-sm gap-2',
+  lg: 'h-12 px-6 text-[15px] gap-2',
+};
+
+/** Shape lock: every control uses radius-ctl (10px). */
+export function Button({
+  className,
+  variant = 'primary',
+  size = 'md',
+  ...props
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  variant?: Variant;
+  size?: Size;
+}) {
   return (
     <button
-      disabled={disabled}
-      style={{ ...baseStyle, ...variantStyles[variant], ...sizeStyles[size] }}
+      className={cn(
+        'press inline-flex shrink-0 items-center justify-center rounded-ctl font-semibold',
+        'whitespace-nowrap cursor-pointer select-none',
+        'disabled:pointer-events-none disabled:opacity-45',
+        VARIANTS[variant],
+        SIZES[size],
+        className,
+      )}
       {...props}
-    >
-      {children}
-    </button>
+    />
   );
 }

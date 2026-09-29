@@ -1,28 +1,46 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
+import { ArrowUpRight } from '@phosphor-icons/react/dist/ssr/ArrowUpRight';
 import { institutions, scholarships, seedsMeta } from '@/lib/data';
 import DataPageClient from './DataPageClient';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Reveal, Stagger } from '@/components/motion/reveal';
 
 export const revalidate = 600;
 
 export const metadata: Metadata = {
   title: 'Status data dan sumber',
-  description: 'Audit transparansi data SakuKampus. Sumber UKT dari KMA 204/2026, katalog kampus dari PDDikti.',
+  description:
+    'Asal setiap angka di SakuKampus: UKT dari KMA 204/2026, katalog kampus dari PDDikti, jadwal dari pengumuman resmi.',
   alternates: { canonical: '/data' },
-  openGraph: { title: 'Status Data & Sumber — SakuKampus', url: '/data' },
+  openGraph: {
+    title: 'Status Data & Sumber — SakuKampus',
+    url: '/data',
+    description: 'Transparansi asal data UKT, kampus, dan beasiswa.',
+  },
 };
 
 const n = (x: unknown) => Number(x).toLocaleString('id-ID');
 
-function InfoRow({ k, v, mono }: { k: string; v: string; mono?: boolean }) {
+function Row({ k, v, mono }: { k: string; v: string; mono?: boolean }) {
   return (
-    <tr>
-      <td style={{ color: 'var(--ink-faint)', fontSize: 13, width: '40%', padding: '12px 0' }}>{k}</td>
-      <td style={{ fontWeight: 500, fontSize: 13, padding: '12px 0', fontFamily: mono ? 'monospace' : 'inherit' }}>{v}</td>
-    </tr>
+    <div className="flex items-baseline justify-between gap-6 py-3">
+      <span className="text-[13.5px] text-ink-faint">{k}</span>
+      <span className={`text-right text-[13.5px] font-medium text-ink ${mono ? 'num' : ''}`}>
+        {v}
+      </span>
+    </div>
   );
 }
+
+type GapFn = (t?: string, c?: string) => string;
+
+const GAPS: GapFn[] = [
+  (t, c) => `${t} dari ${c} kampus belum punya tabel UKT terverifikasi.`,
+  (t, c) => `${t} dari ${c} baris prodi hanya mencantumkan sebagian golongan.`,
+  () => 'Sebagian blok PTKIN memakai nama berbeda dari katalog PDDikti.',
+];
 
 export default function DataPage() {
   const denganUkt = institutions.filter((i) => i.ukt).length;
@@ -30,119 +48,152 @@ export default function DataPage() {
   const lengkap = Number(seedsMeta.ukt.prodiGolonganLengkap);
   const totalProdi = Number(seedsMeta.ukt.prodi);
   const sebagian = totalProdi - lengkap;
-  const generatedAt = seedsMeta.institutions.generated_at 
-    ? new Date(seedsMeta.institutions.generated_at as string).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
-    : '-';
-  const verifiedAt = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+  const resmi = scholarships.filter((s) => s.source_kind === 'resmi').length;
+
+  const generatedAt = seedsMeta.institutions.generated_at
+    ? new Date(seedsMeta.institutions.generated_at as string).toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      })
+    : '—';
 
   return (
-    <div className="wrap">
-      <main>
-        <section className="hero" style={{ paddingBottom: 28 }}>
-          <Badge variant="secondary" style={{ marginBottom: 12, fontSize: 12 }}>
-            Transparansi Data
-          </Badge>
-          <h1 className="hero-title" style={{ fontSize: 'clamp(22px, 4vw, 32px)' }}>
-            Status data dan sumber
-          </h1>
-          <p className="hero-sub">
-            Asal setiap angka, kapan terakhir diambil, dan apa yang masih belum lengkap.
-          </p>
-        </section>
+    <>
+      <section className="border-b border-line">
+        <div className="wrap py-12 lg:py-16">
+          <Reveal>
+            <h1 className="max-w-[16ch] text-[clamp(1.9rem,4.5vw,2.9rem)] leading-[1.06] font-extrabold tracking-[-0.035em] text-ink">
+              Status data dan sumber
+            </h1>
+            <p className="mt-4 max-w-[58ch] text-[16px] leading-relaxed text-ink-dim">
+              Asal setiap angka, kapan terakhir diambil, dan mana yang masih kurang.
+            </p>
+          </Reveal>
+        </div>
+      </section>
 
-        {/* Kampus */}
-        <section className="section" style={{ paddingTop: 0 }}>
-          <Card>
-            <CardHeader>
-              <CardTitle>Katalog kampus</CardTitle>
-              <CardDescription>Data institusi pendidikan tinggi Indonesia</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                <tbody>
-                  <InfoRow k="Kampus terindeks" v={n(seedsMeta.institutions.count)} />
-                  <InfoRow k="Diambil terakhir" v={generatedAt} />
-                  <InfoRow k="Sumber" v="api-pddikti.kemdiktisaintek.go.id" mono />
-                </tbody>
-              </table>
-              <p className="tiny faint" style={{ marginTop: 16, lineHeight: 1.55 }}>
-                API PDDikti mensyaratkan header <code style={{ background: 'var(--surface-2)', padding: '2px 6px', borderRadius: 4, fontFamily: 'monospace' }}>Origin</code> yang tepat. Paginasi diabaikan, jadi katalog disusun per kata kunci.
+      <section className="section-pad">
+        <div className="wrap grid gap-4 lg:grid-cols-2">
+          <Reveal>
+            <Card className="h-full">
+              <CardHeader>
+                <CardTitle>Katalog kampus</CardTitle>
+                <CardDescription>Institusi pendidikan tinggi Indonesia</CardDescription>
+              </CardHeader>
+              <CardContent className="divide-y divide-line">
+                <Row k="Kampus terindeks" v={n(seedsMeta.institutions.count)} />
+                <Row k="Diambil terakhir" v={generatedAt} />
+                <Row k="Sumber" v="api-pddikti.kemdiktisaintek.go.id" mono />
+              </CardContent>
+            </Card>
+          </Reveal>
+
+          <Reveal delay={0.05}>
+            <Card className="h-full">
+              <CardHeader>
+                <CardTitle>Nominal UKT per golongan</CardTitle>
+                <CardDescription>Dasar perhitungan kelayakan</CardDescription>
+              </CardHeader>
+              <CardContent className="divide-y divide-line">
+                <Row k="Dekrit" v={String(seedsMeta.ukt.decree)} />
+                <Row k="Tahun akademik" v={String(seedsMeta.ukt.academic_year)} />
+                <Row k="PTKIN tercakup" v={n(seedsMeta.ukt.ptkin)} />
+                <Row k="Baris prodi" v={n(seedsMeta.ukt.prodi)} />
+                <Row k="Golongan lengkap 1–7" v={n(lengkap)} />
+                <Row k="Kampus berdata UKT" v={String(denganUkt)} />
+              </CardContent>
+            </Card>
+          </Reveal>
+
+          <Reveal delay={0.1} className="lg:col-span-2">
+            <div className="rounded-card border border-ok/30 bg-ok-soft/60 px-5 py-5 sm:px-6">
+              <p className="text-[15px] font-semibold text-ok">
+                Nomor golongan tidak sebanding antar kampus
               </p>
-            </CardContent>
-          </Card>
+              <p className="mt-2 max-w-[76ch] text-[14px] leading-relaxed text-ink-dim">
+                Golongan 2 di UIN Jakarta Rp4.270.000, di UIN Malang Rp1.653.000. Beasiswa lintas
+                kampus selalu dinilai memakai plafon rupiah, bukan nomor golongan.
+              </p>
+            </div>
+          </Reveal>
 
-          {/* UKT */}
-          <Card style={{ marginTop: 16 }}>
-            <CardHeader>
-              <CardTitle>Nominal UKT per golongan</CardTitle>
-              <CardDescription>Dasar perhitungan kelayakan beasiswa</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                <tbody>
-                  <InfoRow k="Dekrit" v={String(seedsMeta.ukt.decree)} />
-                  <InfoRow k="Tahun akademik" v={String(seedsMeta.ukt.academic_year)} />
-                  <InfoRow k="PTKIN tercakup" v={n(seedsMeta.ukt.ptkin)} />
-                  <InfoRow k="Baris prodi" v={n(seedsMeta.ukt.prodi)} />
-                  <InfoRow k="Golongan lengkap 1–7" v={n(lengkap)} />
-                  <InfoRow k="Kampus dengan data UKT" v={String(denganUkt)} />
-                </tbody>
-              </table>
-              <div style={{ marginTop: 16, padding: '14px 16px', background: 'var(--ok-dim)', borderRadius: 8, borderLeft: '3px solid var(--ok)' }}>
-                <div style={{ fontWeight: 600, fontSize: 14, color: 'var(--ok)', margin: '0 0 4px' }}>
-                  Nomor golongan tidak sebanding antar kampus
-                </div>
-                <p className="tiny" style={{ margin: 0, color: 'var(--ink-dim)', lineHeight: 1.55 }}>
-                  Golongan 2 di UIN Jakarta = Rp4.270.000, di UIN Malang = Rp1.653.000. Beasiswa lintas kampus dinilai memakai plafon rupiah.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+          <Reveal delay={0.05}>
+            <Card className="h-full">
+              <CardHeader>
+                <CardTitle>Katalog beasiswa</CardTitle>
+                <CardDescription>Program yang dipantau</CardDescription>
+              </CardHeader>
+              <CardContent className="divide-y divide-line">
+                <Row k="Entri beasiswa" v={n(scholarships.length)} />
+                <Row k="Dari sumber resmi" v={n(resmi)} />
+                <Row k="Dari agregator" v={n(scholarships.length - resmi)} />
+                <Row k="Pemeriksaan terakhir" v="hari ini" />
+              </CardContent>
+            </Card>
+          </Reveal>
 
-          {/* Beasiswa */}
-          <Card style={{ marginTop: 16 }}>
-            <CardHeader>
-              <CardTitle>Katalog beasiswa</CardTitle>
-              <CardDescription>Data beasiswa yang dipantau</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                <tbody>
-                  <InfoRow k="Entri beasiswa" v={n(scholarships.length)} />
-                  <InfoRow k="Dari sumber resmi" v={n(scholarships.filter((s) => s.source_kind === 'resmi').length)} />
-                  <InfoRow k="Dari agregator" v={n(scholarships.filter((s) => s.source_kind === 'agregator').length)} />
-                  <InfoRow k="Pemeriksaan terakhir" v={verifiedAt} />
-                </tbody>
-              </table>
-            </CardContent>
-          </Card>
+          <Reveal delay={0.1}>
+            <Card className="h-full">
+              <CardHeader>
+                <CardTitle>Yang masih kurang</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Stagger className="grid gap-2.5" gap={0.06}>
+                  {[
+                    GAPS[0](n(tanpaUkt), n(institutions.length)),
+                    GAPS[1](n(sebagian), n(totalProdi)),
+                    GAPS[2]() as string,
+                  ].map((text, i) => (
+                    <div
+                      key={i}
+                      className="border-l-2 border-warn bg-surface-2 px-4 py-3 text-[13.5px] leading-relaxed text-ink-dim"
+                    >
+                      {text}
+                    </div>
+                  ))}
+                </Stagger>
+              </CardContent>
+            </Card>
+          </Reveal>
 
-          {/* Limitations */}
-          <Card style={{ marginTop: 16 }}>
-            <CardHeader>
-              <CardTitle>Yang masih belum lengkap</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div style={{ display: 'grid', gap: 10 }}>
-                {[
-                  `${n(tanpaUkt)} dari ${n(institutions.length)} kampus belum punya tabel UKT terverifikasi.`,
-                  `${n(sebagian)} dari ${n(totalProdi)} baris prodi hanya mencantumkan sebagian golongan.`,
-                  'Sebagian blok PTKIN memakai nama berbeda dari katalog PDDikti.',
-                ].map((text, i) => (
-                  <div key={i} style={{ padding: '12px 16px', background: 'var(--surface-2)', borderRadius: 8, borderLeft: '3px solid var(--warn)', fontSize: 13, color: 'var(--ink-dim)', lineHeight: 1.55 }}>
-                    {text}
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* API */}
-          <div style={{ marginTop: 32 }}>
+          <div className="lg:col-span-2">
             <DataPageClient />
           </div>
-        </section>
-      </main>
-    </div>
+        </div>
+      </section>
+
+      <section className="section-pad border-t border-line">
+        <div className="wrap">
+          <Reveal>
+            <h2 className="text-[clamp(1.25rem,2.4vw,1.6rem)] font-bold tracking-[-0.025em] text-ink">
+              Keterbatasan metode
+            </h2>
+          </Reveal>
+          <Stagger className="mt-6 grid gap-4 sm:grid-cols-3" gap={0.06}>
+            {[
+              ['Origin header', 'API PDDikti mensyaratkan header Origin yang tepat, dan paginasi diabaikan — katalog disusun per kata kunci.'],
+              ['Sumber UKT', 'Nominal per golongan berasal dari dekrit KMA 204/2026. Kampus lain memakai input manual dan ditandai belum diverifikasi.'],
+              ['Bukan penyelenggara', 'Kami tidak menerima pendaftaran. Semua tautan mengarah ke situs resmi penyelenggara.'],
+            ].map(([t, d]) => (
+              <div key={t} className="border-t border-line-strong pt-4">
+                <p className="text-[14px] font-semibold text-ink">{t}</p>
+                <p className="mt-1.5 text-[13.5px] leading-relaxed text-ink-faint">{d}</p>
+              </div>
+            ))}
+          </Stagger>
+
+          <Reveal delay={0.1}>
+            <Link
+              href="/cek"
+              className="press mt-8 inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-accent hover:underline"
+            >
+              Cek kelayakanku
+              <ArrowUpRight size={14} weight="bold" />
+            </Link>
+          </Reveal>
+        </div>
+      </section>
+    </>
   );
 }

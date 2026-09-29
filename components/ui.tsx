@@ -2,8 +2,9 @@ import { SealCheck } from '@phosphor-icons/react/dist/ssr/SealCheck';
 import { Warning } from '@phosphor-icons/react/dist/ssr/Warning';
 import { ArrowSquareOut } from '@phosphor-icons/react/dist/ssr/ArrowSquareOut';
 import type { Candidate, DisplayState, StageStatus } from '@/lib/match';
+import { cn } from '@/lib/utils';
 
-/* One place that turns a number into rupiah, a timestamp into Indonesian, and a
+/* One place turns a number into rupiah, a timestamp into Indonesian, and a
    state into a label. Every page imports from here, so a label can never mean
    two different things on two different screens. */
 
@@ -20,8 +21,8 @@ export const tanggal = (s: string | number | null): string => {
 export const sisaHari = (target: number): number =>
   Math.ceil((target - Date.now()) / 86_400_000);
 
-/** Indonesian label for a display state. `tutup` is its own state, never folded
-    into "perlu data": there is no data left to complete for a closed intake. */
+/** `tutup` is its own state, never folded into "perlu data": there is no data
+    left to complete for a closed intake. */
 export const STATE_LABEL: Record<DisplayState, string> = {
   lolos: 'Lolos',
   perlu_data: 'Perlu data',
@@ -29,11 +30,11 @@ export const STATE_LABEL: Record<DisplayState, string> = {
   tutup: 'Pendaftaran tutup',
 };
 
-export const STATE_BADGE: Record<DisplayState, string> = {
-  lolos: 'badge badge-ok',
-  perlu_data: 'badge badge-warn',
-  tidak: 'badge badge-off',
-  tutup: 'badge badge-off',
+const STATE_TONE: Record<DisplayState, 'ok' | 'warn' | 'neutral'> = {
+  lolos: 'ok',
+  perlu_data: 'warn',
+  tidak: 'neutral',
+  tutup: 'neutral',
 };
 
 export const STAGE_LABEL: Record<StageStatus, string> = {
@@ -50,11 +51,22 @@ export const TIER_LABEL: Record<string, string> = {
 };
 
 export function StateBadge({ state }: { state: DisplayState }) {
-  return <span className={STATE_BADGE[state]}>{STATE_LABEL[state]}</span>;
+  const tone = STATE_TONE[state];
+  return (
+    <span
+      className={cn(
+        'inline-flex shrink-0 items-center rounded-full border px-2.5 py-[3px] text-[11px] font-semibold tracking-[0.01em] uppercase',
+        tone === 'ok' && 'border-ok/30 bg-ok-soft text-ok',
+        tone === 'warn' && 'border-warn/30 bg-warn-soft text-warn',
+        tone === 'neutral' && 'border-line bg-surface-2 text-ink-faint',
+      )}
+    >
+      {STATE_LABEL[state]}
+    </span>
+  );
 }
 
-/** Provenance stamp. Required on every scholarship card: the whole product
-    promise is that no figure appears without an origin and a date. */
+/** Provenance stamp — no figure appears without an origin and a date. */
 export function SourceStamp({
   url,
   verifiedAt,
@@ -65,27 +77,21 @@ export function SourceStamp({
   confidence?: number;
 }) {
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
-      <span className="badge">
+    <div className="flex flex-wrap items-center gap-2">
+      <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface-2 px-2.5 py-[3px] text-[11px] font-semibold text-ink-dim uppercase">
         <SealCheck size={12} weight="fill" aria-hidden="true" />
         Diperiksa {tanggal(verifiedAt)}
       </span>
       {confidence !== undefined && confidence < 100 && (
-        <span className="badge">Keyakinan {confidence}%</span>
+        <span className="inline-flex items-center rounded-full border border-line bg-surface-2 px-2.5 py-[3px] text-[11px] font-semibold text-ink-faint uppercase">
+          Keyakinan {confidence}%
+        </span>
       )}
       <a
         href={url}
         target="_blank"
         rel="noreferrer noopener"
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: 4,
-          fontSize: '0.75rem',
-          color: 'var(--color-ink-muted)',
-          textDecoration: 'underline',
-          textUnderlineOffset: 3,
-        }}
+        className="press inline-flex items-center gap-1 text-[12px] text-ink-faint underline decoration-line underline-offset-3 hover:text-ink-dim"
       >
         Sumber resmi
         <ArrowSquareOut size={12} aria-hidden="true" />
@@ -94,54 +100,53 @@ export function SourceStamp({
   );
 }
 
-/** Reason list for one scholarship. The three marks are deliberately different
-    shapes (tick, cross, question) so the state survives greyscale and colour
-    blindness. */
+/**
+ * Reason list for one scholarship. The three marks are deliberately different
+ * shapes (tick, cross, question) so the state survives greyscale and colour
+ * blindness.
+ */
 export function Reasons({ reasons }: { reasons: Candidate['reasons'] }) {
   return (
-    <div>
+    <ul className="grid gap-1.5">
       {reasons.map((r, i) => (
-        <div
+        <li
           key={`${r.label}-${i}`}
-          className="reason"
-          data-ok={r.skipped ? 'skip' : String(r.ok)}
-          data-skip={String(!!r.skipped)}
+          className={cn(
+            'flex gap-2.5 text-[13.5px] leading-snug',
+            r.skipped && 'opacity-55',
+            r.ok === true ? 'text-ink-dim' : 'text-ink-faint',
+          )}
         >
-          <span className="reason-mark" aria-hidden="true">
-            {/* Marks are shapes, not colours, so state survives greyscale.
-                Skipped reasons show a hollow ring drawn in CSS, which keeps the
-                dash characters off the page entirely. */}
-            {r.skipped ? '' : r.ok === true ? '✓' : r.ok === false ? '×' : '?'}
+          <span
+            aria-hidden="true"
+            className={cn(
+              'num mt-px w-3.5 shrink-0 text-center text-[13px] font-bold',
+              r.skipped ? 'text-ink-faint' : r.ok === true ? 'text-ok' : r.ok === false ? 'text-warn' : 'text-ink-faint',
+            )}
+          >
+            {r.skipped ? '·' : r.ok === true ? '✓' : r.ok === false ? '×' : '?'}
           </span>
           <span>
             {r.label}
-            {r.skipped && <span className="faint"> · tidak berlaku untuk kampusmu</span>}
-            {r.soft && !r.skipped && <span className="faint"> · prioritas, bukan syarat wajib</span>}
+            {r.skipped && <span className="text-ink-faint"> · tidak berlaku untuk kampusmu</span>}
+            {r.soft && !r.skipped && (
+              <span className="text-ink-faint"> · prioritas, bukan syarat wajib</span>
+            )}
           </span>
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }
 
 /** Honest caveat. Used where the data is thinner than the reader would assume. */
-export function Caveat({ children }: { children: React.ReactNode }) {
+export function Caveat({ children }: { children?: React.ReactNode }) {
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: '18px 1fr',
-        gap: 10,
-        alignItems: 'start',
-        padding: '13px 15px',
-        borderRadius: 'var(--radius-card)',
-        background: 'var(--color-warn-soft)',
-        color: 'var(--color-warn)',
-      }}
-    >
-      <Warning size={18} weight="fill" aria-hidden="true" style={{ marginTop: 1 }} />
-      <p className="small" style={{ margin: 0, color: 'inherit' }}>
-        {children}
+    <div className="mt-4 flex items-start gap-2.5 rounded-card border border-warn/30 bg-warn-soft px-4 py-3.5">
+      <Warning size={16} weight="fill" aria-hidden="true" className="mt-0.5 shrink-0 text-warn" />
+      <p className="text-[13.5px] leading-relaxed text-ink-dim">
+        {children ??
+          'Beasiswa nasional dinilai dengan plafon rupiah. Nomor golongan hanya berlaku di kampus penerbit dekritnya.'}
       </p>
     </div>
   );
@@ -157,23 +162,12 @@ export function SectionHead({
   note?: string;
 }) {
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'baseline',
-        justifyContent: 'space-between',
-        gap: 14,
-        flexWrap: 'wrap',
-        marginBottom: 14,
-      }}
-    >
+    <div className="mb-4 flex flex-wrap items-baseline justify-between gap-3">
       <div>
-        <h2 className="h2">{title}</h2>
-        {note && (
-          <p className="small faint" style={{ margin: '5px 0 0', maxWidth: '58ch' }}>
-            {note}
-          </p>
-        )}
+        <h2 className="text-[clamp(1.25rem,2.4vw,1.55rem)] font-bold tracking-[-0.025em] text-ink">
+          {title}
+        </h2>
+        {note && <p className="mt-1.5 max-w-[58ch] text-[13.5px] text-ink-faint">{note}</p>}
       </div>
       {action}
     </div>
@@ -188,9 +182,5 @@ export function Section({
   children: React.ReactNode;
   tight?: boolean;
 }) {
-  return (
-    <section style={{ padding: tight ? '28px 0' : '40px 0' }}>
-      <div className="shell">{children}</div>
-    </section>
-  );
+  return <section className={tight ? 'py-7' : 'py-10'}>{children}</section>;
 }

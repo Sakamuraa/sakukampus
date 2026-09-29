@@ -1,22 +1,30 @@
 import { cn } from '@/lib/utils';
 
-function Badge({
+type Variant = 'default' | 'accent' | 'ok' | 'warn' | 'neutral';
+
+const VARIANTS: Record<Variant, string> = {
+  default: 'bg-surface-2 text-ink-dim border-line',
+  accent: 'bg-accent-soft text-accent border-accent/30',
+  ok: 'bg-ok-soft text-ok border-ok/30',
+  warn: 'bg-warn-soft text-warn border-warn/30',
+  neutral: 'bg-transparent text-ink-faint border-line',
+};
+
+/** Shape lock: badges are always full-pill. */
+export function Badge({
   className,
   variant = 'default',
   ...props
-}: React.ComponentProps<'div'> & { variant?: 'default' | 'secondary' | 'outline' }) {
+}: React.HTMLAttributes<HTMLSpanElement> & { variant?: Variant }) {
   return (
-    <div
+    <span
       className={cn(
-        'inline-flex items-center justify-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors',
-        variant === 'default' && 'border-transparent bg-[#f5a623] text-[#0a0c10]',
-        variant === 'secondary' && 'border-transparent bg-[#1a1e27] text-[#e8ecf4]',
-        variant === 'outline' && 'border-[#2a3040] text-[#9aa4b8]',
-        className
+        'inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-2.5 py-[3px]',
+        'text-[11px] font-semibold tracking-[0.01em] uppercase',
+        VARIANTS[variant],
+        className,
       )}
       {...props}
     />
   );
 }
-
-export { Badge };

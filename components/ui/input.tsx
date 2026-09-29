@@ -1,14 +1,57 @@
 import { cn } from '@/lib/utils';
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
+/** Label ABOVE input. Never placeholder-as-label. */
+export function Field({
+  label,
+  hint,
+  htmlFor,
+  children,
+  className,
+}: {
+  label: string;
+  hint?: string;
+  htmlFor?: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={cn('grid gap-2', className)}>
+      <label
+        htmlFor={htmlFor}
+        className="text-[13px] font-medium text-ink-dim"
+      >
+        {label}
+      </label>
+      {children}
+      {hint && <p className="text-[12px] text-ink-faint">{hint}</p>}
+    </div>
+  );
+}
 
-export function Input({ className, type, ...props }: InputProps) {
+/** Shape lock: inputs use radius-ctl (10px), same as buttons. */
+export function Input({ className, ...props }: React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <input
-      type={type}
       className={cn(
-        'flex h-10 w-full rounded-md border border-[var(--line)] bg-[var(--surface-2)] px-3 py-2 text-[var(--ink)] placeholder:text-[var(--ink-faint)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
-        className
+        'press h-11 w-full rounded-ctl border border-line bg-surface-2 px-3.5',
+        'text-[15px] text-ink placeholder:text-ink-faint',
+        'focus:border-accent/60 focus:outline-none focus:ring-2 focus:ring-accent/25',
+        'disabled:opacity-50',
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+export function Select({ className, ...props }: React.SelectHTMLAttributes<HTMLSelectElement>) {
+  return (
+    <select
+      className={cn(
+        'press h-11 w-full rounded-ctl border border-line bg-surface-2 px-3.5',
+        'text-[15px] text-ink cursor-pointer',
+        'focus:border-accent/60 focus:outline-none focus:ring-2 focus:ring-accent/25',
+        className,
       )}
       {...props}
     />

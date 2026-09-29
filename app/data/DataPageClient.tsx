@@ -1,62 +1,55 @@
 'use client';
 
 import { useState } from 'react';
+import { ArrowUpRight } from '@phosphor-icons/react/dist/ssr/ArrowUpRight';
 import ApiDocModal from '@/components/ui/api-doc-modal';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 const API_ENDPOINTS = [
   ['/api/v1/institutions', 'Cari kampus atau ambil detail UKT'],
   ['/api/v1/scholarships', 'Katalog beasiswa dengan jadwal dan syarat'],
-  ['/api/v1/calendar', 'Semua tenggat, terurut'],
+  ['/api/v1/calendar', 'Seluruh tenggat, terurut'],
   ['/api/v1/meta/sources', 'Halaman ini dalam JSON'],
   ['/api/v1/eligibility/check', 'Periksa kelayakan (POST)'],
 ] as const;
 
 export default function DataPageClient() {
-  const [showApiDocs, setShowApiDocs] = useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
     <>
-      <div className="data-section-title" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-        <span>API publik</span>
-        <button
-          onClick={() => setShowApiDocs(true)}
-          style={{
-            padding: '6px 12px',
-            borderRadius: 8,
-            border: '1px solid var(--line)',
-            background: 'var(--surface-2)',
-            color: 'var(--ink-dim)',
-            fontSize: 12,
-            cursor: 'pointer',
-            transition: 'all .15s',
-          }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--accent)';
-            (e.currentTarget as HTMLButtonElement).style.color = 'var(--accent)';
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--line)';
-            (e.currentTarget as HTMLButtonElement).style.color = 'var(--ink-dim)';
-          }}
-        >
-          Lihat dokumentasi
-        </button>
-      </div>
-      <p className="tiny faint" style={{ marginBottom: 12 }}>Semua data tersedia lewat API tanpa kunci.</p>
-      <div className="grouped">
-        {API_ENDPOINTS.map(([path, desc]) => (
-          <div
-            key={path}
-            className="grid-row"
-            style={{ padding: '12px 16px', cursor: 'pointer' }}
-            onClick={() => setShowApiDocs(true)}
-          >
-            <code className="mono" style={{ fontSize: 13, color: 'var(--accent)', fontWeight: 500 }}>{path}</code>
-            <span className="tiny faint">{desc}</span>
+      <div className="overflow-hidden rounded-card border border-line bg-surface">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-5 py-4 sm:px-6">
+          <div>
+            <p className="text-[15px] font-semibold text-ink">API publik</p>
+            <p className="mt-1 text-[13px] text-ink-faint">
+              Semua data tersedia tanpa kunci.
+            </p>
           </div>
-        ))}
+          <Button variant="secondary" size="sm" onClick={() => setOpen(true)}>
+            Lihat dokumentasi
+          </Button>
+        </div>
+
+        <div className="divide-y divide-line">
+          {API_ENDPOINTS.map(([path, desc]) => (
+            <button
+              key={path}
+              onClick={() => setOpen(true)}
+              className="press flex w-full items-center gap-4 px-5 py-3.5 text-left hover:bg-surface-2 sm:px-6"
+            >
+              <code className="font-mono text-[12.5px] font-medium text-accent">{path}</code>
+              <span className="ml-auto hidden text-right text-[13px] text-ink-faint sm:block">
+                {desc}
+              </span>
+              <ArrowUpRight size={14} className="shrink-0 text-ink-faint" />
+            </button>
+          ))}
+        </div>
       </div>
-      {showApiDocs && <ApiDocModal onClose={() => setShowApiDocs(false)} />}
+
+      {open && <ApiDocModal onClose={() => setOpen(false)} />}
     </>
   );
 }

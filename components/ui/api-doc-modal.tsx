@@ -1,485 +1,218 @@
 'use client';
 
-import { useState } from 'react';
-import { X, Copy } from '@phosphor-icons/react';
+import { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Copy } from '@phosphor-icons/react/dist/csr/Copy';
+import { X } from '@phosphor-icons/react/dist/csr/X';
+import { API_DOCS, type ApiDoc } from '@/components/ui/api-docs';
+import { cn } from '@/lib/utils';
 
-const API_DOCS = [
-  {
-    path: '/api/v1/institutions',
-    title: 'Katalog Kampus',
-    description: 'Cari kampus atau ambil detail UKT per prodi.',
-    methods: [
-      {
-        method: 'GET',
-        desc: 'Cari kampus berdasarkan nama',
-        curl: 'curl "https://sakukampus.onheil.fun/api/v1/institutions?q=brawijaya&limit=5"',
-        response: {
-          status: 'success',
-          data: [
-            { kode: '001019', nama: 'UNIVERSITAS BRAWIJAYA', jenis: 'UNIVERSITAS', punya_ukt: false, jumlah_prodi: 0 }
-          ]
-        }
-      },
-      {
-        method: 'GET',
-        desc: 'Detail satu kampus + tabel UKT',
-        curl: 'curl "https://sakukampus.onheil.fun/api/v1/institutions?kode=201001"',
-        response: {
-          status: 'success',
-          data: {
-            kode: '201001',
-            nama: 'UIN SYARIF HIDAYATULLAH JAKARTA',
-            jenis: 'UNIVERSITAS',
-            ukt_model: 'ptkin_kma',
-            ukt_note: 'KMA 204/2026, TA 2026/2027',
-            prodi_terdaftar: [{ nama: 'Teknik Informatika', fakultas: 'FTI', ada_data_ukt: true, golongan: 8 }],
-            contoh_ukt: [
-              { kelompok: 1, label: 'Golongan 1', nominal: 400000 },
-              { kelompok: 2, label: 'Golongan 2', nominal: 4270000 }
-            ]
-          }
-        }
-      }
-    ]
-  },
-  {
-    path: '/api/v1/scholarships',
-    title: 'Katalog Beasiswa',
-    description: 'Daftar beasiswa dengan filter tier & status.',
-    methods: [
-      {
-        method: 'GET',
-        desc: 'Semua beasiswa',
-        curl: 'curl "https://sakukampus.onheil.fun/api/v1/scholarships"',
-        response: {
-          status: 'success',
-          data: [
-            {
-              slug: 'kip-kuliah-2026',
-              name: 'Kartu Indonesia Pintar (KIP) Kuliah 2026',
-              provider: 'Kemdikbud Ristek',
-              tier: 'pemerintah',
-              scope: 'nasional',
-              status: 'buka',
-              ukt_syarat: 'UKT ≤ Rp2.400.000',
-              stages: [{ name: 'pendaftaran', opens_at: '2026-06-01T00:00:00Z', closes_at: '2026-07-31T23:59:00Z' }]
-            }
-          ]
-        }
-      },
-      {
-        method: 'GET',
-        desc: 'Filter berdasarkan tier',
-        curl: 'curl "https://sakukampus.onheil.fun/api/v1/scholarships?tier=kampus"',
-        response: {
-          status: 'success',
-          data: [
-            { slug: 'stf-uin-jakarta-2026', name: 'Beasiswa STF UIN Jakarta 2026', tier: 'kampus', status: 'tutup' }
-          ]
-        }
-      }
-    ]
-  },
-  {
-    path: '/api/v1/calendar',
-    title: 'Kalender Tenggat',
-    description: 'Semua tenggat pendaftaran, terurut kronologis.',
-    methods: [
-      {
-        method: 'GET',
-        desc: 'Ambil semua tenggat',
-        curl: 'curl "https://sakukampus.onheil.fun/api/v1/calendar"',
-        response: {
-          status: 'success',
-          data: [
-            { slug: 'kip-kuliah-2026', name: 'KIP Kuliah 2026', tenggat: '2026-07-31T23:59:00Z', sisa_hari: 42 },
-            { slug: 'djarum-beasiswa-plus-2026', name: 'Djarum Beasiswa Plus 2026', tenggat: '2026-06-10T23:59:00Z', sisa_hari: 2 }
-          ]
-        }
-      }
-    ]
-  },
-  {
-    path: '/api/v1/meta/sources',
-    title: 'Metadata Sumber',
-    description: 'Info sumber data: kapan diupdate, dari mana, dll.',
-    methods: [
-      {
-        method: 'GET',
-        desc: 'Meta seluruh sumber',
-        curl: 'curl "https://sakukampus.onheil.fun/api/v1/meta/sources"',
-        response: {
-          status: 'success',
-          data: {
-            institutions: { count: 3690, generated_at: '2026-09-19T14:56:56Z', source: 'PDDikti' },
-            ukt: { decree: 'KMA 204/2026', academic_year: '2026/2027', ptkin: 58, prodi: 1550 },
-            scholarships: { count: 18, last_verified: '2026-09-19T14:47:13Z' }
-          }
-        }
-      }
-    ]
-  },
-  {
-    path: '/api/v1/eligibility/check',
-    title: 'Cek Kelayakan',
-    description: 'POST endpoint — cocokkan profil dengan beasiswa.',
-    methods: [
-      {
-        method: 'POST',
-        desc: 'Cek beasiswa untuk Brawijaya (manual UKT)',
-        curl: 'curl -X POST "https://sakukampus.onheil.fun/api/v1/eligibility/check" \\\n  -H "Content-Type: application/json" \\\n  -d \'{"kode_pt": "001019", "nominal_manual": 3500000, "profil": {"jenjang": "S1"}}\'',
-        response: {
-          status: 'success',
-          data: {
-            kampus: { kode: '001019', nama: 'UNIVERSITAS BRAWIJAYA', ukt_model: 'manual' },
-            ukt: { dipakai: 3500000, sumber: 'manual', terverifikasi: false },
-            hasil: [
-              {
-                slug: 'kip-kuliah-2026',
-                name: 'KIP Kuliah 2026',
-                verdict: 'lolos',
-                score: 100,
-                reasons: [{ label: 'Jenjang S1', ok: true, soft: false }],
-                missing: []
-              }
-            ]
-          }
-        }
-      },
-      {
-        method: 'POST',
-        desc: 'Cek untuk UIN Jakarta (golongan UKT)',
-        curl: 'curl -X POST "https://sakukampus.onheil.fun/api/v1/eligibility/check" \\\n  -H "Content-Type: application/json" \\\n  -d \'{"kode_pt": "201001", "prodi": "Teknik Informatika", "kelompok": 2, "profil": {"jenjang": "S1", "ipk": 3.5, "semester": 5}}\'',
-        response: {
-          status: 'success',
-          data: {
-            kampus: { kode: '201001', nama: 'UIN SYARIF HIDAYATULLAH JAKARTA', ukt_model: 'ptkin_kma' },
-            ukt: { dipakai: 4270000, sumber: 'kma', terverifikasi: true },
-            hasil: [
-              {
-                slug: 'stf-uin-jakarta-2026',
-                name: 'Beasiswa STF UIN Jakarta 2026',
-                verdict: 'perlu_data',
-                score: 80,
-                reasons: [
-                  { label: 'Mahasiswa S1', ok: true, soft: false },
-                  { label: 'Semester 3–7', ok: true, soft: false },
-                  { label: 'IPK minimal 3,50', ok: true, soft: false },
-                  { label: 'Prioritas UKT golongan 1–4', ok: false, soft: true }
-                ],
-                missing: ['Tidak sedang menerima beasiswa lain']
-              }
-            ]
-          }
-        }
-      }
-    ]
-  }
-];
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 export default function ApiDocModal({ onClose }: { onClose: () => void }) {
-  const [selected, setSelected] = useState(API_DOCS[0]);
-  const [activeMethod, setActiveMethod] = useState(0);
+  const [selected, setSelected] = useState<ApiDoc>(API_DOCS[0]);
+  const [active, setActive] = useState(0);
   const [copied, setCopied] = useState(false);
-  const [showSidebar, setShowSidebar] = useState(false);
+  const [picker, setPicker] = useState(false);
 
-  const copyCurl = (curl: string) => {
-    navigator.clipboard.writeText(curl);
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+    document.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
+    };
+  }, [onClose]);
+
+  const copy = (text: string) => {
+    navigator.clipboard?.writeText(text);
     setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setTimeout(() => setCopied(false), 1800);
   };
 
-  return (
-    <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 9999,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 16,
-      }}
-    >
-      {/* Backdrop */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'rgba(0,0,0,0.8)',
-          backdropFilter: 'blur(8px)',
-        }}
-        onClick={onClose}
-      />
+  const m = selected.methods[active];
 
-      {/* Modal container */}
-      <div
-        style={{
-          position: 'relative',
-          background: 'var(--surface)',
-          border: '1px solid var(--line)',
-          borderRadius: 16,
-          maxWidth: 720,
-          width: '100%',
-          maxHeight: '90vh',
-          overflow: 'hidden',
-          display: 'flex',
-          flexDirection: 'column',
-          boxShadow: '0 24px 80px rgba(0,0,0,0.6)',
-        }}
+  return (
+    <AnimatePresence>
+      <motion.div
+        className="fixed inset-0 z-[90] flex items-end justify-center p-0 sm:items-center sm:p-6"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
       >
-        {/* Header */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '16px 20px',
-            borderBottom: '1px solid var(--line)',
-            flexShrink: 0,
-          }}
+        <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
+
+        <motion.div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Dokumentasi API"
+          className="relative flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-2xl border border-line bg-surface shadow-[0_-20px_60px_-20px_rgba(0,0,0,0.9)] sm:max-h-[85dvh] sm:max-w-3xl sm:rounded-2xl"
+          initial={{ y: 40, opacity: 0, scale: 0.98 }}
+          animate={{ y: 0, opacity: 1, scale: 1 }}
+          exit={{ y: 24, opacity: 0, scale: 0.98 }}
+          transition={{ duration: 0.3, ease: EASE }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            {/* Mobile menu toggle */}
-            <button
-              onClick={() => setShowSidebar(!showSidebar)}
-              style={{
-                background: 'var(--surface-2)',
-                border: '1px solid var(--line)',
-                borderRadius: 8,
-                padding: '6px 12px',
-                color: 'var(--ink-dim)',
-                fontSize: 12,
-                cursor: 'pointer',
-                display: window.innerWidth < 768 ? 'flex' : 'none',
-                alignItems: 'center',
-                gap: 4,
-              }}
-              className="mobile-menu-btn"
-            >
-              ☰ Menu
-            </button>
-            <div>
-              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 600 }}>API Dokumentasi</h3>
-              <p style={{ margin: '2px 0 0', fontSize: 12, color: 'var(--ink-faint)' }}>
-                Contoh penggunaan endpoint SakuKampus
+          <header className="flex shrink-0 items-center justify-between gap-4 border-b border-line px-5 py-4">
+            <div className="min-w-0">
+              <p className="text-[15px] font-semibold text-ink">Dokumentasi API</p>
+              <p className="truncate text-[12.5px] text-ink-faint">
+                Publik, tanpa kunci, terbuka untuk siapa saja
               </p>
             </div>
-          </div>
-          <button
-            onClick={onClose}
-            style={{
-              background: 'transparent',
-              border: 'none',
-              cursor: 'pointer',
-              color: 'var(--ink-faint)',
-              fontSize: 24,
-              padding: 4,
-              lineHeight: 1,
-            }}
-          >
-            ×
-          </button>
-        </div>
+            <button
+              onClick={onClose}
+              aria-label="Tutup"
+              className="press grid h-8 w-8 shrink-0 place-items-center rounded-ctl border border-line text-ink-faint hover:border-line-strong hover:text-ink"
+            >
+              <X size={15} />
+            </button>
+          </header>
 
-        {/* Content */}
-        <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
-          {/* Sidebar - hidden on mobile by default */}
-          <div
-            style={{
-              width: showSidebar || window.innerWidth >= 768 ? '220px' : '0',
-              borderRight: showSidebar || window.innerWidth >= 768 ? '1px solid var(--line)' : 'none',
-              overflowY: 'auto',
-              flexShrink: 0,
-              transition: 'all 0.2s ease',
-              background: showSidebar || window.innerWidth >= 768 ? 'var(--surface)' : 'transparent',
-            }}
-            className="api-sidebar"
-          >
-            <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--line)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--ink-faint)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Endpoints</span>
-              {showSidebar && (
-                <button 
-                  onClick={() => setShowSidebar(false)} 
-                  style={{ background: 'none', border: 'none', color: 'var(--ink-faint)', cursor: 'pointer', fontSize: 18, padding: '4px 8px' }}
-                >
-                  ←
-                </button>
-              )}
-            </div>
-            {API_DOCS.map((api) => (
-              <button
-                key={api.path}
-                onClick={() => { 
-                  setSelected(api); 
-                  setActiveMethod(0); 
-                  if (window.innerWidth < 768) setShowSidebar(false); 
-                }}
-                style={{
-                  display: 'block',
-                  width: '100%',
-                  padding: '14px 16px',
-                  background: selected === api ? 'var(--accent-dim)' : 'transparent',
-                  border: 'none',
-                  borderLeft: selected === api ? '3px solid var(--accent)' : '3px solid transparent',
-                  textAlign: 'left',
-                  cursor: 'pointer',
-                  color: selected === api ? 'var(--accent)' : 'var(--ink-dim)',
-                  fontSize: 13,
-                  fontWeight: selected === api ? 600 : 400,
-                  transition: 'all 0.15s',
-                }}
-              >
-                <div style={{ fontFamily: 'monospace', fontSize: 11, marginBottom: 4, opacity: 0.7 }}>{api.path}</div>
-                <div style={{ fontSize: 13 }}>{api.title}</div>
-              </button>
-            ))}
-          </div>
+          <div className="flex min-h-0 flex-1 flex-col sm:flex-row">
+            {/* Endpoint picker — accordion on mobile, rail on desktop */}
+            <div className="shrink-0 border-b border-line sm:w-[220px] sm:border-r sm:border-b-0">
+              <div className="hidden sm:block">
+                {API_DOCS.map((d) => (
+                  <button
+                    key={d.path}
+                    onClick={() => {
+                      setSelected(d);
+                      setActive(0);
+                    }}
+                    className={cn(
+                      'press block w-full border-l-2 px-4 py-3.5 text-left',
+                      selected.path === d.path
+                        ? 'border-accent bg-accent/8'
+                        : 'border-transparent hover:bg-surface-2',
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        'block font-mono text-[11px]',
+                        selected.path === d.path ? 'text-accent' : 'text-ink-faint',
+                      )}
+                    >
+                      {d.path}
+                    </span>
+                    <span
+                      className={cn(
+                        'mt-0.5 block text-[13px] font-medium',
+                        selected.path === d.path ? 'text-ink' : 'text-ink-dim',
+                      )}
+                    >
+                      {d.title}
+                    </span>
+                  </button>
+                ))}
+              </div>
 
-          {/* Main content */}
-          <div style={{ flex: 1, overflowY: 'auto', padding: 20 }}>
-            <p style={{ color: 'var(--ink-dim)', marginBottom: 20, fontSize: 13, lineHeight: 1.5 }}>
-              {selected.description}
-            </p>
-
-            {selected.methods.map((method, i) => (
-              <div key={i} style={{ marginBottom: 24 }}>
+              <div className="sm:hidden">
                 <button
-                  onClick={() => setActiveMethod(i)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 10,
-                    padding: '12px 16px',
-                    background: activeMethod === i ? 'var(--surface-2)' : 'transparent',
-                    border: `1px solid ${activeMethod === i ? 'var(--line-strong)' : 'var(--line)'}`,
-                    borderRadius: 10,
-                    cursor: 'pointer',
-                    width: '100%',
-                    textAlign: 'left',
-                    color: 'inherit',
-                    fontSize: 13,
-                    transition: 'all 0.15s',
-                  }}
+                  onClick={() => setPicker((v) => !v)}
+                  className="press flex w-full items-center justify-between px-5 py-3.5 text-left"
                 >
-                  <span style={{
-                    padding: '3px 8px',
-                    borderRadius: 6,
-                    background: method.method === 'POST' ? 'var(--ok-dim)' : 'var(--accent-dim)',
-                    color: method.method === 'POST' ? 'var(--ok)' : 'var(--accent)',
-                    fontWeight: 700,
-                    fontSize: 11,
-                    letterSpacing: '0.05em',
-                  }}>
-                    {method.method}
-                  </span>
-                  <span style={{ color: 'var(--ink)', flex: 1 }}>{method.desc}</span>
-                  <span style={{ color: 'var(--ink-faint)', fontSize: 18 }}>›</span>
+                  <span className="font-mono text-[12.5px] text-accent">{selected.path}</span>
+                  <span className="text-[12px] text-ink-faint">{picker ? 'Tutup' : 'Ganti'}</span>
                 </button>
-
-                {activeMethod === i && (
-                  <div style={{ marginTop: 12, animation: 'fadeIn 0.2s ease' }}>
-                    {/* Curl */}
-                    <div style={{ marginBottom: 16 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-                        <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--ink-faint)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>cURL</span>
-                        <button
-                          onClick={() => copyCurl(method.curl)}
-                          style={{
-                            background: 'transparent',
-                            border: '1px solid var(--line)',
-                            borderRadius: 6,
-                            cursor: 'pointer',
-                            color: 'var(--ink-faint)',
-                            fontSize: 11,
-                            padding: '4px 10px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 4,
-                            transition: 'all 0.15s',
-                          }}
-                          onMouseEnter={(e) => {
-                            (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--accent)';
-                            (e.currentTarget as HTMLButtonElement).style.color = 'var(--accent)';
-                          }}
-                          onMouseLeave={(e) => {
-                            (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--line)';
-                            (e.currentTarget as HTMLButtonElement).style.color = 'var(--ink-faint)';
-                          }}
-                        >
-                          <Copy size={12} />
-                          {copied ? 'Disalin!' : 'Salin'}
-                        </button>
-                      </div>
-                      <pre style={{
-                        background: 'var(--surface-2)',
-                        border: '1px solid var(--line)',
-                        borderRadius: 10,
-                        padding: '14px 16px',
-                        fontSize: 12,
-                        fontFamily: '"IBM Plex Mono", monospace',
-                        color: 'var(--ink)',
-                        overflowX: 'auto',
-                        whiteSpace: 'pre-wrap',
-                        wordBreak: 'break-all',
-                        lineHeight: 1.6,
-                      }}>
-                        {method.curl}
-                      </pre>
-                    </div>
-
-                    {/* Response */}
-                    <div>
-                      <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--ink-faint)', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: 8 }}>Response</span>
-                      <pre style={{
-                        background: 'var(--surface-2)',
-                        border: '1px solid var(--line)',
-                        borderRadius: 10,
-                        padding: '14px 16px',
-                        fontSize: 12,
-                        fontFamily: '"IBM Plex Mono", monospace',
-                        color: 'var(--ok)',
-                        overflowX: 'auto',
-                        whiteSpace: 'pre-wrap',
-                        wordBreak: 'break-all',
-                        lineHeight: 1.6,
-                      }}>
-                        {JSON.stringify(method.response, null, 2)}
-                      </pre>
-                    </div>
+                {picker && (
+                  <div className="border-t border-line">
+                    {API_DOCS.map((d) => (
+                      <button
+                        key={d.path}
+                        onClick={() => {
+                          setSelected(d);
+                          setActive(0);
+                          setPicker(false);
+                        }}
+                        className="press block w-full border-b border-line px-5 py-3 text-left text-[13.5px] text-ink-dim last:border-b-0"
+                      >
+                        <span className="font-mono text-[11px] text-ink-faint">{d.path}</span>
+                        <span className="block">{d.title}</span>
+                      </button>
+                    ))}
                   </div>
                 )}
               </div>
-            ))}
-          </div>
-        </div>
-      </div>
+            </div>
 
-      <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(-8px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* Mobile responsive */
-        @media (max-width: 767px) {
-          .api-sidebar {
-            position: absolute;
-            inset: 0;
-            z-index: 10;
-            background: var(--surface);
-          }
-          .mobile-menu-btn {
-            display: inline-flex !important;
-          }
-        }
-        
-        @media (min-width: 768px) {
-          .mobile-menu-btn {
-            display: none !important;
-          }
-        }
-      `}</style>
-    </div>
+            {/* Detail */}
+            <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5">
+              <p className="text-[13.5px] leading-relaxed text-ink-dim">{selected.description}</p>
+
+              <div className="mt-4 grid gap-3">
+                {selected.methods.map((meth, i) => {
+                  const open = active === i;
+                  return (
+                    <div key={i}>
+                      <button
+                        onClick={() => setActive(open ? -1 : i)}
+                        className={cn(
+                          'press flex w-full items-center gap-3 rounded-ctl border px-3.5 py-3 text-left',
+                          open
+                            ? 'border-accent/40 bg-accent/8'
+                            : 'border-line bg-surface-2 hover:border-line-strong',
+                        )}
+                      >
+                        <span
+                          className={cn(
+                            'rounded-md px-2 py-0.5 font-mono text-[11px] font-bold',
+                            meth.method === 'POST'
+                              ? 'bg-ok-soft text-ok'
+                              : 'bg-accent-soft text-accent',
+                          )}
+                        >
+                          {meth.method}
+                        </span>
+                        <span className="flex-1 text-[13.5px] text-ink">{meth.desc}</span>
+                        <span className="text-ink-faint">{open ? '−' : '+'}</span>
+                      </button>
+
+                      <AnimatePresence initial={false}>
+                        {open && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.28, ease: EASE }}
+                            className="overflow-hidden"
+                          >
+                            <div className="pt-3">
+                              <div className="mb-2 flex items-center justify-between">
+                                <span className="text-[11px] font-semibold tracking-[0.1em] text-ink-faint uppercase">
+                                  cURL
+                                </span>
+                                <button
+                                  onClick={() => copy(meth.curl)}
+                                  className="press inline-flex items-center gap-1.5 rounded-md border border-line px-2 py-1 text-[11.5px] text-ink-faint hover:border-accent/50 hover:text-accent"
+                                >
+                                  <Copy size={11} />
+                                  {copied ? 'Tersalin' : 'Salin'}
+                                </button>
+                              </div>
+                              <pre className="overflow-x-auto rounded-ctl border border-line bg-bg p-4 font-mono text-[12px] leading-relaxed whitespace-pre-wrap break-all text-ink">
+                                {meth.curl}
+                              </pre>
+
+                              <span className="mt-4 mb-2 block text-[11px] font-semibold tracking-[0.1em] text-ink-faint uppercase">
+                                Response
+                              </span>
+                              <pre className="max-h-64 overflow-auto rounded-ctl border border-line bg-bg p-4 font-mono text-[12px] leading-relaxed text-ok">
+                                {JSON.stringify(meth.response, null, 2)}
+                              </pre>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
   );
 }
