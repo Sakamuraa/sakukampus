@@ -71,7 +71,7 @@ export default function Home() {
 
             <Reveal delay={0.06}>
               <h1 className="max-w-[15ch] text-[clamp(2.1rem,6vw,3.6rem)] leading-[1.03] font-extrabold tracking-[-0.035em] text-ink">
-                Cek kelayakan dari <span className="text-accent">UKT riil</span>, bukan nomor golongan.
+                Cek beasiswa yang cocok sama <span className="text-accent">UKT-mu</span>.
               </h1>
             </Reveal>
 
