@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     'Beasiswa kampus, pemerintah, dan swasta untuk mahasiswa Indonesia. Syarat UKT ditulis dalam rupiah sesuai dekrit KMA 204/2026.',
   alternates: { canonical: '/beasiswa' },
   openGraph: {
-    title: 'Katalog Beasiswa — SakuKampus',
+    title: 'Katalog Beasiswa',
     url: '/beasiswa',
     description: 'Beasiswa dengan syarat UKT dinyatakan dalam rupiah.',
   },
@@ -77,7 +77,7 @@ export default async function BeasiswaPage({
         <div className="wrap flex gap-2 overflow-x-auto py-3.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <Link
             href="/beasiswa"
-            className={`press h-9 shrink-0 rounded-ctl border px-3.5 text-[13px] font-medium whitespace-nowrap ${
+            className={`press inline-flex h-9 shrink-0 items-center justify-center rounded-ctl border px-3.5 text-[13px] font-medium whitespace-nowrap ${
               on() && !tier
                 ? 'border-accent/40 bg-accent-soft text-accent'
                 : 'border-line bg-surface text-ink-dim hover:border-line-strong hover:text-ink'
@@ -89,7 +89,7 @@ export default async function BeasiswaPage({
             <Link
               key={t}
               href={`/beasiswa?tier=${t}`}
-              className={`press h-9 shrink-0 rounded-ctl border px-3.5 text-[13px] font-medium whitespace-nowrap ${
+              className={`press inline-flex h-9 shrink-0 items-center justify-center rounded-ctl border px-3.5 text-[13px] font-medium whitespace-nowrap ${
                 tier === t
                   ? 'border-accent/40 bg-accent-soft text-accent'
                   : 'border-line bg-surface text-ink-dim hover:border-line-strong hover:text-ink'
@@ -100,7 +100,7 @@ export default async function BeasiswaPage({
           ))}
           <Link
             href="/beasiswa?status=buka"
-            className={`press h-9 shrink-0 rounded-ctl border px-3.5 text-[13px] font-medium whitespace-nowrap ${
+            className={`press inline-flex h-9 shrink-0 items-center justify-center rounded-ctl border px-3.5 text-[13px] font-medium whitespace-nowrap ${
               status === 'buka'
                 ? 'border-ok/40 bg-ok-soft text-ok'
                 : 'border-line bg-surface text-ink-dim hover:border-line-strong hover:text-ink'

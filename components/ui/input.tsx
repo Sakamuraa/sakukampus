@@ -43,17 +43,3 @@ export function Input({ className, ...props }: React.InputHTMLAttributes<HTMLInp
     />
   );
 }
-
-export function Select({ className, ...props }: React.SelectHTMLAttributes<HTMLSelectElement>) {
-  return (
-    <select
-      className={cn(
-        'press h-11 w-full rounded-ctl border border-line bg-surface-2 px-3.5',
-        'text-[15px] text-ink cursor-pointer',
-        'focus:border-accent/60 focus:outline-none focus:ring-2 focus:ring-accent/25',
-        className,
-      )}
-      {...props}
-    />
-  );
-}

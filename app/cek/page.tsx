@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     canonical: '/cek',
   },
   openGraph: {
-    title: 'Cek Kelayakan Beasiswa — SakuKampus',
+    title: 'Cek Kelayakan Beasiswa',
     url: '/cek',
     description: 'Simulasi gratis: masukkan profil akademik untuk filter beasiswa yang cocok.',
   },

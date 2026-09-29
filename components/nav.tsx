@@ -57,7 +57,7 @@ export function TopNav() {
 
         <Link
           href="/cek"
-          className="press h-9 shrink-0 rounded-ctl bg-accent px-4 text-[13.5px] font-semibold text-[#14100a] hover:bg-[#ffb739]"
+          className="press inline-flex h-9 shrink-0 items-center justify-center rounded-ctl bg-accent px-4 text-[13.5px] font-semibold whitespace-nowrap text-[#14100a] hover:bg-[#ffb739]"
         >
           Cek kelayakanku
         </Link>

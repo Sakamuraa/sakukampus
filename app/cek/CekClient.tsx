@@ -24,7 +24,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Field, Input, Select } from '@/components/ui/input';
+import { Field, Input } from '@/components/ui/input';
+import { Select } from '@/components/ui/select';
 import { Reveal, Stagger } from '@/components/motion/reveal';
 import { cn } from '@/lib/utils';
 
@@ -260,7 +261,7 @@ export default function CekClient() {
               Cek kelayakan beasiswa
             </h1>
             <p className="mt-4 max-w-[56ch] text-[16px] leading-relaxed text-ink-dim">
-              Pilih kampus dan golongan UKT-mu. Kolom lain boleh dikosongkan — hasilnya akan jujur
+              Pilih kampus dan golongan UKT-mu. Kolom lain boleh dikosongkan. Hasilnya akan jujur
               berkata <span className="text-warn">perlu data</span>, bukan menolak.
             </p>
           </Reveal>
@@ -404,11 +405,12 @@ export default function CekClient() {
               >
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Field label="Jenjang" htmlFor="jenjang">
-                    <Select id="jenjang" value={jenjang} onChange={(e) => setJenjang(e.target.value)}>
-                      {['S1', 'D4', 'D3', 'S2'].map((x) => (
-                        <option key={x}>{x}</option>
-                      ))}
-                    </Select>
+                    <Select
+                      id="jenjang"
+                      value={jenjang}
+                      onChange={setJenjang}
+                      options={['S1', 'D4', 'D3', 'S2'].map((x) => ({ value: x, label: x }))}
+                    />
                   </Field>
                   <Field label="Semester" htmlFor="semester">
                     <Input
@@ -445,19 +447,25 @@ export default function CekClient() {
                     <Select
                       id="lain"
                       value={beasiswaLain}
-                      onChange={(e) => setBeasiswaLain(e.target.value)}
-                    >
-                      <option value="">Belum dijawab</option>
-                      <option value="tidak">Tidak</option>
-                      <option value="ya">Ya</option>
-                    </Select>
+                      onChange={setBeasiswaLain}
+                      placeholder="Belum dijawab"
+                      options={[
+                        { value: 'tidak', label: 'Tidak' },
+                        { value: 'ya', label: 'Ya' },
+                      ]}
+                    />
                   </Field>
                   <Field label="Pemegang KIP?" htmlFor="kip">
-                    <Select id="kip" value={kip} onChange={(e) => setKip(e.target.value)}>
-                      <option value="">Belum dijawab</option>
-                      <option value="tidak">Tidak</option>
-                      <option value="ya">Ya</option>
-                    </Select>
+                    <Select
+                      id="kip"
+                      value={kip}
+                      onChange={setKip}
+                      placeholder="Belum dijawab"
+                      options={[
+                        { value: 'tidak', label: 'Tidak' },
+                        { value: 'ya', label: 'Ya' },
+                      ]}
+                    />
                   </Field>
                 </div>
               </Step>
@@ -520,7 +528,7 @@ export default function CekClient() {
                           ? 'KMA 204/2026'
                           : uktInfo.sumber === 'manual'
                             ? 'Input kamu'
-                            : '—'}
+                            : '-'}
                       </p>
                     </div>
                   </div>
@@ -646,19 +654,27 @@ export default function CekClient() {
 
             <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5">
               <div className="grid gap-5">
-                <Field label="Program studi" htmlFor="prodi-sheet">
+                <Field
+                  label="Program studi"
+                  htmlFor="prodi-sheet"
+                  hint={
+                    kampus.ukt_model === 'ptkin_kma' && kampus.prodi_terdaftar.length > 40
+                      ? `Ketik untuk menyaring dari ${kampus.prodi_terdaftar.length} prodi.`
+                      : undefined
+                  }
+                >
                   <Select
                     id="prodi-sheet"
+                    searchable
                     value={prodi}
-                    onChange={(e) => setProdi(e.target.value)}
-                  >
-                    {kampus.prodi_terdaftar.map((p) => (
-                      <option key={p.nama} value={p.nama}>
-                        {p.nama}
-                        {p.fakultas ? ` (${p.fakultas})` : ''}
-                      </option>
-                    ))}
-                  </Select>
+                    onChange={setProdi}
+                    placeholder="Pilih program studi"
+                    options={kampus.prodi_terdaftar.map((p) => ({
+                      value: p.nama,
+                      label: p.nama,
+                      hint: p.fakultas ?? undefined,
+                    }))}
+                  />
                 </Field>
 
                 <div>
@@ -686,7 +702,7 @@ export default function CekClient() {
                             {u.kelompok === 8 ? 'KIP Kuliah' : `Gol ${u.kelompok}`}
                           </span>
                           <span className="num mt-0.5 block text-[11.5px] opacity-80">
-                            {u.nominal ? rp(u.nominal) : '—'}
+                            {u.nominal ? rp(u.nominal) : '-'}
                           </span>
                         </button>
                       );

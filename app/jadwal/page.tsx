@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   description:
     'Tenggat pendaftaran beasiswa dari pengumuman resmi, diurutkan dari yang terdekat.',
   alternates: { canonical: '/jadwal' },
-  openGraph: { title: 'Jadwal Tenggat Beasiswa — SakuKampus', url: '/jadwal' },
+  openGraph: { title: 'Jadwal Tenggat Beasiswa', url: '/jadwal' },
 };
 
 const DEADLINE_STAGES = new Set(['pendaftaran', 'pendaftaran_akun', 'mandiri_ptn_pts']);

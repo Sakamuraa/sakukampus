@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     'Asal setiap angka di SakuKampus: UKT dari KMA 204/2026, katalog kampus dari PDDikti, jadwal dari pengumuman resmi.',
   alternates: { canonical: '/data' },
   openGraph: {
-    title: 'Status Data & Sumber — SakuKampus',
+    title: 'Status Data dan Sumber',
     url: '/data',
     description: 'Transparansi asal data UKT, kampus, dan beasiswa.',
   },
@@ -56,7 +56,7 @@ export default function DataPage() {
         month: 'long',
         year: 'numeric',
       })
-    : '—';
+    : '-';
 
   return (
     <>
@@ -172,7 +172,7 @@ export default function DataPage() {
           </Reveal>
           <Stagger className="mt-6 grid gap-4 sm:grid-cols-3" gap={0.06}>
             {[
-              ['Origin header', 'API PDDikti mensyaratkan header Origin yang tepat, dan paginasi diabaikan — katalog disusun per kata kunci.'],
+              ['Origin header', 'API PDDikti mensyaratkan header Origin yang tepat, dan paginasi diabaikan. Katalog disusun per kata kunci.'],
               ['Sumber UKT', 'Nominal per golongan berasal dari dekrit KMA 204/2026. Kampus lain memakai input manual dan ditandai belum diverifikasi.'],
               ['Bukan penyelenggara', 'Kami tidak menerima pendaftaran. Semua tautan mengarah ke situs resmi penyelenggara.'],
             ].map(([t, d]) => (
