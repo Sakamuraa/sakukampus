@@ -21,3 +21,6 @@ skills-lock.json
 .agents/
 .agents/
 skills-lock.json
+
+# build artifacts
+SakuKampus-ChangeLog.pdf
