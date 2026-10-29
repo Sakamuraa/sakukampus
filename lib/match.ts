@@ -249,6 +249,10 @@ export function matchAll(
   // menaruh pintu yang sudah tertutup di atas pintu yang masih terbuka.
   const order = { lolos: 0, perlu_data: 1, tidak: 2, tutup: 3 } as const;
   return scholarships
+    // Beasiswa yang terikat kampus lain tidak boleh muncul sama sekali.
+    // Kalau hanya dibiarkan lewat matchOne, ia akan tampil sebagai "tutup"
+    // dan mengotori hasil kampus yang sedang dilihat.
+    .filter((s) => !/^kampus:/.test(s.scope) || s.scope === `kampus:${input.kodePt}`)
     .map((s) => matchOne(s, input, now))
     .sort((a, b) => {
       if (order[a.displayState] !== order[b.displayState]) {

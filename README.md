@@ -49,7 +49,7 @@ kampus dan menuntut hasil berbeda.
 |---|---|
 | Katalog kampus (3.690 PT) | `api-pddikti.kemdiktisaintek.go.id` |
 | Nominal UKT per golongan (58 PTKIN) | KMA 204/2026, PDF 82 halaman |
-| Jadwal & syarat beasiswa | pengumuman resmi (KIP Kuliah, Djarum, YBR BRILiaN, STF UIN, BIB Kemenag–LPDP) |
+| Jadwal & syarat beasiswa | pengumuman resmi (KIP Kuliah, Beasiswa Unggulan, BPI, Djarum, YBR BRILiaN, STF UIN, BIB Kemenag–LPDP, KSE, BAZNAS, Bakti BCA) + portal SatuBeasiswa |
 
 Keterbatasan diakui terbuka di halaman `/data` di dalam aplikasi, bukan hanya di README.
 
@@ -59,7 +59,7 @@ Keterbatasan diakui terbuka di halaman `/data` di dalam aplikasi, bukan hanya di
 
 ```bash
 npm install
-npm test        # 61 tes: parser KMA, engine, pencocokan, data
+npm test        # 90 tes: parser KMA, engine, pencocokan, data
 npm run typecheck
 npm run dev     # http://localhost:3000
 ```
@@ -85,6 +85,7 @@ data/
   scholarships.seed.json  beasiswa + jadwal + rule
   fixtures/               PDF KMA + koordinat hasil ekstraksi (dipakai tes)
 scripts/
+  add-more-scholarships.mjs tambah entri + rapikan slug ganda
   extract-kma-lines.mjs   PDF → koordinat (sekali, hasilnya di-commit)
   build-ukt-seed.mjs      koordinat → seed UKT (dengan golden test)
   link-ptkin.mjs          pasangkan blok KMA ↔ kode kampus PDDikti

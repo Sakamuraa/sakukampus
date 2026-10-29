@@ -82,4 +82,36 @@ describe('seed beasiswa', () => {
       expect(institutionsByKode.has(kode), `${s.slug} -> ${kode}`).toBe(true);
     }
   });
+
+  it('slug beasiswa unik', () => {
+    const slugs = scholarships.map((s) => s.slug);
+    expect(new Set(slugs).size).toBe(slugs.length);
+  });
+
+  it('setiap beasiswa punya jenjang, rule, dan stages', () => {
+    for (const s of scholarships) {
+      expect(s.jenjang.length, s.slug).toBeGreaterThan(0);
+      expect(s.rule, s.slug).toBeDefined();
+      expect(Array.isArray(s.stages), s.slug).toBe(true);
+    }
+  });
+
+  it('jadwal tahapan tidak terbalik', () => {
+    for (const s of scholarships) {
+      for (const st of s.stages) {
+        if (st.opens_at && st.closes_at) {
+          expect(Date.parse(st.closes_at), `${s.slug}/${st.name}`).toBeGreaterThanOrEqual(
+            Date.parse(st.opens_at),
+          );
+        }
+      }
+    }
+  });
+
+  it('meta menghitung entri yang benar-benar ada', () => {
+    expect(seedsMeta.scholarships.entry_count).toBe(scholarships.length);
+    expect(seedsMeta.scholarships.unique_count).toBe(
+      new Set(scholarships.map((s) => s.slug)).size,
+    );
+  });
 });

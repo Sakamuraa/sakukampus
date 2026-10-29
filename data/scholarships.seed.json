@@ -1,9 +1,11 @@
 {
   "_meta": {
-    "generated_at": "2026-09-20T14:48:42.627Z",
+    "generated_at": "2026-10-29T00:00:00Z",
     "note": "Setiap entri WAJIB punya source_url + last_verified_at. Syarat UKT pada beasiswa nasional dinyatakan dalam RUPIAH (ukt_max_idr), bukan nomor golongan — lihat lib/eligibility/engine.ts dan plan §5.",
-    "normalized_at": "2026-09-20T14:48:42.627Z",
-    "normalized_count": 19
+    "normalized_at": "2026-10-29T00:00:00Z",
+    "normalized_count": 26,
+    "entry_count": 26,
+    "unique_count": 26
   },
   "scholarships": [
     {
@@ -177,32 +179,47 @@
     },
     {
       "slug": "bright-scholarship-2026",
-      "name": "Bright Scholarship 2026 (YBM BRILiaN)",
-      "provider": "Yayasan Baitul Maal BRILiaN",
+      "name": "Bright Scholarship 2026",
+      "provider": "Yayasan Baitul Maal BRILiaN (Bank BRI)",
       "tier": "swasta",
       "scope": "nasional",
-      "coverage": "ukt_penuh+allowance",
-      "benefit_summary": "Pelunasan UKT penuh, living allowance bulanan, fasilitas asrama, pembinaan karakter, peluang student exchange",
+      "coverage": "ukt_penuh+allowance+asrama",
+      "benefit_summary": "Fully funded: UKT penuh, tunjangan bulanan, asrama gratis, pembinaan karakter.",
       "jenjang": [
         "S1",
         "D4"
       ],
       "url_pendaftaran": "https://brilianscholarship.id/bright/pendaftaran",
-      "source_url": "https://uinjkt.ac.id/id/pendaftaran-bright-scholarship-2026",
+      "source_url": "https://ybmbrilian.id/ybm-brilian-resmi-buka-pendaftaran-bright-scholarship-2026/",
       "source_kind": "resmi",
-      "confidence": 90,
+      "confidence": 92,
       "last_verified_at": "2026-09-19T16:39:31.255Z",
       "needs_test": true,
       "academic_year": "2026/2027",
       "stages": [
         {
           "name": "pendaftaran",
-          "opens_at": "2026-07-01T00:00:00Z",
+          "opens_at": "2026-07-13T00:00:00Z",
           "closes_at": "2026-07-31T23:59:00Z"
+        },
+        {
+          "name": "seleksi_berkas",
+          "opens_at": "2026-08-01T00:00:00Z",
+          "closes_at": "2026-08-15T23:59:00Z"
+        },
+        {
+          "name": "pengumuman",
+          "opens_at": "2026-08-20T00:00:00Z"
         }
       ],
       "rule": {
         "all": [
+          {
+            "fact": "warga_negara",
+            "op": "eq",
+            "value": true,
+            "label": "Warga Negara Indonesia (WNI)"
+          },
           {
             "fact": "jenjang",
             "op": "in",
@@ -210,25 +227,31 @@
               "S1",
               "D4"
             ],
-            "label": "Jenjang S1/D4"
+            "label": "Mahasiswa S1/D4 semester 1"
           },
           {
             "fact": "semester",
-            "op": "lte",
+            "op": "eq",
             "value": 1,
-            "label": "Mahasiswa baru semester 1"
+            "label": "Semester 1"
           },
           {
-            "fact": "pt_mitra",
+            "fact": "penerima_beasiswa_lain",
             "op": "eq",
-            "value": true,
-            "label": "Kampus termasuk PT mitra YBM BRILiaN"
+            "value": false,
+            "label": "Tidak sedang menerima beasiswa lain"
           },
           {
-            "fact": "kondisi_ekonomi_lemah",
+            "fact": "panti_sosial",
             "op": "eq",
             "value": true,
-            "label": "Kondisi ekonomi kurang mampu (dokumen pendukung)"
+            "label": "Keluarga pra sejahtera / dhuafa"
+          },
+          {
+            "fact": "aktif_organisasi",
+            "op": "exists",
+            "value": true,
+            "label": "Aktif berorganisasi"
           }
         ]
       }
@@ -250,6 +273,7 @@
       "source_kind": "resmi",
       "confidence": 90,
       "last_verified_at": "2026-09-19T16:39:31.255Z",
+      "ukt_max_idr": null,
       "academic_year": "2026/2027",
       "stages": [
         {
@@ -555,172 +579,6 @@
             "onlyWhen": {
               "scope": "kampus:201001"
             }
-          }
-        ]
-      }
-    },
-    {
-      "slug": "bright-scholarship-2026",
-      "name": "Bright Scholarship 2026",
-      "provider": "Yayasan Baitul Maal BRILiaN (Bank BRI)",
-      "tier": "swasta",
-      "scope": "nasional",
-      "coverage": "ukt_penuh+allowance+asrama",
-      "benefit_summary": "Fully funded: UKT penuh, tunjangan bulanan, asrama gratis, pembinaan karakter.",
-      "jenjang": [
-        "S1",
-        "D4"
-      ],
-      "url_pendaftaran": "https://brilianscholarship.id/bright/pendaftaran",
-      "source_url": "https://ybmbrilian.id/ybm-brilian-resmi-buka-pendaftaran-bright-scholarship-2026/",
-      "source_kind": "resmi",
-      "confidence": 92,
-      "last_verified_at": "2026-09-19T16:39:31.255Z",
-      "ukt_max_idr": null,
-      "academic_year": "2026/2027",
-      "stages": [
-        {
-          "name": "pendaftaran",
-          "opens_at": "2026-07-13T00:00:00Z",
-          "closes_at": "2026-07-31T23:59:00Z"
-        },
-        {
-          "name": "seleksi_berkas",
-          "opens_at": "2026-08-01T00:00:00Z",
-          "closes_at": "2026-08-15T23:59:00Z"
-        },
-        {
-          "name": "pengumuman",
-          "opens_at": "2026-08-20T00:00:00Z"
-        }
-      ],
-      "rule": {
-        "all": [
-          {
-            "fact": "warga_negara",
-            "op": "eq",
-            "value": true,
-            "label": "Warga Negara Indonesia (WNI)"
-          },
-          {
-            "fact": "jenjang",
-            "op": "in",
-            "value": [
-              "S1",
-              "D4"
-            ],
-            "label": "Mahasiswa S1/D4 semester 1"
-          },
-          {
-            "fact": "semester",
-            "op": "eq",
-            "value": 1,
-            "label": "Semester 1"
-          },
-          {
-            "fact": "penerima_beasiswa_lain",
-            "op": "eq",
-            "value": false,
-            "label": "Tidak sedang menerima beasiswa lain"
-          },
-          {
-            "fact": "panti_sosial",
-            "op": "eq",
-            "value": true,
-            "label": "Keluarga pra sejahtera / dhuafa"
-          },
-          {
-            "fact": "aktif_organisasi",
-            "op": "exists",
-            "value": true,
-            "label": "Aktif berorganisasi"
-          }
-        ]
-      }
-    },
-    {
-      "slug": "djarum-beasiswa-plus-2026",
-      "name": "Djarum Beasiswa Plus 2026/2027",
-      "provider": "Djarum Foundation",
-      "tier": "swasta",
-      "scope": "nasional",
-      "coverage": "ukt_penuh+allowance+pelatihan",
-      "benefit_summary": "Bantuan UKT penuh, tunjangan bulanan, pelatihan soft skills & leadership, jaringan alumni.",
-      "jenjang": [
-        "S1",
-        "D4"
-      ],
-      "url_pendaftaran": "https://register.djarumbeasiswaplus.org",
-      "source_url": "https://djarumbeasiswaplus.org/our-program/regulation-djarum-beasiswa-plus",
-      "source_kind": "resmi",
-      "confidence": 95,
-      "last_verified_at": "2026-09-19T16:39:31.255Z",
-      "ukt_max_idr": null,
-      "academic_year": "2026/2027",
-      "stages": [
-        {
-          "name": "pendaftaran",
-          "opens_at": "2026-04-08T00:00:00Z",
-          "closes_at": "2026-06-10T23:59:00Z"
-        },
-        {
-          "name": "tes_tulis",
-          "opens_at": "2026-06-15T00:00:00Z",
-          "closes_at": "2026-06-20T23:59:00Z"
-        },
-        {
-          "name": "wawancara",
-          "opens_at": "2026-07-01T00:00:00Z",
-          "closes_at": "2026-07-15T23:59:00Z"
-        },
-        {
-          "name": "pengumuman",
-          "opens_at": "2026-07-20T00:00:00Z"
-        }
-      ],
-      "rule": {
-        "all": [
-          {
-            "fact": "jenjang",
-            "op": "in",
-            "value": [
-              "S1",
-              "D4"
-            ],
-            "label": "Mahasiswa S1/D4"
-          },
-          {
-            "fact": "semester",
-            "op": "between",
-            "value": [
-              4,
-              4
-            ],
-            "label": "Semester IV"
-          },
-          {
-            "fact": "ipk",
-            "op": "gte",
-            "value": 3,
-            "label": "IPK minimal 3.00"
-          },
-          {
-            "fact": "aktif_organisasi",
-            "op": "eq",
-            "value": true,
-            "label": "Aktif berorganisasi"
-          },
-          {
-            "fact": "penerima_beasiswa_lain",
-            "op": "eq",
-            "value": false,
-            "label": "Tidak sedang menerima beasiswa lain"
-          },
-          {
-            "fact": "pt_mitra",
-            "op": "eq",
-            "value": true,
-            "label": "Kampus mitra Djarum Beasiswa Plus"
           }
         ]
       }
@@ -1384,6 +1242,416 @@
             "op": "eq",
             "value": false,
             "label": "Tidak menerima beasiswa lain"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "beasiswa-unggulan-2026",
+      "name": "Beasiswa Unggulan 2026",
+      "provider": "Kementerian Pendidikan Dasar dan Menengah",
+      "tier": "pemerintah",
+      "scope": "nasional",
+      "coverage": "ukt_penuh+allowance",
+      "benefit_summary": "Pembiayaan UKT, biaya hidup, dan biaya buku untuk masyarakat berprestasi jenjang S1/S2/S3 di perguruan tinggi dalam dan luar negeri",
+      "jenjang": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "url_pendaftaran": "https://beasiswaunggulan.kemendikdasmen.go.id/",
+      "source_url": "https://beasiswaunggulan.kemendikdasmen.go.id/",
+      "source_kind": "resmi",
+      "confidence": 92,
+      "last_verified_at": "2026-10-29T00:00:00Z",
+      "needs_test": true,
+      "academic_year": "2026",
+      "stages": [
+        {
+          "name": "pendaftaran",
+          "opens_at": "2026-08-20T00:00:00Z",
+          "closes_at": "2026-08-24T23:59:00Z"
+        }
+      ],
+      "rule": {
+        "all": [
+          {
+            "fact": "jenjang",
+            "op": "in",
+            "value": [
+              "S1",
+              "S2",
+              "S3"
+            ],
+            "label": "Jenjang S1/S2/S3"
+          },
+          {
+            "fact": "penerima_beasiswa_lain",
+            "op": "eq",
+            "value": false,
+            "label": "Tidak sedang menerima beasiswa lain"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "beasiswa-pendidikan-indonesia-2026",
+      "name": "Beasiswa Pendidikan Indonesia (BPI) 2026",
+      "provider": "Kementerian Pendidikan Tinggi, Sains, dan Teknologi × LPDP",
+      "tier": "pemerintah",
+      "scope": "nasional",
+      "coverage": "ukt_penuh+allowance",
+      "benefit_summary": "Biaya pendidikan penuh, biaya hidup bulanan, tunjangan buku, dana penelitian, transportasi/visa, dan asuransi kesehatan untuk studi S1/S2/S3 dalam dan luar negeri",
+      "jenjang": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "url_pendaftaran": "https://beasiswa.kemdiktisaintek.go.id/",
+      "source_url": "https://satubeasiswa.kemdiktisaintek.go.id/beasiswa/fpc9",
+      "source_kind": "agregator",
+      "confidence": 88,
+      "last_verified_at": "2026-10-29T00:00:00Z",
+      "academic_year": "2026",
+      "stages": [
+        {
+          "name": "pendaftaran",
+          "opens_at": "2026-05-01T00:00:00Z",
+          "closes_at": "2026-06-30T23:59:00Z"
+        }
+      ],
+      "rule": {
+        "all": [
+          {
+            "fact": "jenjang",
+            "op": "in",
+            "value": [
+              "S1",
+              "S2",
+              "S3"
+            ],
+            "label": "Jenjang S1/S2/S3"
+          },
+          {
+            "fact": "penerima_beasiswa_lain",
+            "op": "eq",
+            "value": false,
+            "label": "Tidak sedang menerima beasiswa lain"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "bib-pesantren-magister-doktor-2026",
+      "name": "Beasiswa Indonesia Bangkit: Pesantren Magister & Doktor 2026",
+      "provider": "Kementerian Agama RI × LPDP",
+      "tier": "pemerintah",
+      "scope": "nasional",
+      "coverage": "ukt_penuh+allowance",
+      "benefit_summary": "Pembiayaan penuh studi magister/doktor bagi santri dan pengajar pesantren di lingkungan Kementerian Agama",
+      "jenjang": [
+        "S2",
+        "S3"
+      ],
+      "url_pendaftaran": "https://beasiswa.kemenag.go.id/",
+      "source_url": "https://beasiswa.kemenag.go.id/",
+      "source_kind": "resmi",
+      "confidence": 82,
+      "last_verified_at": "2026-10-29T00:00:00Z",
+      "academic_year": "2026",
+      "stages": [],
+      "rule": {
+        "all": [
+          {
+            "fact": "jenjang",
+            "op": "in",
+            "value": [
+              "S2",
+              "S3"
+            ],
+            "label": "Jenjang S2/S3"
+          },
+          {
+            "fact": "afiliasi_kemenag",
+            "op": "eq",
+            "value": true,
+            "label": "Berafiliasi dengan pesantren/lembaga Kemenag"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "bib-beasiswa-santri-2026",
+      "name": "Beasiswa Indonesia Bangkit: Beasiswa Santri 2026",
+      "provider": "Kementerian Agama RI × LPDP",
+      "tier": "pemerintah",
+      "scope": "nasional",
+      "coverage": "ukt_penuh+allowance",
+      "benefit_summary": "Pembiayaan studi sarjana bagi santri berprestasi di lingkungan pesantren/Kementerian Agama",
+      "jenjang": [
+        "S1"
+      ],
+      "url_pendaftaran": "https://beasiswa.kemenag.go.id/",
+      "source_url": "https://beasiswa.kemenag.go.id/",
+      "source_kind": "resmi",
+      "confidence": 80,
+      "last_verified_at": "2026-10-29T00:00:00Z",
+      "academic_year": "2026",
+      "stages": [],
+      "rule": {
+        "all": [
+          {
+            "fact": "jenjang",
+            "op": "in",
+            "value": [
+              "S1"
+            ],
+            "label": "Jenjang S1"
+          },
+          {
+            "fact": "afiliasi_kemenag",
+            "op": "eq",
+            "value": true,
+            "label": "Berafiliasi dengan pesantren/lembaga Kemenag"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "beasiswa-kse-2025-2026",
+      "name": "Beasiswa KSE (Karya Salemba Empat) 2025/2026",
+      "provider": "Yayasan Karya Salemba Empat (KSE)",
+      "tier": "swasta",
+      "scope": "nasional",
+      "coverage": "ukt_sebagian+allowance",
+      "benefit_summary": "Dukungan finansial pendidikan, pelatihan kepemimpinan, soft skill, career coaching, dan jejaring alumni untuk mahasiswa S1",
+      "jenjang": [
+        "S1"
+      ],
+      "url_pendaftaran": "https://kse.or.id/",
+      "source_url": "https://kse.or.id/",
+      "source_kind": "resmi",
+      "confidence": 80,
+      "last_verified_at": "2026-10-29T00:00:00Z",
+      "academic_year": "2025/2026",
+      "stages": [],
+      "rule": {
+        "all": [
+          {
+            "fact": "jenjang",
+            "op": "in",
+            "value": [
+              "S1"
+            ],
+            "label": "Mahasiswa S1"
+          },
+          {
+            "fact": "desil_dtsen",
+            "op": "lte",
+            "value": 4,
+            "label": "Prioritas desil DTSEN ≤ 4"
+          },
+          {
+            "fact": "penerima_beasiswa_lain",
+            "op": "eq",
+            "value": false,
+            "label": "Tidak sedang menerima beasiswa lain"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "beasiswa-cendekia-baznas-2026",
+      "name": "Beasiswa Cendekia BAZNAS 2026",
+      "provider": "Badan Amil Zakat Nasional (BAZNAS)",
+      "tier": "pemerintah",
+      "scope": "nasional",
+      "coverage": "ukt_penuh+allowance",
+      "benefit_summary": "Bantuan biaya pendidikan dan dukungan penuh selama masa studi bagi mahasiswa kurang mampu",
+      "jenjang": [
+        "S1"
+      ],
+      "url_pendaftaran": "https://baznas.go.id/",
+      "source_url": "https://uinjkt.ac.id/id/beasiswa-dan-bantuan-biaya-pendidikan",
+      "source_kind": "agregator",
+      "confidence": 72,
+      "last_verified_at": "2026-10-29T00:00:00Z",
+      "academic_year": "2026",
+      "stages": [],
+      "rule": {
+        "all": [
+          {
+            "fact": "jenjang",
+            "op": "in",
+            "value": [
+              "S1"
+            ],
+            "label": "Mahasiswa S1"
+          },
+          {
+            "fact": "desil_dtsen",
+            "op": "lte",
+            "value": 4,
+            "label": "Prioritas desil DTSEN ≤ 4"
+          },
+          {
+            "fact": "penerima_beasiswa_lain",
+            "op": "eq",
+            "value": false,
+            "label": "Tidak sedang menerima beasiswa lain"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "beasiswa-baznas-jateng-uin-walisongo-2026",
+      "name": "Beasiswa BAZNAS Provinsi Jawa Tengah 2026 (UIN Walisongo)",
+      "provider": "BAZNAS Provinsi Jawa Tengah × UIN Walisongo Semarang",
+      "tier": "kampus",
+      "scope": "kampus:201010",
+      "coverage": "ukt_sebagian",
+      "benefit_summary": "Bantuan biaya pendidikan dari BAZNAS Provinsi Jawa Tengah; pendaftaran diumumkan 15 Oktober 2026",
+      "jenjang": [
+        "S1"
+      ],
+      "url_pendaftaran": "https://walisongo.ac.id/",
+      "source_url": "https://walisongo.ac.id/",
+      "source_kind": "resmi",
+      "confidence": 80,
+      "last_verified_at": "2026-10-29T00:00:00Z",
+      "academic_year": "2026",
+      "stages": [],
+      "rule": {
+        "all": [
+          {
+            "fact": "jenjang",
+            "op": "in",
+            "value": [
+              "S1"
+            ],
+            "label": "Mahasiswa S1"
+          },
+          {
+            "fact": "desil_dtsen",
+            "op": "lte",
+            "value": 4,
+            "label": "Prioritas desil DTSEN ≤ 4"
+          },
+          {
+            "fact": "penerima_beasiswa_lain",
+            "op": "eq",
+            "value": false,
+            "label": "Tidak sedang menerima beasiswa lain"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "beasiswa-teladan-uin-malang-2026",
+      "name": "Beasiswa Teladan UIN Maulana Malik Ibrahim Malang 2026",
+      "provider": "UIN Maulana Malik Ibrahim Malang",
+      "tier": "kampus",
+      "scope": "kampus:201003",
+      "coverage": "ukt_penuh",
+      "benefit_summary": "UKT Rp0 selama 8 semester + bebas biaya pengembangan institusi dan ma’had 2 semester pertama; kategori Tahfidz 30 juz, Qira’atul Kutub/Alfiyah, Hadis Arbain, atau prestasi seni/olahraga",
+      "jenjang": [
+        "S1"
+      ],
+      "url_pendaftaran": "https://uin-malang.ac.id/",
+      "source_url": "https://uin-malang.ac.id/",
+      "source_kind": "resmi",
+      "confidence": 85,
+      "last_verified_at": "2026-10-29T00:00:00Z",
+      "academic_year": "2026/2027",
+      "stages": [],
+      "rule": {
+        "all": [
+          {
+            "fact": "jenjang",
+            "op": "in",
+            "value": [
+              "S1"
+            ],
+            "label": "Mahasiswa S1"
+          },
+          {
+            "fact": "semester",
+            "op": "eq",
+            "value": 1,
+            "label": "Semester 1"
+          },
+          {
+            "fact": "prestasi",
+            "op": "exists",
+            "label": "Prestasi sesuai kategori: Tahfidz 30 juz, Qira’atul Kutub/Alfiyah, Hadis Arbain, seni, atau olahraga"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "beasiswa-bakti-bca-2026",
+      "name": "Beasiswa Bakti BCA 2026",
+      "provider": "PT Bank Central Asia Tbk",
+      "tier": "swasta",
+      "scope": "nasional",
+      "coverage": "ukt_sebagian+allowance",
+      "benefit_summary": "Tunjangan biaya hidup dan dukungan dana pendidikan bagi mahasiswa S1 semester 3 di PTN mitra BCA",
+      "jenjang": [
+        "S1"
+      ],
+      "url_pendaftaran": "https://satubeasiswa.kemdiktisaintek.go.id/beasiswa/ihnm",
+      "source_url": "https://satubeasiswa.kemdiktisaintek.go.id/beasiswa/ihnm",
+      "source_kind": "agregator",
+      "confidence": 82,
+      "last_verified_at": "2026-10-29T00:00:00Z",
+      "needs_test": true,
+      "academic_year": "2026/2027",
+      "stages": [
+        {
+          "name": "pendaftaran",
+          "opens_at": "2026-08-03T00:00:00Z",
+          "closes_at": "2026-11-01T23:59:00Z"
+        }
+      ],
+      "rule": {
+        "all": [
+          {
+            "fact": "jenjang",
+            "op": "in",
+            "value": [
+              "S1"
+            ],
+            "label": "Mahasiswa S1 (non-vokasi)"
+          },
+          {
+            "fact": "semester",
+            "op": "eq",
+            "value": 3,
+            "label": "Semester 3"
+          },
+          {
+            "fact": "ipk",
+            "op": "gte",
+            "value": 3,
+            "label": "IPK minimal 3,00"
+          },
+          {
+            "fact": "aktif_organisasi",
+            "op": "eq",
+            "value": true,
+            "label": "Aktif berorganisasi"
+          },
+          {
+            "fact": "penerima_beasiswa_lain",
+            "op": "eq",
+            "value": false,
+            "label": "Tidak sedang menerima beasiswa lain"
+          },
+          {
+            "fact": "pt_mitra",
+            "op": "eq",
+            "value": true,
+            "label": "Kampus termasuk PT mitra BCA"
           }
         ]
       }

@@ -204,13 +204,17 @@ const newScholarships = [
   },
 ];
 
-// Add new scholarships
-seed.scholarships.push(...newScholarships);
+// Add new scholarships, lewati slug yang sudah ada supaya skrip ini idempoten.
+const existing = new Set(seed.scholarships.map((s) => s.slug));
+const toAdd = newScholarships.filter((s) => !existing.has(s.slug));
+seed.scholarships.push(...toAdd);
 
 // Update meta
 seed._meta.generated_at = new Date().toISOString();
 seed._meta.normalized_count = seed.scholarships.length;
+seed._meta.entry_count = seed.scholarships.length;
+seed._meta.unique_count = new Set(seed.scholarships.map((s) => s.slug)).size;
 
 // Write back
 fs.writeFileSync(SEED_PATH, JSON.stringify(seed, null, 2));
-console.log(`Added ${newScholarships.length} scholarships. Total: ${seed.scholarships.length}`);
+console.log(`Added ${toAdd.length} scholarships. Total: ${seed.scholarships.length}`);

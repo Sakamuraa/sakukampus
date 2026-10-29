@@ -121,6 +121,8 @@ describe('matchAll — perilaku verdict', () => {
     const hasil = matchAll(seed.scholarships, TI_LOKAL, NOW);
     // Semua scope harus nasional atau kampus:201001.
     expect(hasil.every((c) => c.scope === 'nasional' || c.scope === 'kampus:201001')).toBe(true);
+    expect(hasil.some((c) => c.slug === 'beasiswa-teladan-uin-malang-2026')).toBe(false);
+    expect(hasil.some((c) => c.slug === 'beasiswa-baznas-jateng-uin-walisongo-2026')).toBe(false);
   });
 });
 
@@ -166,6 +168,12 @@ describe('jadwal', () => {
     const blu = seed.scholarships.find((s) => s.slug === 'beasiswa-blu-uin-jakarta')!;
     expect(stageStatus(blu, NOW)).toBe('tanpa_jadwal');
     expect(nextDeadline(blu, NOW)).toBeNull();
+  });
+
+  it('Bakti BCA masih buka per 17 Sep 2026 dan tutup 1 Nov 2026', () => {
+    const bca = seed.scholarships.find((s) => s.slug === 'beasiswa-bakti-bca-2026')!;
+    expect(stageStatus(bca, NOW)).toBe('buka');
+    expect(nextDeadline(bca, NOW)).toBe(Date.parse('2026-11-01T23:59:00Z'));
   });
 });
 
