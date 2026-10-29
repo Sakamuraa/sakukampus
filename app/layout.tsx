@@ -19,9 +19,9 @@ const numeric = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://sakukampus.onheil.fun'),
+  metadataBase: new URL('https://sakukampus.web.id'),
   title: {
-    default: 'SakuKampus: cek kelayakan beasiswa dari UKT riil',
+    default: 'SakuKampus: cek kelayakan beasiswa dari UKT asli',
     template: '%s · SakuKampus',
   },
   description:
@@ -32,13 +32,13 @@ export const metadata: Metadata = {
     locale: 'id_ID',
     url: '/',
     siteName: 'SakuKampus',
-    title: 'SakuKampus: cek kelayakan beasiswa dari UKT riil',
+    title: 'SakuKampus: cek kelayakan beasiswa dari UKT asli',
     description: 'Kelayakan beasiswa dihitung dari nominal rupiah UKT kampusmu.',
     images: [{ url: '/og.png', width: 1200, height: 630, alt: 'SakuKampus' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'SakuKampus: cek kelayakan beasiswa dari UKT riil',
+    title: 'SakuKampus: cek kelayakan beasiswa dari UKT asli',
     description: 'Kelayakan beasiswa dihitung dari nominal rupiah UKT kampusmu.',
     images: ['/og.png'],
   },

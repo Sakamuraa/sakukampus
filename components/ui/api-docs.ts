@@ -21,7 +21,7 @@ export const API_DOCS: ApiDoc[] = [
       {
         method: 'GET',
         desc: 'Cari kampus berdasarkan nama',
-        curl: 'curl "https://sakukampus.onheil.fun/api/v1/institutions?q=brawijaya&limit=5"',
+        curl: 'curl "https://sakukampus.web.id/api/v1/institutions?q=brawijaya&limit=5"',
         response: {
           status: 'success',
           data: [
@@ -38,7 +38,7 @@ export const API_DOCS: ApiDoc[] = [
       {
         method: 'GET',
         desc: 'Detail satu kampus beserta tabel UKT',
-        curl: 'curl "https://sakukampus.onheil.fun/api/v1/institutions?kode=201001"',
+        curl: 'curl "https://sakukampus.web.id/api/v1/institutions?kode=201001"',
         response: {
           status: 'success',
           data: {
@@ -67,7 +67,7 @@ export const API_DOCS: ApiDoc[] = [
       {
         method: 'GET',
         desc: 'Semua beasiswa',
-        curl: 'curl "https://sakukampus.onheil.fun/api/v1/scholarships"',
+        curl: 'curl "https://sakukampus.web.id/api/v1/scholarships"',
         response: {
           status: 'success',
           data: [
@@ -93,7 +93,7 @@ export const API_DOCS: ApiDoc[] = [
       {
         method: 'GET',
         desc: 'Filter berdasarkan tingkat penyelenggara',
-        curl: 'curl "https://sakukampus.onheil.fun/api/v1/scholarships?tier=kampus"',
+        curl: 'curl "https://sakukampus.web.id/api/v1/scholarships?tier=kampus"',
         response: {
           status: 'success',
           data: [
@@ -116,7 +116,7 @@ export const API_DOCS: ApiDoc[] = [
       {
         method: 'GET',
         desc: 'Ambil semua tenggat',
-        curl: 'curl "https://sakukampus.onheil.fun/api/v1/calendar"',
+        curl: 'curl "https://sakukampus.web.id/api/v1/calendar"',
         response: {
           status: 'success',
           data: [
@@ -139,7 +139,7 @@ export const API_DOCS: ApiDoc[] = [
       {
         method: 'GET',
         desc: 'Meta seluruh sumber',
-        curl: 'curl "https://sakukampus.onheil.fun/api/v1/meta/sources"',
+        curl: 'curl "https://sakukampus.web.id/api/v1/meta/sources"',
         response: {
           status: 'success',
           data: {
@@ -160,7 +160,7 @@ export const API_DOCS: ApiDoc[] = [
         method: 'POST',
         desc: 'Kampus tanpa data UKT (nominal diisi manual)',
         curl:
-          'curl -X POST "https://sakukampus.onheil.fun/api/v1/eligibility/check" \\\n' +
+          'curl -X POST "https://sakukampus.web.id/api/v1/eligibility/check" \\\n' +
           '  -H "Content-Type: application/json" \\\n' +
           `  -d '{"kode_pt":"001019","nominal_manual":3500000,"profil":{"jenjang":"S1"}}'`,
         response: {
@@ -184,7 +184,7 @@ export const API_DOCS: ApiDoc[] = [
         method: 'POST',
         desc: 'PTKIN (golongan UKT dari dekrit)',
         curl:
-          'curl -X POST "https://sakukampus.onheil.fun/api/v1/eligibility/check" \\\n' +
+          'curl -X POST "https://sakukampus.web.id/api/v1/eligibility/check" \\\n' +
           '  -H "Content-Type: application/json" \\\n' +
           `  -d '{"kode_pt":"201001","prodi":"Teknik Informatika","kelompok":2,"profil":{"jenjang":"S1","ipk":3.5,"semester":5}}'`,
         response: {

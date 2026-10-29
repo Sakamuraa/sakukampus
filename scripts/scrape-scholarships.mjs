@@ -23,7 +23,7 @@ import https from 'node:https';
 import { URL } from 'node:url';
 
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
-const ORIGIN = 'https://sakukampus.onheil.fun';
+const ORIGIN = 'https://sakukampus.web.id';
 
 function fetchJSON(urlStr, opts = {}) {
   return new Promise((resolve, reject) => {

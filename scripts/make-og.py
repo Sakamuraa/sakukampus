@@ -68,8 +68,8 @@ def build_og() -> None:
 
     # Bottom band
     d.line([(96, 512), (W - 96, 512)], fill=LINE + (255,), width=2)
-    d.text((96, 546), "sakukampus.onheil.fun", font=dom, fill=ACCENT)
-    domain_w = d.textlength("sakukampus.onheil.fun", font=dom)
+    d.text((96, 546), "sakukampus.web.id", font=dom, fill=ACCENT)
+    domain_w = d.textlength("sakukampus.web.id", font=dom)
     d.text(
         (96 + domain_w + 28, 552),
         "UKT dari KMA 204/2026  ·  Katalog dari PDDikti",

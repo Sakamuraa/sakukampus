@@ -275,7 +275,7 @@ def build_html() -> str:
        kondisi akhir situs.</p>
 
     <div class="meta">
-      <div><b>Alamat situs</b><span>sakukampus.onheil.fun</span></div>
+      <div><b>Alamat situs</b><span>sakukampus.web.id</span></div>
       <div><b>Repositori</b><span>github.com/Sakamuraa/sakukampus</span></div>
       <div><b>Periode</b><span>17 September 2026 sampai 29 September 2026</span></div>
       <div><b>Tahap kerja</b><span>4 tahap</span></div>
