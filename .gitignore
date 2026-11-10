@@ -24,3 +24,6 @@ skills-lock.json
 
 # build artifacts
 SakuKampus-*.pdf
+
+# cache tarikan PDDikti (scripts/build-catalog.mjs) — jangan di-commit
+data/.catalog-cache/
