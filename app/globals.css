@@ -21,6 +21,7 @@
   --color-ink-dim: #4b463c;
   --color-ink-faint: #7e7666;
   --color-accent: #0d5b63;
+  --color-accent-strong: #0a4a51;
   --color-accent-soft: #dbeaec;
   --color-accent-ink: #ffffff;
   --color-ok: #2c6a41;
@@ -37,6 +38,40 @@
 
   --shadow-lift: 0 1px 2px rgba(23, 20, 15, 0.04), 0 12px 28px -18px rgba(23, 20, 15, 0.28);
   --shadow-float: 0 2px 4px rgba(23, 20, 15, 0.05), 0 26px 50px -26px rgba(23, 20, 15, 0.35);
+}
+
+/* ============================================================
+   DARK INK — same paper logic, inverted.
+
+   Not a generic dark mode: the ground stays warm (brown-black, not
+   blue-black), the accent lifts to a readable teal, and every rule
+   gets brighter than its fill so the gazette grid survives at night.
+   Toggled by `data-theme` on <html>; the token names never change, so
+   no component needs a dark: variant.
+   ============================================================ */
+html[data-theme='dark'] {
+  color-scheme: dark;
+
+  --color-bg: #131210;
+  --color-surface: #1b1916;
+  --color-surface-2: #221f1a;
+  --color-surface-3: #2b2720;
+  --color-line: #33302a;
+  --color-line-strong: #4a4438;
+  --color-ink: #f3eee2;
+  --color-ink-dim: #b6ae9d;
+  --color-ink-faint: #8b8373;
+  --color-accent: #63c8d2;
+  --color-accent-strong: #7fd6de;
+  --color-accent-soft: #12363c;
+  --color-accent-ink: #06232a;
+  --color-ok: #79cd93;
+  --color-ok-soft: #15301f;
+  --color-warn: #e2ab66;
+  --color-warn-soft: #302516;
+
+  --shadow-lift: 0 1px 2px rgba(0, 0, 0, 0.5), 0 12px 28px -18px rgba(0, 0, 0, 0.85);
+  --shadow-float: 0 2px 4px rgba(0, 0, 0, 0.55), 0 26px 50px -26px rgba(0, 0, 0, 0.95);
 }
 
 /* ============================================================
@@ -180,6 +215,11 @@
     pointer-events: none;
     opacity: 0.5;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+  }
+
+  /* White noise on a dark ground reads as static, so the grain backs off. */
+  html[data-theme='dark'] body::before {
+    opacity: 0.3;
   }
 
   #isi,

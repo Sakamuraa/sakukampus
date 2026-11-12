@@ -169,7 +169,7 @@ export default function DataPage() {
         <div className="wrap">
           <Reveal>
             <p className="eyebrow">Batasan</p>
-            <h2 className="mt-3 font-display text-[clamp(1.4rem,2.6vw,1.9rem)] font-semibold tracking-[-0.022em] text-ink">
+            <h2 className="mt-4 font-display text-[clamp(1.4rem,2.6vw,1.9rem)] font-semibold tracking-[-0.022em] text-ink">
               Keterbatasan metode
             </h2>
           </Reveal>

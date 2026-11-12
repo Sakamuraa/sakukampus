@@ -6,7 +6,7 @@ type Size = 'sm' | 'md' | 'lg';
 const VARIANTS: Record<Variant, string> = {
   /* One accent, locked across the whole product: teal on paper. */
   primary:
-    'bg-accent text-accent-ink hover:bg-[#0a4a51] shadow-[0_1px_0_rgba(255,255,255,0.14)_inset]',
+    'bg-accent text-accent-ink hover:bg-accent-strong shadow-[0_1px_0_rgba(255,255,255,0.14)_inset]',
   secondary:
     'bg-surface text-ink border border-line-strong hover:border-ink hover:bg-surface-2',
   ghost: 'text-ink-dim hover:text-ink hover:bg-surface-2',

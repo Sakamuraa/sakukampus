@@ -69,8 +69,8 @@ export default function JadwalPage() {
 
           {mendatang.length === 0 ? (
             <Reveal delay={0.05}>
-              <Card className="mt-6">
-                <CardContent className="py-12 text-center">
+              <Card className="mt-6 py-10">
+                <CardContent className="text-center">
                   <p className="font-display text-[16px] font-semibold text-ink">
                     Belum ada tenggat yang akan datang
                   </p>
@@ -96,7 +96,7 @@ export default function JadwalPage() {
                     interactive
                     className={mendesak ? 'border-warn/45 bg-warn-soft/45' : undefined}
                   >
-                    <CardContent className="flex items-start gap-5 py-5">
+                    <CardContent className="flex items-start gap-5">
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-2">
                           <h3 className="font-display text-[16px] font-semibold text-ink">{r.nama}</h3>

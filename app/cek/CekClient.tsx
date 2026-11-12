@@ -353,7 +353,7 @@ export default function CekClient() {
                     kampus.ukt_model === 'ptkin_kma' && 'border-accent/35 bg-accent-soft/45',
                   )}
                 >
-                  <CardContent className="flex flex-wrap items-start justify-between gap-3 py-5">
+                  <CardContent className="flex flex-wrap items-start justify-between gap-3">
                     <div className="min-w-0">
                       <p className="font-display text-[16.5px] font-semibold text-ink">{kampus.nama}</p>
                       <p className="mt-1 text-[12.5px] text-ink-faint">

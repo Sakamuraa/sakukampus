@@ -117,8 +117,8 @@ export default async function BeasiswaPage({
         <div className="wrap">
           {list.length === 0 ? (
             <Reveal>
-              <Card className="mx-auto max-w-[460px] text-center">
-                <CardContent className="py-12">
+              <Card className="mx-auto max-w-[460px] py-10 text-center">
+                <CardContent>
                   <p className="font-display text-[16px] font-semibold text-ink">Tidak ada hasil</p>
                   <p className="mt-1.5 text-[13.5px] text-ink-faint">
                     Coba ubah filter di atas.

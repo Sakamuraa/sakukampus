@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Newsreader, Plus_Jakarta_Sans, IBM_Plex_Mono } from 'next/font/google';
 import './globals.css';
 import { TopNav, TabBar } from '@/components/nav';
+import { THEME_INIT_SCRIPT } from '@/components/theme-toggle';
 
 /* Serif carries the editorial voice (headlines, section openers).
    Sans carries the reading. Mono carries every number. */
@@ -66,13 +67,20 @@ export const viewport: Viewport = {
   viewportFit: 'cover',
   // Android keyboard resizes the viewport instead of covering inputs.
   interactiveWidget: 'resizes-content',
-  themeColor: [{ media: '(prefers-color-scheme: light)', color: '#f4f1e9' }],
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f4f1e9' },
+    { media: '(prefers-color-scheme: dark)', color: '#131210' },
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id" className={`${display.variable} ${sans.variable} ${numeric.variable}`}>
+    <html lang="id" suppressHydrationWarning className={`${display.variable} ${sans.variable} ${numeric.variable}`}>
       <body className="min-h-dvh bg-bg text-ink antialiased">
+        {/* Palette decided before the first paint: localStorage wins, then the OS
+            preference. Inline and synchronous on purpose — a deferred script
+            would flash the light theme for one frame. */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         {/* Tanpa JavaScript, blok reveal akan menyembunyikan isi selamanya.
             <noscript> hanya dirender browser yang JS-nya mati, jadi di sana
             kita buka lagi semua elemen yang menunggu reveal. */}

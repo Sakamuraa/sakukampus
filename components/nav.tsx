@@ -8,6 +8,7 @@ import { GraduationCap } from '@phosphor-icons/react/dist/csr/GraduationCap';
 import { CalendarDots } from '@phosphor-icons/react/dist/csr/CalendarDots';
 import { Database } from '@phosphor-icons/react/dist/csr/Database';
 import Logo from '@/components/ui/logo';
+import { ThemeTab, ThemeToggle } from '@/components/theme-toggle';
 import { cn } from '@/lib/utils';
 
 const ITEMS = [
@@ -57,12 +58,16 @@ export function TopNav() {
           })}
         </nav>
 
-        <Link
-          href="/cek"
-          className="press inline-flex h-10 shrink-0 items-center justify-center rounded-ctl bg-ink px-5 text-[13.5px] font-semibold whitespace-nowrap text-bg hover:bg-accent hover:text-accent-ink"
-        >
-          Cek kelayakanku
-        </Link>
+        <div className="flex shrink-0 items-center gap-2">
+          <ThemeToggle />
+
+          <Link
+            href="/cek"
+            className="press inline-flex h-10 shrink-0 items-center justify-center rounded-ctl bg-ink px-5 text-[13.5px] font-semibold whitespace-nowrap text-bg hover:bg-accent hover:text-accent-ink"
+          >
+            Cek kelayakanku
+          </Link>
+        </div>
       </div>
     </header>
   );
@@ -77,7 +82,7 @@ export function TabBar() {
       className="fixed inset-x-0 bottom-0 z-50 border-t border-line-strong bg-bg/95 backdrop-blur-md lg:hidden"
       style={{ paddingBottom: 'env(safe-area-inset-bottom, 0)' }}
     >
-      <div className="grid grid-cols-5">
+      <div className="grid grid-cols-6">
         {ITEMS.map(({ href, short, Icon }) => {
           const active = isActive(pathname, href);
           return (
@@ -95,6 +100,7 @@ export function TabBar() {
             </Link>
           );
         })}
+        <ThemeTab />
       </div>
     </nav>
   );
