@@ -37,7 +37,7 @@ export async function GET(req: Request) {
   const umurHari = Math.floor(
     (Date.now() - Date.parse(seedsMeta.institutions.generated_at as string)) / 86_400_000,
   );
-  if (umurHari > 45) masalah.push(`katalog kampus berumur ${umurHari} hari — jalankan refresh shard`);
+  if (umurHari > 45) masalah.push(`katalog kampus berumur ${umurHari} hari — jalankan scripts/build-catalog.mjs`);
 
   return NextResponse.json(
     {

@@ -55,10 +55,10 @@ export function StateBadge({ state }: { state: DisplayState }) {
   return (
     <span
       className={cn(
-        'inline-flex shrink-0 items-center rounded-full border px-2.5 py-[3px] text-[11px] font-semibold tracking-[0.01em] uppercase',
-        tone === 'ok' && 'border-ok/30 bg-ok-soft text-ok',
-        tone === 'warn' && 'border-warn/30 bg-warn-soft text-warn',
-        tone === 'neutral' && 'border-line bg-surface-2 text-ink-faint',
+        'inline-flex shrink-0 items-center rounded-[4px] border px-2 py-[3px] text-[10.5px] font-semibold tracking-[0.07em] uppercase',
+        tone === 'ok' && 'border-ok/25 bg-ok-soft text-ok',
+        tone === 'warn' && 'border-warn/25 bg-warn-soft text-warn',
+        tone === 'neutral' && 'border-line-strong bg-surface-2 text-ink-faint',
       )}
     >
       {STATE_LABEL[state]}
@@ -78,12 +78,12 @@ export function SourceStamp({
 }) {
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface-2 px-2.5 py-[3px] text-[11px] font-semibold text-ink-dim uppercase">
+      <span className="inline-flex items-center gap-1.5 rounded-[4px] border border-line-strong bg-surface-2 px-2 py-[3px] text-[10.5px] font-semibold tracking-[0.06em] text-ink-dim uppercase">
         <SealCheck size={12} weight="fill" aria-hidden="true" />
         Diperiksa {tanggal(verifiedAt)}
       </span>
       {confidence !== undefined && confidence < 100 && (
-        <span className="inline-flex items-center rounded-full border border-line bg-surface-2 px-2.5 py-[3px] text-[11px] font-semibold text-ink-faint uppercase">
+        <span className="inline-flex items-center rounded-[4px] border border-line-strong bg-surface-2 px-2 py-[3px] text-[10.5px] font-semibold tracking-[0.06em] text-ink-faint uppercase">
           Keyakinan {confidence}%
         </span>
       )}
@@ -91,7 +91,7 @@ export function SourceStamp({
         href={url}
         target="_blank"
         rel="noreferrer noopener"
-        className="press inline-flex items-center gap-1 text-[12px] text-ink-faint underline decoration-line underline-offset-3 hover:text-ink-dim"
+        className="press inline-flex items-center gap-1 text-[12px] text-ink-faint underline decoration-line-strong underline-offset-3 hover:text-accent"
       >
         Sumber resmi
         <ArrowSquareOut size={12} aria-hidden="true" />
@@ -142,7 +142,7 @@ export function Reasons({ reasons }: { reasons: Candidate['reasons'] }) {
 /** Honest caveat. Used where the data is thinner than the reader would assume. */
 export function Caveat({ children }: { children?: React.ReactNode }) {
   return (
-    <div className="mt-4 flex items-start gap-2.5 rounded-card border border-warn/30 bg-warn-soft px-4 py-3.5">
+    <div className="mt-4 flex items-start gap-3 rounded-card border-l-2 border-warn bg-warn-soft/55 px-4 py-3.5">
       <Warning size={16} weight="fill" aria-hidden="true" className="mt-0.5 shrink-0 text-warn" />
       <p className="text-[13.5px] leading-relaxed text-ink-dim">
         {children ??
@@ -162,12 +162,12 @@ export function SectionHead({
   note?: string;
 }) {
   return (
-    <div className="mb-4 flex flex-wrap items-baseline justify-between gap-3">
+    <div className="mb-6 flex flex-wrap items-baseline justify-between gap-3">
       <div>
-        <h2 className="text-[clamp(1.25rem,2.4vw,1.55rem)] font-bold tracking-[-0.025em] text-ink">
+        <h2 className="font-display text-[clamp(1.4rem,2.6vw,1.85rem)] font-semibold tracking-[-0.022em] text-ink">
           {title}
         </h2>
-        {note && <p className="mt-1.5 max-w-[58ch] text-[13.5px] text-ink-faint">{note}</p>}
+        {note && <p className="mt-2 max-w-[58ch] text-[13.5px] text-ink-faint">{note}</p>}
       </div>
       {action}
     </div>

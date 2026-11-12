@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 
-/** Shape lock: cards are always 16px. */
+/** Shape lock: cards are always 10px. */
 export function Card({
   className,
   interactive = false,
@@ -11,7 +11,7 @@ export function Card({
       className={cn(
         'rounded-card border border-line bg-surface',
         interactive &&
-          'press cursor-pointer hover:border-line-strong hover:bg-surface-2 hover:shadow-[0_18px_40px_-24px_rgba(0,0,0,0.9)]',
+          'press cursor-pointer hover:border-line-strong hover:bg-surface-2 hover:shadow-lift',
         className,
       )}
       {...props}
@@ -26,7 +26,10 @@ export function CardHeader({ className, ...props }: React.HTMLAttributes<HTMLDiv
 export function CardTitle({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
   return (
     <h3
-      className={cn('text-[15px] font-semibold tracking-[-0.01em] text-ink', className)}
+      className={cn(
+        'font-display text-[16px] font-semibold tracking-[-0.015em] text-ink',
+        className,
+      )}
       {...props}
     />
   );

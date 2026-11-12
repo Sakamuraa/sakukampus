@@ -27,3 +27,7 @@ SakuKampus-*.pdf
 
 # cache tarikan PDDikti (scripts/build-catalog.mjs) — jangan di-commit
 data/.catalog-cache/
+
+# Next.js 16 menulis dua file ini sendiri saat dev/build
+AGENTS.md
+CLAUDE.md

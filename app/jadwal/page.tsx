@@ -42,13 +42,15 @@ export default function JadwalPage() {
 
   return (
     <>
-      <section className="border-b border-line">
-        <div className="wrap py-12 lg:py-16">
+      <section className="border-b border-line-strong">
+        <div className="wrap pt-14 pb-10 lg:pt-20 lg:pb-14">
           <Reveal>
-            <h1 className="max-w-[16ch] text-[clamp(1.9rem,4.5vw,2.9rem)] leading-[1.06] font-extrabold tracking-[-0.035em] text-ink">
+            <p className="eyebrow">Tenggat</p>
+            <h1 className="mt-4 max-w-[14ch] font-display text-[clamp(2.2rem,5vw,3.4rem)] leading-[1.03] font-semibold tracking-[-0.03em] text-ink">
               Jadwal dan tenggat
             </h1>
-            <p className="mt-4 max-w-[54ch] text-[16px] leading-relaxed text-ink-dim">
+            <div className="mt-6 h-px w-full bg-line-strong" />
+            <p className="mt-5 max-w-[52ch] text-[16px] leading-relaxed text-ink-dim">
               Dihitung mundur dari hari ini. Periksa ulang di situs resmi sebelum menutup
               pendaftaran.
             </p>
@@ -59,7 +61,7 @@ export default function JadwalPage() {
       <section className="section-pad">
         <div className="wrap">
           <Reveal className="flex flex-wrap items-baseline justify-between gap-3">
-            <h2 className="text-[clamp(1.25rem,2.4vw,1.6rem)] font-bold tracking-[-0.025em] text-ink">
+            <h2 className="font-display text-[clamp(1.4rem,2.6vw,1.9rem)] font-semibold tracking-[-0.022em] text-ink">
               Masih bisa didaftar
             </h2>
             <span className="text-[13.5px] text-ink-faint">{mendatang.length} tahap terbuka</span>
@@ -69,7 +71,7 @@ export default function JadwalPage() {
             <Reveal delay={0.05}>
               <Card className="mt-6">
                 <CardContent className="py-12 text-center">
-                  <p className="text-[15px] font-semibold text-ink">
+                  <p className="font-display text-[16px] font-semibold text-ink">
                     Belum ada tenggat yang akan datang
                   </p>
                   <p className="mt-1.5 text-[13.5px] text-ink-faint">
@@ -92,12 +94,12 @@ export default function JadwalPage() {
                   <Card
                     key={r.slug}
                     interactive
-                    className={mendesak ? 'border-warn/45 bg-warn-soft/40' : undefined}
+                    className={mendesak ? 'border-warn/45 bg-warn-soft/45' : undefined}
                   >
                     <CardContent className="flex items-start gap-5 py-5">
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-2">
-                          <h3 className="text-[15px] font-semibold text-ink">{r.nama}</h3>
+                          <h3 className="font-display text-[16px] font-semibold text-ink">{r.nama}</h3>
                           {mendesak && <Badge variant="warn">Mendesak</Badge>}
                         </div>
                         <p className="mt-1 text-[13px] text-ink-faint">{r.penyelenggara}</p>
@@ -131,7 +133,7 @@ export default function JadwalPage() {
 
                       <div className="shrink-0 text-right">
                         <p
-                          className={`num text-[clamp(1.5rem,4vw,2rem)] leading-none font-bold ${
+                          className={`num text-[clamp(1.7rem,4.4vw,2.2rem)] leading-none font-semibold ${
                             mendesak ? 'text-warn' : 'text-ink'
                           }`}
                         >
@@ -150,8 +152,8 @@ export default function JadwalPage() {
 
           {lewat.length > 0 && (
             <Reveal delay={0.1}>
-              <details className="mt-8 overflow-hidden rounded-card border border-line bg-surface">
-                <summary className="cursor-pointer px-5 py-4 text-[14px] font-medium text-ink-dim select-none hover:text-ink">
+              <details className="mt-8 overflow-hidden rounded-card border border-line-strong bg-surface">
+                <summary className="cursor-pointer px-5 py-4 font-display text-[15px] font-medium text-ink-dim select-none hover:text-ink">
                   {lewat.length} tahap sudah lewat
                 </summary>
                 <div className="divide-y divide-line border-t border-line">

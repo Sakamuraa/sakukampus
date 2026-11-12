@@ -1,32 +1,42 @@
 @import "tailwindcss";
 
 /* ============================================================
-   DESIGN TOKENS
-   Shape lock: cards 16px, controls 10px, badges full-pill.
-   One accent only (amber). Neutrals stay in a single cool family.
+   DESIGN TOKENS — "Kertas" (paper editorial)
+
+   Concept: the site reads like a well-set government gazette.
+   Warm paper ground, ink-black type, one deep-teal accent, hairline
+   rules instead of heavy borders, serif display for voice and sans
+   for reading. Numbers stay monospaced — this is a data product.
+
+   Shape lock: cards 10px, controls 8px, tags 4px.
    ============================================================ */
 @theme {
-  --color-bg: #0a0c10;
-  --color-surface: #12151c;
-  --color-surface-2: #1a1e27;
-  --color-surface-3: #222832;
-  --color-line: #262c39;
-  --color-line-strong: #363d4e;
-  --color-ink: #e8ecf4;
-  --color-ink-dim: #9aa4b8;
-  --color-ink-faint: #6b7588;
-  --color-accent: #f5a623;
-  --color-accent-soft: #3a2a0c;
-  --color-ok: #34d399;
-  --color-ok-soft: #0e2a22;
-  --color-warn: #fb923c;
-  --color-warn-soft: #2d1c0c;
+  --color-bg: #f4f1e9;
+  --color-surface: #fffdf8;
+  --color-surface-2: #efeade;
+  --color-surface-3: #e7e1d2;
+  --color-line: #ddd5c4;
+  --color-line-strong: #c2b8a2;
+  --color-ink: #17140f;
+  --color-ink-dim: #4b463c;
+  --color-ink-faint: #7e7666;
+  --color-accent: #0d5b63;
+  --color-accent-soft: #dbeaec;
+  --color-accent-ink: #ffffff;
+  --color-ok: #2c6a41;
+  --color-ok-soft: #e0eee4;
+  --color-warn: #9a5a12;
+  --color-warn-soft: #f5e9d5;
 
-  --radius-card: 16px;
-  --radius-ctl: 10px;
+  --radius-card: 10px;
+  --radius-ctl: 8px;
 
-  --font-display: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, monospace;
+
+  --shadow-lift: 0 1px 2px rgba(23, 20, 15, 0.04), 0 12px 28px -18px rgba(23, 20, 15, 0.28);
+  --shadow-float: 0 2px 4px rgba(23, 20, 15, 0.05), 0 26px 50px -26px rgba(23, 20, 15, 0.35);
 }
 
 /* ============================================================
@@ -45,11 +55,26 @@
   body {
     background: var(--color-bg);
     color: var(--color-ink);
-    font-family: var(--font-display);
+    font-family: var(--font-sans);
     font-size: 15px;
-    line-height: 1.55;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+  }
+
+  /* Serif carries the voice; sans carries the reading. */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.018em;
+    line-height: 1.12;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
   }
 
   a {
@@ -64,25 +89,31 @@
     font: inherit;
   }
 
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
+  }
+
   :focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 2px;
-    border-radius: 6px;
+    border-radius: 4px;
   }
 
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
   }
   ::-webkit-scrollbar-track {
-    background: transparent;
+    background: var(--color-surface-2);
   }
   ::-webkit-scrollbar-thumb {
-    background: var(--color-line);
+    background: var(--color-line-strong);
+    border: 2px solid var(--color-surface-2);
     border-radius: 999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-line-strong);
+    background: var(--color-ink-faint);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -100,17 +131,77 @@
 }
 
 /* ============================================================
+   REVEAL
+   Scroll-entry animation, done in CSS so the server and the client
+   render identical markup (framer-motion's reduced-motion branch
+   used to break hydration for exactly the visitors who wanted less
+   motion).
+
+   The hidden state applies to every [data-reveal="pending"]. Visitors
+   without JavaScript get it undone by the <noscript> style block in
+   app/layout.tsx, so nobody is left staring at an empty page.
+   ============================================================ */
+@layer components {
+  [data-reveal="pending"] {
+    opacity: 0;
+    transform: translateY(var(--reveal-y, 18px));
+  }
+
+  [data-reveal="in"] {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 550ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+      transform 550ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal="pending"] {
+      opacity: 1;
+      transform: none;
+    }
+    [data-reveal="in"] {
+      transition: none;
+    }
+  }
+}
+
+/* ============================================================
+   PAPER GRAIN
+   The ground is printed stock, not a flat fill. One fixed overlay,
+   pointer-events none, so nothing about the layout shifts.
+   ============================================================ */
+@layer components {
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+  }
+
+  #isi,
+  header,
+  footer {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+/* ============================================================
    LAYOUT PRIMITIVES
    ============================================================ */
 @utility wrap {
   width: 100%;
-  max-width: 1320px;
+  max-width: 1200px;
   margin-inline: auto;
   padding-inline: 20px;
 }
 
 @utility section-pad {
-  padding-block: clamp(44px, 6vw, 76px);
+  padding-block: clamp(48px, 7vw, 92px);
 }
 
 /* ============================================================
@@ -119,6 +210,26 @@
 @utility num {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* ============================================================
+   EYEBROW — the small label that opens a section.
+   Serif italic, not caps: it should read like a rubric line.
+   ============================================================ */
+@utility eyebrow {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 14px;
+  letter-spacing: 0.005em;
+  color: var(--color-accent);
+}
+
+/* ============================================================
+   RULE — a hairline with an accent tick, used to open sections.
+   ============================================================ */
+@utility rule {
+  border-top: 1px solid var(--color-line-strong);
 }
 
 /* ============================================================
@@ -135,8 +246,8 @@
   overflow: visible;
 }
 .sheet::backdrop {
-  background: rgba(3, 5, 8, 0.72);
-  backdrop-filter: blur(6px);
+  background: rgba(23, 20, 15, 0.42);
+  backdrop-filter: blur(3px);
 }
 
 /* ============================================================

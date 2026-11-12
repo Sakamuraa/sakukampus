@@ -16,10 +16,7 @@ export function Field({
 }) {
   return (
     <div className={cn('grid gap-2', className)}>
-      <label
-        htmlFor={htmlFor}
-        className="text-[13px] font-medium text-ink-dim"
-      >
+      <label htmlFor={htmlFor} className="text-[12.5px] font-semibold tracking-[0.02em] text-ink-dim">
         {label}
       </label>
       {children}
@@ -28,14 +25,14 @@ export function Field({
   );
 }
 
-/** Shape lock: inputs use radius-ctl (10px), same as buttons. */
+/** Shape lock: inputs use radius-ctl (8px), same as buttons. */
 export function Input({ className, ...props }: React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <input
       className={cn(
-        'press h-11 w-full rounded-ctl border border-line bg-surface-2 px-3.5',
+        'press h-11 w-full rounded-ctl border border-line-strong bg-surface px-3.5',
         'text-[15px] text-ink placeholder:text-ink-faint',
-        'focus:border-accent/60 focus:outline-none focus:ring-2 focus:ring-accent/25',
+        'focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/18',
         'disabled:opacity-50',
         className,
       )}

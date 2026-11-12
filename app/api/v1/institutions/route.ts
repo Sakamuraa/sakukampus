@@ -78,6 +78,9 @@ export async function GET(req: Request) {
     data: hasil.map((i) => ({
       kode: i.kode,
       nama: i.nama,
+      // Nama yang biasa dipakai orang ("UIN SYARIF HIDAYATULLAH JAKARTA").
+      // Null kalau sama dengan nama resmi.
+      nama_populer: i.namaPopuler && i.namaPopuler !== i.nama ? i.namaPopuler : null,
       jenis: i.jenis,
       punya_ukt: Boolean(i.ukt),
       jumlah_prodi: i.ukt?.prodi.length ?? 0,

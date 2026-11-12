@@ -4,13 +4,13 @@ type Variant = 'primary' | 'secondary' | 'ghost' | 'danger';
 type Size = 'sm' | 'md' | 'lg';
 
 const VARIANTS: Record<Variant, string> = {
-  /* One accent, locked across the whole product. */
+  /* One accent, locked across the whole product: teal on paper. */
   primary:
-    'bg-accent text-[#14100a] hover:bg-[#ffb739] shadow-[0_1px_0_rgba(255,255,255,0.25)_inset,0_6px_20px_-8px_rgba(245,166,35,0.6)]',
+    'bg-accent text-accent-ink hover:bg-[#0a4a51] shadow-[0_1px_0_rgba(255,255,255,0.14)_inset]',
   secondary:
-    'bg-surface-2 text-ink border border-line hover:border-line-strong hover:bg-surface-3',
+    'bg-surface text-ink border border-line-strong hover:border-ink hover:bg-surface-2',
   ghost: 'text-ink-dim hover:text-ink hover:bg-surface-2',
-  danger: 'bg-[#3a1518] text-[#ff8f8f] border border-[#5c2226] hover:bg-[#4a1a1e]',
+  danger: 'bg-[#8f2d28] text-white border border-[#7a2622] hover:bg-[#7a2622]',
 };
 
 const SIZES: Record<Size, string> = {
@@ -19,7 +19,7 @@ const SIZES: Record<Size, string> = {
   lg: 'h-12 px-6 text-[15px] gap-2',
 };
 
-/** Shape lock: every control uses radius-ctl (10px). */
+/** Shape lock: every control uses radius-ctl (8px). */
 export function Button({
   className,
   variant = 'primary',

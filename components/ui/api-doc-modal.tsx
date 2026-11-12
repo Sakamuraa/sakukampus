@@ -42,13 +42,13 @@ export default function ApiDocModal({ onClose }: { onClose: () => void }) {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.2 }}
       >
-        <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
+        <div className="absolute inset-0 bg-[#17140f]/45 backdrop-blur-[3px]" onClick={onClose} />
 
         <motion.div
           role="dialog"
           aria-modal="true"
           aria-label="Dokumentasi API"
-          className="relative flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-2xl border border-line bg-surface shadow-[0_-20px_60px_-20px_rgba(0,0,0,0.9)] sm:max-h-[85dvh] sm:max-w-3xl sm:rounded-2xl"
+          className="relative flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-card border border-line-strong bg-surface shadow-float sm:max-h-[85dvh] sm:max-w-3xl sm:rounded-card"
           initial={{ y: 40, opacity: 0, scale: 0.98 }}
           animate={{ y: 0, opacity: 1, scale: 1 }}
           exit={{ y: 24, opacity: 0, scale: 0.98 }}
@@ -84,7 +84,7 @@ export default function ApiDocModal({ onClose }: { onClose: () => void }) {
                     className={cn(
                       'press block w-full border-l-2 px-4 py-3.5 text-left',
                       selected.path === d.path
-                        ? 'border-accent bg-accent/8'
+                        ? 'border-accent bg-accent-soft'
                         : 'border-transparent hover:bg-surface-2',
                     )}
                   >
@@ -151,8 +151,8 @@ export default function ApiDocModal({ onClose }: { onClose: () => void }) {
                         className={cn(
                           'press flex w-full items-center gap-3 rounded-ctl border px-3.5 py-3 text-left',
                           open
-                            ? 'border-accent/40 bg-accent/8'
-                            : 'border-line bg-surface-2 hover:border-line-strong',
+                            ? 'border-accent/40 bg-accent-soft'
+                            : 'border-line-strong bg-surface-2 hover:border-ink-faint',
                         )}
                       >
                         <span
@@ -191,14 +191,14 @@ export default function ApiDocModal({ onClose }: { onClose: () => void }) {
                                   {copied ? 'Tersalin' : 'Salin'}
                                 </button>
                               </div>
-                              <pre className="overflow-x-auto rounded-ctl border border-line bg-bg p-4 font-mono text-[12px] leading-relaxed whitespace-pre-wrap break-all text-ink">
+                              <pre className="overflow-x-auto rounded-ctl border border-line-strong bg-surface-2 p-4 font-mono text-[12px] leading-relaxed whitespace-pre-wrap break-all text-ink">
                                 {meth.curl}
                               </pre>
 
                               <span className="mt-4 mb-2 block text-[11px] font-semibold tracking-[0.1em] text-ink-faint uppercase">
                                 Response
                               </span>
-                              <pre className="max-h-64 overflow-auto rounded-ctl border border-line bg-bg p-4 font-mono text-[12px] leading-relaxed text-ok">
+                              <pre className="max-h-64 overflow-auto rounded-ctl border border-line-strong bg-surface-2 p-4 font-mono text-[12px] leading-relaxed text-ink-dim">
                                 {JSON.stringify(meth.response, null, 2)}
                               </pre>
                             </div>

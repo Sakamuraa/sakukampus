@@ -32,6 +32,7 @@ import { cn } from '@/lib/utils';
 type KampusRingkas = {
   kode: string;
   nama: string;
+  nama_populer?: string | null;
   jenis: string;
   punya_ukt: boolean;
   jumlah_prodi: number;
@@ -66,15 +67,15 @@ const GROUP_TINT: Record<string, string> = {
 
 function Step({ n, title, note, children }: { n: number; title: string; note?: string; children: React.ReactNode }) {
   return (
-    <Reveal className="relative pl-11">
-      <span className="absolute top-0 left-0 grid h-7 w-7 place-items-center rounded-full border border-line bg-surface-2 font-mono text-[12px] font-semibold text-accent">
+    <Reveal className="relative pl-12">
+      <span className="num absolute top-0.5 left-0 grid h-8 w-8 place-items-center rounded-[4px] border border-accent/30 bg-accent-soft text-[12.5px] font-semibold text-accent">
         {n}
       </span>
       <div className="pb-1">
-        <h2 className="text-[15px] font-semibold text-ink">{title}</h2>
-        {note && <p className="mt-1 text-[13.5px] text-ink-faint">{note}</p>}
+        <h2 className="font-display text-[19px] font-semibold text-ink">{title}</h2>
+        {note && <p className="mt-1.5 text-[13.5px] text-ink-faint">{note}</p>}
       </div>
-      <div className="pt-4">{children}</div>
+      <div className="pt-5">{children}</div>
     </Reveal>
   );
 }
@@ -145,7 +146,7 @@ export default function CekClient() {
 
   async function pilihKampus(k: KampusRingkas) {
     setKandidat([]);
-    setQ(k.nama);
+    setQ(k.nama_populer ?? k.nama);
     setKelompok(null);
     setManual('');
     setHasil(null);
@@ -254,13 +255,15 @@ export default function CekClient() {
 
   return (
     <>
-      <section className="border-b border-line">
-        <div className="wrap max-w-3xl py-12 lg:py-16">
+      <section className="border-b border-line-strong">
+        <div className="wrap max-w-3xl pt-14 pb-10 lg:pt-20 lg:pb-14">
           <Reveal>
-            <h1 className="text-[clamp(1.9rem,4.5vw,2.9rem)] leading-[1.06] font-extrabold tracking-[-0.035em] text-ink">
+            <p className="eyebrow">Perhitungan</p>
+            <h1 className="mt-4 max-w-[16ch] font-display text-[clamp(2.2rem,5vw,3.4rem)] leading-[1.03] font-semibold tracking-[-0.03em] text-ink">
               Cek kelayakan beasiswa
             </h1>
-            <p className="mt-4 max-w-[56ch] text-[16px] leading-relaxed text-ink-dim">
+            <div className="mt-6 h-px w-full bg-line-strong" />
+            <p className="mt-5 max-w-[54ch] text-[16px] leading-relaxed text-ink-dim">
               Pilih kampus dan golongan UKT-mu. Kolom lain boleh dikosongkan. Hasilnya akan jujur
               berkata <span className="text-warn">perlu data</span>, bukan menolak.
             </p>
@@ -305,7 +308,7 @@ export default function CekClient() {
                   [0, 1, 2].map((i) => (
                     <div
                       key={i}
-                      className="h-[62px] animate-pulse rounded-card border border-line bg-surface"
+                      className="h-[62px] animate-pulse rounded-card border border-line-strong bg-surface"
                     />
                   ))}
 
@@ -315,11 +318,14 @@ export default function CekClient() {
                       key={k.kode}
                       type="button"
                       onClick={() => pilihKampus(k)}
-                      className="press flex w-full items-center gap-4 rounded-card border border-line bg-surface px-4 py-3.5 text-left hover:border-accent/50 hover:bg-surface-2"
+                      className="press flex w-full items-center gap-4 rounded-card border border-line-strong bg-surface px-4 py-3.5 text-left hover:border-accent hover:bg-surface-2"
                     >
                       <div className="min-w-0 flex-1">
-                        <p className="truncate text-[14.5px] font-semibold text-ink">{k.nama}</p>
-                        <p className="mt-0.5 text-[12.5px] text-ink-faint">
+                        <p className="truncate font-display text-[15.5px] font-semibold text-ink">
+                          {k.nama_populer ?? k.nama}
+                        </p>
+                        <p className="mt-0.5 truncate text-[12.5px] text-ink-faint">
+                          {k.nama_populer ? `${k.nama} · ` : ''}
                           {k.kode} · {k.jenis.toLowerCase()} ·{' '}
                           {k.punya_ukt ? `${k.jumlah_prodi} prodi berdata` : 'UKT manual'}
                         </p>
@@ -329,7 +335,7 @@ export default function CekClient() {
                   ))}
 
                 {!mencari && q.trim().length >= 3 && kandidat.length === 0 && (
-                  <p className="rounded-card border border-line bg-surface px-4 py-3.5 text-[13.5px] text-ink-faint">
+                  <p className="rounded-card border border-line-strong bg-surface px-4 py-3.5 text-[13.5px] text-ink-faint">
                     Tidak ada kampus yang cocok dengan “{q.trim()}”.
                   </p>
                 )}
@@ -341,12 +347,12 @@ export default function CekClient() {
               <Reveal>
                 <Card
                   className={cn(
-                    kampus.ukt_model === 'ptkin_kma' && 'border-accent/40 bg-accent/6',
+                    kampus.ukt_model === 'ptkin_kma' && 'border-accent/35 bg-accent-soft/45',
                   )}
                 >
                   <CardContent className="flex flex-wrap items-start justify-between gap-3 py-5">
                     <div className="min-w-0">
-                      <p className="text-[15.5px] font-semibold text-ink">{kampus.nama}</p>
+                      <p className="font-display text-[16.5px] font-semibold text-ink">{kampus.nama}</p>
                       <p className="mt-1 text-[12.5px] text-ink-faint">
                         {kampus.kode} · {kampus.jenis.toLowerCase()}
                       </p>
@@ -371,7 +377,7 @@ export default function CekClient() {
             {kampus && (
               <Step n={2} title="UKT" note="Tentukan golongan atau nominal yang kamu bayar.">
                 {kampus.ukt_model !== 'ptkin_kma' && (
-                  <div className="mb-3 flex items-start gap-2.5 rounded-ctl border border-warn/35 bg-warn-soft px-4 py-3">
+                  <div className="mb-3 flex items-start gap-2.5 rounded-ctl border-l-2 border-warn bg-warn-soft/55 px-4 py-3">
                     <Warning size={15} className="mt-0.5 shrink-0 text-warn" />
                     <p className="text-[13px] leading-relaxed text-ink-dim">
                       Kampus ini belum punya tabel UKT terverifikasi. Isi nominal per semester yang
@@ -385,7 +391,7 @@ export default function CekClient() {
                   onClick={() =>
                     setSheet(kampus.ukt_model === 'ptkin_kma' ? 'ukt' : 'manual')
                   }
-                  className="press flex w-full items-center gap-3 rounded-card border border-line bg-surface px-4 py-4 text-left hover:border-accent/50 hover:bg-surface-2"
+                  className="press flex w-full items-center gap-3 rounded-card border border-line-strong bg-surface px-4 py-4 text-left hover:border-accent hover:bg-surface-2"
                 >
                   <SlidersHorizontal size={17} className="shrink-0 text-accent" />
                   <span className="min-w-0 flex-1 truncate text-[14px] text-ink">
@@ -486,7 +492,7 @@ export default function CekClient() {
             )}
 
             {galat && (
-              <div className="rounded-ctl border border-[#5c2226] bg-[#3a1518] px-4 py-3 text-[13.5px] text-[#ff8f8f]">
+              <div className="rounded-ctl border-l-2 border-[#8f2d28] bg-[#f7e6e4] px-4 py-3 text-[13.5px] text-[#7a2622]">
                 {galat}
               </div>
             )}
@@ -501,8 +507,8 @@ export default function CekClient() {
                 animate={{ opacity: 1 }}
                 className="mt-14"
               >
-                <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-line pb-4">
-                  <h2 className="text-[clamp(1.3rem,2.4vw,1.6rem)] font-bold tracking-[-0.025em] text-ink">
+                <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-line-strong pb-4">
+                  <h2 className="font-display text-[clamp(1.4rem,2.6vw,1.9rem)] font-semibold tracking-[-0.022em] text-ink">
                     {hasil.length} beasiswa diperiksa
                   </h2>
                   <Link
@@ -514,10 +520,10 @@ export default function CekClient() {
                 </div>
 
                 {uktInfo && (
-                  <div className="mt-4 flex flex-wrap items-center justify-between gap-4 rounded-card border border-line bg-surface px-5 py-4">
+                  <div className="mt-4 flex flex-wrap items-center justify-between gap-4 rounded-card border border-line-strong bg-surface px-5 py-4">
                     <div>
                       <p className="text-[12.5px] text-ink-faint">UKT yang dipakai</p>
-                      <p className="num mt-0.5 text-[20px] font-bold text-accent">
+                      <p className="num mt-0.5 text-[20px] font-semibold text-accent">
                         {rp(uktInfo.dipakai)}
                       </p>
                     </div>
@@ -558,9 +564,7 @@ export default function CekClient() {
                             <CardHeader>
                               <div className="flex items-start justify-between gap-3">
                                 <div className="min-w-0">
-                                  <CardTitle className="text-[15px] leading-snug">
-                                    {h.name}
-                                  </CardTitle>
+                                  <CardTitle className="leading-snug">{h.name}</CardTitle>
                                   <CardDescription className="mt-1">{h.provider}</CardDescription>
                                 </div>
                                 <StateBadge state={h.displayState} />
@@ -635,10 +639,10 @@ export default function CekClient() {
         onClose={() => setSheet(null)}
       >
         {sheet === 'ukt' && kampus?.ukt_model === 'ptkin_kma' && (
-          <div className="flex max-h-[86dvh] flex-col overflow-hidden rounded-card border border-line bg-surface">
-            <div className="flex shrink-0 items-start justify-between gap-4 border-b border-line px-5 py-4">
+          <div className="flex max-h-[86dvh] flex-col overflow-hidden rounded-card border border-line-strong bg-surface shadow-float">
+            <div className="flex shrink-0 items-start justify-between gap-4 border-b border-line-strong px-5 py-4">
               <div className="min-w-0">
-                <h3 id="sheet-title" className="text-[15.5px] font-semibold text-ink">
+                <h3 id="sheet-title" className="font-display text-[17px] font-semibold text-ink">
                   Prodi dan golongan UKT
                 </h3>
                 <p className="mt-0.5 truncate text-[12.5px] text-ink-faint">{kampus.nama}</p>
@@ -646,7 +650,7 @@ export default function CekClient() {
               <button
                 onClick={tutupSheet}
                 aria-label="Tutup"
-                className="press grid h-8 w-8 shrink-0 place-items-center rounded-ctl border border-line text-ink-faint hover:border-line-strong hover:text-ink"
+                className="press grid h-8 w-8 shrink-0 place-items-center rounded-ctl border border-line-strong text-ink-faint hover:border-ink hover:text-ink"
               >
                 <X size={15} />
               </button>
@@ -694,8 +698,8 @@ export default function CekClient() {
                           className={cn(
                             'press rounded-ctl border px-3 py-2.5 text-left',
                             on
-                              ? 'border-accent bg-accent text-[#14100a]'
-                              : 'border-line bg-surface-2 text-ink-dim hover:border-line-strong',
+                              ? 'border-accent bg-accent text-accent-ink'
+                              : 'border-line-strong bg-surface-2 text-ink-dim hover:border-ink-faint',
                           )}
                         >
                           <span className="block text-[13px] font-semibold">
@@ -711,9 +715,9 @@ export default function CekClient() {
                 </div>
 
                 {uktTerpilih && (
-                  <div className="rounded-ctl border border-line bg-surface-2 px-4 py-3">
+                  <div className="rounded-ctl border border-line-strong bg-surface-2 px-4 py-3">
                     <span className="text-[13px] text-ink-dim">UKT-mu </span>
-                    <span className="num text-[17px] font-bold text-accent">
+                    <span className="num text-[17px] font-semibold text-accent">
                       {rp(uktTerpilih.nominal)}
                     </span>
                   </div>
@@ -730,7 +734,7 @@ export default function CekClient() {
               </div>
             </div>
 
-            <div className="shrink-0 border-t border-line px-5 py-4">
+            <div className="shrink-0 border-t border-line-strong px-5 py-4">
               <Button className="w-full" onClick={tutupSheet}>
                 Simpan pilihan
               </Button>
@@ -739,15 +743,15 @@ export default function CekClient() {
         )}
 
         {sheet === 'manual' && kampus && kampus.ukt_model !== 'ptkin_kma' && (
-          <div className="flex max-h-[86dvh] flex-col overflow-hidden rounded-card border border-line bg-surface">
-            <div className="flex shrink-0 items-center justify-between gap-4 border-b border-line px-5 py-4">
-              <h3 id="sheet-title" className="text-[15.5px] font-semibold text-ink">
+          <div className="flex max-h-[86dvh] flex-col overflow-hidden rounded-card border border-line-strong bg-surface shadow-float">
+            <div className="flex shrink-0 items-center justify-between gap-4 border-b border-line-strong px-5 py-4">
+              <h3 id="sheet-title" className="font-display text-[17px] font-semibold text-ink">
                 Nominal UKT-mu
               </h3>
               <button
                 onClick={tutupSheet}
                 aria-label="Tutup"
-                className="press grid h-8 w-8 shrink-0 place-items-center rounded-ctl border border-line text-ink-faint hover:border-line-strong hover:text-ink"
+                className="press grid h-8 w-8 shrink-0 place-items-center rounded-ctl border border-line-strong text-ink-faint hover:border-ink hover:text-ink"
               >
                 <X size={15} />
               </button>
@@ -770,7 +774,7 @@ export default function CekClient() {
               </Field>
             </div>
 
-            <div className="shrink-0 border-t border-line px-5 py-4">
+            <div className="shrink-0 border-t border-line-strong px-5 py-4">
               <Button className="w-full" onClick={tutupSheet}>
                 Simpan
               </Button>

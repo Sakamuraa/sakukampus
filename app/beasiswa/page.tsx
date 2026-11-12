@@ -58,13 +58,15 @@ export default async function BeasiswaPage({
 
   return (
     <>
-      <section className="border-b border-line">
-        <div className="wrap py-12 lg:py-16">
+      <section className="border-b border-line-strong">
+        <div className="wrap pt-14 pb-10 lg:pt-20 lg:pb-14">
           <Reveal>
-            <h1 className="max-w-[18ch] text-[clamp(1.9rem,4.5vw,2.9rem)] leading-[1.06] font-extrabold tracking-[-0.035em] text-ink">
+            <p className="eyebrow">Katalog</p>
+            <h1 className="mt-4 max-w-[16ch] font-display text-[clamp(2.2rem,5vw,3.4rem)] leading-[1.03] font-semibold tracking-[-0.03em] text-ink">
               Katalog beasiswa
             </h1>
-            <p className="mt-4 max-w-[56ch] text-[16px] leading-relaxed text-ink-dim">
+            <div className="mt-6 h-px w-full bg-line-strong" />
+            <p className="mt-5 max-w-[54ch] text-[16px] leading-relaxed text-ink-dim">
               {semua.length} program dari kampus, pemerintah, dan swasta. Setiap syarat UKT
               diterjemahkan ke rupiah.
             </p>
@@ -73,14 +75,14 @@ export default async function BeasiswaPage({
       </section>
 
       {/* Filter rail — single scrollable line, wraps on desktop */}
-      <div className="sticky top-0 z-30 border-b border-line bg-bg/85 backdrop-blur-xl lg:top-[68px]">
+      <div className="sticky top-0 z-30 border-b border-line-strong bg-bg/92 backdrop-blur-md lg:top-[72px]">
         <div className="wrap flex gap-2 overflow-x-auto py-3.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <Link
             href="/beasiswa"
             className={`press inline-flex h-9 shrink-0 items-center justify-center rounded-ctl border px-3.5 text-[13px] font-medium whitespace-nowrap ${
               on() && !tier
-                ? 'border-accent/40 bg-accent-soft text-accent'
-                : 'border-line bg-surface text-ink-dim hover:border-line-strong hover:text-ink'
+                ? 'border-accent bg-accent text-accent-ink'
+                : 'border-line-strong bg-surface text-ink-dim hover:border-ink hover:text-ink'
             }`}
           >
             Semua ({semua.length})
@@ -91,8 +93,8 @@ export default async function BeasiswaPage({
               href={`/beasiswa?tier=${t}`}
               className={`press inline-flex h-9 shrink-0 items-center justify-center rounded-ctl border px-3.5 text-[13px] font-medium whitespace-nowrap ${
                 tier === t
-                  ? 'border-accent/40 bg-accent-soft text-accent'
-                  : 'border-line bg-surface text-ink-dim hover:border-line-strong hover:text-ink'
+                  ? 'border-accent bg-accent text-accent-ink'
+                  : 'border-line-strong bg-surface text-ink-dim hover:border-ink hover:text-ink'
               }`}
             >
               {TIER_LABEL[t]} ({count(t)})
@@ -102,8 +104,8 @@ export default async function BeasiswaPage({
             href="/beasiswa?status=buka"
             className={`press inline-flex h-9 shrink-0 items-center justify-center rounded-ctl border px-3.5 text-[13px] font-medium whitespace-nowrap ${
               status === 'buka'
-                ? 'border-ok/40 bg-ok-soft text-ok'
-                : 'border-line bg-surface text-ink-dim hover:border-line-strong hover:text-ink'
+                ? 'border-ok bg-ok text-white'
+                : 'border-line-strong bg-surface text-ink-dim hover:border-ink hover:text-ink'
             }`}
           >
             Masih terbuka ({count('buka')})
@@ -117,7 +119,7 @@ export default async function BeasiswaPage({
             <Reveal>
               <Card className="mx-auto max-w-[460px] text-center">
                 <CardContent className="py-12">
-                  <p className="text-[15px] font-semibold text-ink">Tidak ada hasil</p>
+                  <p className="font-display text-[16px] font-semibold text-ink">Tidak ada hasil</p>
                   <p className="mt-1.5 text-[13.5px] text-ink-faint">
                     Coba ubah filter di atas.
                   </p>
@@ -136,7 +138,7 @@ export default async function BeasiswaPage({
                   <CardHeader>
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
-                        <CardTitle className="text-[15.5px] leading-snug">{s.name}</CardTitle>
+                        <CardTitle className="leading-snug">{s.name}</CardTitle>
                         <CardDescription className="mt-1.5 flex items-center gap-1.5">
                           <SealCheck size={13} weight="bold" className="shrink-0 text-ok" />
                           {s.provider}

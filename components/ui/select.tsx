@@ -173,10 +173,10 @@ export function Select({
         onClick={() => (open ? close(false) : openList())}
         onKeyDown={onTriggerKey}
         className={cn(
-          'press flex h-11 w-full items-center gap-2 rounded-ctl border bg-surface-2 px-3.5 text-left',
+          'press flex h-11 w-full items-center gap-2 rounded-ctl border bg-surface px-3.5 text-left',
           'text-[15px]',
           disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
-          open ? 'border-accent/60 ring-2 ring-accent/25' : 'border-line hover:border-line-strong',
+          open ? 'border-accent ring-2 ring-accent/18' : 'border-line-strong hover:border-ink-faint',
         )}
       >
         <span
@@ -206,7 +206,7 @@ export function Select({
             onKeyDown={onListKey}
             onMouseEnter={() => setHovering(true)}
             onMouseLeave={() => setHovering(false)}
-            className="fixed z-[80] overflow-hidden rounded-card border border-line bg-surface shadow-[0_28px_60px_-24px_rgba(0,0,0,0.95)] focus:outline-none"
+            className="fixed z-[80] overflow-hidden rounded-card border border-line-strong bg-surface shadow-float focus:outline-none"
             style={{
               top: pos.top,
               left: pos.left,
@@ -273,7 +273,7 @@ export function Select({
                     className={cn(
                       'flex cursor-pointer items-center gap-3 px-4 py-2.5',
                       isActive && !hovering && 'bg-surface-2',
-                      on && 'bg-accent/8',
+                      on && 'bg-accent-soft',
                     )}
                   >
                     <span

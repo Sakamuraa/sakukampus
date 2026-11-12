@@ -60,13 +60,15 @@ export default function DataPage() {
 
   return (
     <>
-      <section className="border-b border-line">
-        <div className="wrap py-12 lg:py-16">
+      <section className="border-b border-line-strong">
+        <div className="wrap pt-14 pb-10 lg:pt-20 lg:pb-14">
           <Reveal>
-            <h1 className="max-w-[16ch] text-[clamp(1.9rem,4.5vw,2.9rem)] leading-[1.06] font-extrabold tracking-[-0.035em] text-ink">
+            <p className="eyebrow">Transparansi</p>
+            <h1 className="mt-4 max-w-[15ch] font-display text-[clamp(2.2rem,5vw,3.4rem)] leading-[1.03] font-semibold tracking-[-0.03em] text-ink">
               Status data dan sumber
             </h1>
-            <p className="mt-4 max-w-[58ch] text-[16px] leading-relaxed text-ink-dim">
+            <div className="mt-6 h-px w-full bg-line-strong" />
+            <p className="mt-5 max-w-[56ch] text-[16px] leading-relaxed text-ink-dim">
               Asal setiap angka, kapan terakhir diambil, dan mana yang masih kurang.
             </p>
           </Reveal>
@@ -84,7 +86,7 @@ export default function DataPage() {
               <CardContent className="divide-y divide-line">
                 <Row k="Kampus terindeks" v={n(seedsMeta.institutions.count)} />
                 <Row k="Diambil terakhir" v={generatedAt} />
-                <Row k="Sumber" v="api-pddikti.kemdiktisaintek.go.id" mono />
+                <Row k="Sumber" v="pddikti.kemdiktisaintek.go.id" mono />
               </CardContent>
             </Card>
           </Reveal>
@@ -107,8 +109,8 @@ export default function DataPage() {
           </Reveal>
 
           <Reveal delay={0.1} className="lg:col-span-2">
-            <div className="rounded-card border border-ok/30 bg-ok-soft/60 px-5 py-5 sm:px-6">
-              <p className="text-[15px] font-semibold text-ok">
+            <div className="rounded-card border-l-2 border-ok bg-ok-soft/55 px-5 py-5 sm:px-6">
+              <p className="font-display text-[16px] font-semibold text-ok">
                 Nomor golongan tidak sebanding antar kampus
               </p>
               <p className="mt-2 max-w-[76ch] text-[14px] leading-relaxed text-ink-dim">
@@ -166,19 +168,20 @@ export default function DataPage() {
       <section className="section-pad border-t border-line">
         <div className="wrap">
           <Reveal>
-            <h2 className="text-[clamp(1.25rem,2.4vw,1.6rem)] font-bold tracking-[-0.025em] text-ink">
+            <p className="eyebrow">Batasan</p>
+            <h2 className="mt-3 font-display text-[clamp(1.4rem,2.6vw,1.9rem)] font-semibold tracking-[-0.022em] text-ink">
               Keterbatasan metode
             </h2>
           </Reveal>
-          <Stagger className="mt-6 grid gap-4 sm:grid-cols-3" gap={0.06}>
+          <Stagger className="mt-8 grid gap-6 sm:grid-cols-3" gap={0.06}>
             {[
               ['Origin header', 'API PDDikti mensyaratkan header Origin yang tepat, dan paginasi diabaikan. Katalog disusun per kata kunci.'],
               ['Sumber UKT', 'Nominal per golongan berasal dari dekrit KMA 204/2026. Kampus lain memakai input manual dan ditandai belum diverifikasi.'],
               ['Bukan penyelenggara', 'Kami tidak menerima pendaftaran. Semua tautan mengarah ke situs resmi penyelenggara.'],
             ].map(([t, d]) => (
               <div key={t} className="border-t border-line-strong pt-4">
-                <p className="text-[14px] font-semibold text-ink">{t}</p>
-                <p className="mt-1.5 text-[13.5px] leading-relaxed text-ink-faint">{d}</p>
+                <p className="font-display text-[15.5px] font-semibold text-ink">{t}</p>
+                <p className="mt-2 text-[13.5px] leading-relaxed text-ink-faint">{d}</p>
               </div>
             ))}
           </Stagger>

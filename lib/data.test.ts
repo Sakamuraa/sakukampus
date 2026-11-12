@@ -53,6 +53,19 @@ describe('searchInstitutions', () => {
   it('menghormati batas hasil', () => {
     expect(searchInstitutions('universitas', { limit: 5 }).length).toBeLessThanOrEqual(5);
   });
+
+  it('menemukan kampus lewat nama populer yang memuat kota', () => {
+    // Nama resmi PDDikti tidak memuat kota ("UNIVERSITAS ISLAM NEGERI SYARIF
+    // HIDAYATULLAH"), tapi orang menulis "UIN Jakarta".
+    const hasil = searchInstitutions('UIN Jakarta');
+    expect(hasil[0]?.kode).toBe('201001');
+  });
+
+  it('nama populer tersedia untuk PTKIN dan terpasang di indeks', () => {
+    const uin = institutionsByKode.get('201001')!;
+    expect(uin.namaPopuler).toBe('UIN SYARIF HIDAYATULLAH JAKARTA');
+    expect(searchInstitutions('syarif hidayatullah jakarta').map((i) => i.kode)).toContain('201001');
+  });
 });
 
 describe('seed beasiswa', () => {

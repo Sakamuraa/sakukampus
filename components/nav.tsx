@@ -25,16 +25,16 @@ export function TopNav() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 hidden border-b border-white/[0.06] bg-bg/70 backdrop-blur-xl supports-[backdrop-filter]:bg-bg/60 lg:block">
-      <div className="wrap flex h-[68px] items-center gap-8">
+    <header className="sticky top-0 z-50 hidden border-b border-line-strong bg-bg/92 backdrop-blur-md supports-[backdrop-filter]:bg-bg/80 lg:block">
+      <div className="wrap flex h-[72px] items-center gap-10">
         <Link href="/" className="press flex shrink-0 items-center gap-2.5" aria-label="SakuKampus beranda">
           <Logo className="h-7 w-7" />
-          <span className="text-[15px] font-bold tracking-[-0.02em] text-ink">
+          <span className="font-display text-[18px] leading-none font-semibold tracking-[-0.02em] text-ink">
             SakuKampus
           </span>
         </Link>
 
-        <nav className="flex min-w-0 flex-1 items-center gap-1" aria-label="Navigasi utama">
+        <nav className="flex min-w-0 flex-1 items-stretch gap-7 self-stretch" aria-label="Navigasi utama">
           {ITEMS.map(({ href, label }) => {
             const active = isActive(pathname, href);
             return (
@@ -43,10 +43,12 @@ export function TopNav() {
                 href={href}
                 aria-current={active ? 'page' : undefined}
                 className={cn(
-                  'press rounded-ctl px-3 py-2 text-[13.5px] font-medium whitespace-nowrap',
+                  'press relative flex items-center text-[13.5px] font-medium whitespace-nowrap',
+                  'after:absolute after:inset-x-0 after:bottom-0 after:h-[2px] after:origin-left after:bg-accent',
+                  'after:transition-transform after:duration-200',
                   active
-                    ? 'bg-surface-2 text-accent'
-                    : 'text-ink-dim hover:bg-surface-2 hover:text-ink',
+                    ? 'text-ink after:scale-x-100'
+                    : 'text-ink-dim after:scale-x-0 hover:text-ink hover:after:scale-x-100',
                 )}
               >
                 {label}
@@ -57,7 +59,7 @@ export function TopNav() {
 
         <Link
           href="/cek"
-          className="press inline-flex h-9 shrink-0 items-center justify-center rounded-ctl bg-accent px-4 text-[13.5px] font-semibold whitespace-nowrap text-[#14100a] hover:bg-[#ffb739]"
+          className="press inline-flex h-10 shrink-0 items-center justify-center rounded-ctl bg-ink px-5 text-[13.5px] font-semibold whitespace-nowrap text-bg hover:bg-accent hover:text-accent-ink"
         >
           Cek kelayakanku
         </Link>
@@ -72,7 +74,7 @@ export function TabBar() {
   return (
     <nav
       aria-label="Navigasi utama"
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-white/[0.07] bg-bg/85 backdrop-blur-xl lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-line-strong bg-bg/95 backdrop-blur-md lg:hidden"
       style={{ paddingBottom: 'env(safe-area-inset-bottom, 0)' }}
     >
       <div className="grid grid-cols-5">

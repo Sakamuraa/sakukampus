@@ -59,41 +59,43 @@ export default function Home() {
   return (
     <>
       {/* ─────────────────────────────────────── HERO
-          Anti-center: copy left, live proof right. Asymmetric split. */}
-      <section className="border-b border-line">
-        <div className="wrap grid items-center gap-10 py-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:py-20">
-          <div>
+          Editorial opener: serif display, hairline rules, a specimen card
+          that behaves like a printed gazette clipping. */}
+      <section className="border-b border-line-strong">
+        <div className="wrap grid items-start gap-12 pt-16 pb-16 lg:grid-cols-[1.15fr_0.85fr] lg:gap-20 lg:pt-24 lg:pb-24">
+          <div className="min-w-0">
             <Reveal delay={0}>
-              <Badge variant="accent" className="mb-5">
-                Beasiswa untuk mahasiswa Indonesia
-              </Badge>
+              <p className="eyebrow">Beasiswa untuk mahasiswa Indonesia</p>
             </Reveal>
 
             <Reveal delay={0.06}>
-              <h1 className="max-w-[15ch] text-[clamp(2.1rem,6vw,3.6rem)] leading-[1.03] font-extrabold tracking-[-0.035em] text-ink">
-                Cek beasiswa yang cocok sama <span className="text-accent">UKT-mu</span>.
+              <h1 className="mt-5 max-w-[13ch] font-display text-[clamp(2.5rem,6.5vw,4.4rem)] leading-[1.02] font-semibold tracking-[-0.03em] text-ink">
+                Cek beasiswa yang cocok sama <span className="italic text-accent">UKT-mu</span>.
               </h1>
             </Reveal>
 
             <Reveal delay={0.12}>
-              <p className="mt-5 max-w-[52ch] text-[17px] leading-relaxed text-ink-dim">
-                Masukkan kampus dan golonganmu. Kami bandingkan dengan plafon rupiah tiap beasiswa
-                dan laporkan apa yang sudah cocok, apa yang belum.
+              <div className="mt-7 h-px w-full bg-line-strong" />
+              <p className="mt-6 max-w-[50ch] text-[17px] leading-relaxed text-ink-dim">
+                Masukkan kampus dan golonganmu. Kami bandingkan dengan plafon rupiah tiap
+                beasiswa dan laporkan apa yang sudah cocok, apa yang belum.
               </p>
             </Reveal>
 
             <Reveal delay={0.18}>
-              <div className="mt-8 flex flex-wrap gap-3">
+              <div className="mt-9 flex flex-wrap items-center gap-4">
                 <Link href="/cek">
                   <Button size="lg">
                     Cek kelayakanku
                     <ArrowRight size={16} weight="bold" />
                   </Button>
                 </Link>
-                <Link href="/beasiswa">
-                  <Button size="lg" variant="secondary">
-                    Lihat katalog
-                  </Button>
+                <Link
+                  href="/beasiswa"
+                  className="press inline-flex items-center gap-1.5 text-[14.5px] font-semibold text-ink underline decoration-line-strong decoration-1 underline-offset-[6px] hover:text-accent hover:decoration-accent"
+                >
+                  Lihat katalog
+                  <ArrowUpRight size={14} weight="bold" />
                 </Link>
               </div>
             </Reveal>
@@ -101,19 +103,16 @@ export default function Home() {
 
           {/* Live component preview — the real UI, not a fake screenshot. */}
           {a && b && (
-            <Reveal delay={0.24} y={24}>
-              <div className="relative">
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute -inset-6 -z-10 rounded-full bg-accent/10 blur-3xl"
-                />
-                <Card className="overflow-hidden">
-                  <div className="flex items-center justify-between border-b border-line bg-surface-2 px-5 py-3.5">
-                    <p className="text-[12.5px] font-medium text-ink-dim">
+            <Reveal delay={0.24} y={24} className="min-w-0">
+              <figure className="relative">
+                <div aria-hidden className="absolute -left-3 -top-3 h-full w-full rounded-card border border-line" />
+                <Card className="relative overflow-hidden">
+                  <figcaption className="flex items-center justify-between gap-4 border-b border-line-strong bg-surface-2 px-5 py-3">
+                    <span className="font-display text-[13.5px] italic text-ink-dim">
                       Teknik Informatika · Golongan 2
-                    </p>
+                    </span>
                     <Badge variant="ok">Data terverifikasi</Badge>
-                  </div>
+                  </figcaption>
 
                   <div className="divide-y divide-line">
                     {[
@@ -127,14 +126,15 @@ export default function Home() {
                     ))}
                   </div>
 
-                  <div className="flex items-start gap-3 border-t border-line bg-accent/8 px-5 py-4">
-                    <span className="mt-0.5 text-[12px] font-bold text-accent">2,6×</span>
+                  <div className="flex items-start gap-3 border-t border-line-strong bg-accent-soft/60 px-5 py-4">
+                    <span className="num mt-0.5 text-[12.5px] font-bold text-accent">2,6×</span>
                     <p className="text-[13px] leading-relaxed text-ink-dim">
-                      Selisih untuk golongan yang sama. Nomor golongan tidak sebanding antar kampus.
+                      Selisih untuk golongan yang sama. Nomor golongan tidak sebanding antar
+                      kampus.
                     </p>
                   </div>
                 </Card>
-              </div>
+              </figure>
             </Reveal>
           )}
         </div>
@@ -142,27 +142,30 @@ export default function Home() {
 
       {/* ─────────────────────────────────────── RULES
           Layout family: ruled definition list, not cards. */}
-      <section className="section-pad border-b border-line">
+      <section className="section-pad border-b border-line-strong">
         <div className="wrap">
           <Reveal>
-            <h2 className="max-w-[20ch] text-[clamp(1.5rem,3vw,2.1rem)] leading-[1.15] font-bold tracking-[-0.03em] text-ink">
+            <p className="eyebrow">Metode</p>
+            <h2 className="mt-3 max-w-[22ch] font-display text-[clamp(1.8rem,3.6vw,2.6rem)] leading-[1.08] font-semibold tracking-[-0.028em] text-ink">
               Cara kami menilainya
             </h2>
           </Reveal>
 
-          <div className="mt-8 border-t border-line">
+          <div className="mt-10 border-t border-line-strong">
             <Stagger className="divide-y divide-line">
-              {RULES.map((r) => (
+              {RULES.map((r, i) => (
                 <div
                   key={r.k}
-                  className="group grid gap-2 py-6 sm:grid-cols-[110px_1fr] sm:gap-8"
+                  className="group grid gap-3 py-7 sm:grid-cols-[64px_1fr] sm:gap-10"
                 >
-                  <span className="num pt-1 text-[12px] font-semibold tracking-[0.1em] text-accent uppercase">
-                    {r.k}
+                  <span className="num pt-1 text-[12px] font-semibold tracking-[0.1em] text-accent">
+                    {String(i + 1).padStart(2, '0')} · {r.k}
                   </span>
                   <div>
-                    <p className="text-[16px] font-semibold text-ink">{r.t}</p>
-                    <p className="mt-1.5 max-w-[62ch] text-[14px] leading-relaxed text-ink-faint">
+                    <p className="font-display text-[19px] leading-snug font-semibold text-ink">
+                      {r.t}
+                    </p>
+                    <p className="mt-2 max-w-[62ch] text-[14px] leading-relaxed text-ink-faint">
                       {r.d}
                     </p>
                   </div>
@@ -176,14 +179,15 @@ export default function Home() {
       {/* ─────────────────────────────────────── OPEN CALLS
           Layout family: horizontal rail. */}
       {buka.length > 0 && (
-        <section className="section-pad border-b border-line">
+        <section className="section-pad border-b border-line-strong">
           <div className="wrap">
             <Reveal className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <h2 className="text-[clamp(1.35rem,2.6vw,1.8rem)] font-bold tracking-[-0.025em] text-ink">
+                <p className="eyebrow">Sedang dibuka</p>
+                <h2 className="mt-3 font-display text-[clamp(1.6rem,3vw,2.2rem)] leading-[1.1] font-semibold tracking-[-0.025em] text-ink">
                   Pendaftaran yang masih terbuka
                 </h2>
-                <p className="mt-2 text-[14px] text-ink-faint">
+                <p className="mt-2.5 text-[14px] text-ink-faint">
                   Diperbarui {tanggal(now)} · lengkap di halaman jadwal
                 </p>
               </div>
@@ -196,17 +200,17 @@ export default function Home() {
               </Link>
             </Reveal>
 
-            <div className="mt-7 -mx-5 flex snap-x gap-4 overflow-x-auto px-5 pb-2 [scrollbar-width:thin] lg:mx-0 lg:overflow-visible lg:px-0">
+            <div className="mt-9 -mx-5 flex snap-x gap-4 overflow-x-auto px-5 pb-2 [scrollbar-width:thin] lg:mx-0 lg:overflow-visible lg:px-0">
               {buka.map(({ s }, i) => (
                 <Reveal
                   key={s.slug}
                   delay={i * 0.06}
                   className="w-[300px] shrink-0 snap-start lg:w-auto lg:flex-1"
                 >
-                  <Card interactive className="h-full">
+                  <Card interactive className="flex h-full flex-col">
                     <CardContent className="flex h-full flex-col gap-3">
                       <div className="flex items-start justify-between gap-3">
-                        <h3 className="text-[15px] leading-snug font-semibold text-ink">
+                        <h3 className="font-display text-[16px] leading-snug font-semibold text-ink">
                           {s.name}
                         </h3>
                         <Badge variant="ok">Buka</Badge>
@@ -243,28 +247,29 @@ export default function Home() {
 
       {/* ─────────────────────────────────────── COVERAGE
           Layout family: display-number grid, no card chrome. */}
-      <section className="section-pad border-b border-line">
+      <section className="section-pad border-b border-line-strong">
         <div className="wrap">
           <Reveal>
-            <h2 className="max-w-[22ch] text-[clamp(1.35rem,2.6vw,1.8rem)] font-bold tracking-[-0.025em] text-ink">
+            <p className="eyebrow">Cakupan data</p>
+            <h2 className="mt-3 max-w-[24ch] font-display text-[clamp(1.6rem,3vw,2.2rem)] leading-[1.1] font-semibold tracking-[-0.025em] text-ink">
               Data apa saja yang kami pegang
             </h2>
           </Reveal>
 
-          <Stagger className="mt-8 grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-4" gap={0.06}>
+          <Stagger className="mt-10 grid grid-cols-2 gap-x-8 gap-y-10 lg:grid-cols-4" gap={0.06}>
             {stats.map((s) => (
               <div key={s.k} className="border-t border-line-strong pt-4">
-                <p className="num text-[clamp(1.7rem,4vw,2.5rem)] leading-none font-bold text-ink">
+                <p className="num text-[clamp(1.9rem,4.4vw,2.7rem)] leading-none font-semibold text-ink">
                   {s.v}
                 </p>
-                <p className="mt-2.5 text-[13.5px] leading-snug text-ink-dim">{s.k}</p>
+                <p className="mt-3 text-[13.5px] leading-snug text-ink-dim">{s.k}</p>
                 <p className="mt-1 text-[12px] text-ink-faint">{s.s}</p>
               </div>
             ))}
           </Stagger>
 
           <Reveal delay={0.1}>
-            <p className="mt-8 max-w-[70ch] text-[13.5px] leading-relaxed text-ink-faint">
+            <p className="mt-10 max-w-[70ch] text-[13.5px] leading-relaxed text-ink-faint">
               UKT terverifikasi penuh untuk {denganUkt} kampus PTKIN. {institutions.length - denganUkt}{' '}
               kampus lain tetap bisa dipakai dengan nominal yang kamu isi sendiri, ditandai belum
               diverifikasi.
@@ -277,13 +282,17 @@ export default function Home() {
       <section className="section-pad">
         <div className="wrap">
           <Reveal>
-            <div className="relative overflow-hidden rounded-card border border-accent/25 bg-accent/8 px-6 py-9 sm:px-10 sm:py-12">
+            <div className="relative overflow-hidden rounded-card border border-accent/25 bg-accent-soft/45 px-6 py-10 sm:px-10 sm:py-12">
+              <div
+                aria-hidden
+                className="absolute inset-y-0 left-0 w-[3px] bg-accent"
+              />
               <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <h2 className="max-w-[24ch] text-[clamp(1.3rem,2.4vw,1.7rem)] leading-tight font-bold tracking-[-0.025em] text-ink">
+                  <h2 className="max-w-[26ch] font-display text-[clamp(1.5rem,2.8vw,2rem)] leading-[1.15] font-semibold tracking-[-0.022em] text-ink">
                     Kampusmu belum ada di tabel UKT?
                   </h2>
-                  <p className="mt-2 max-w-[54ch] text-[14.5px] leading-relaxed text-ink-dim">
+                  <p className="mt-3 max-w-[54ch] text-[14.5px] leading-relaxed text-ink-dim">
                     Isi nominal yang kamu bayar sendiri. Perhitungannya tetap jalan, hasilnya
                     ditandai belum diverifikasi.
                   </p>
