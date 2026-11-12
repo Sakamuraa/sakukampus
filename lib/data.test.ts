@@ -72,6 +72,13 @@ describe('searchInstitutions', () => {
     const hasil = searchInstitutions('binalita sudama deli serdang');
     expect(hasil.length).toBeGreaterThan(0);
     expect(hasil[0].nama).toContain('BINALITA SUDAMA');
+    expect(hasil[0].kota).toBe('Deli Serdang');
+  });
+
+  it('kota saja bisa menemukan kampus', () => {
+    const hasil = searchInstitutions('sukabumi', { limit: 20 });
+    expect(hasil.length).toBeGreaterThan(0);
+    expect(hasil.some((i) => i.kota?.toUpperCase().includes('SUKABUMI'))).toBe(true);
   });
 });
 
