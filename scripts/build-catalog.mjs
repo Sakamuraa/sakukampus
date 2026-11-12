@@ -63,9 +63,16 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 /* ---------------------------------------------------------------- browser */
 
 const list = await (await fetch(`http://127.0.0.1:${PORT}/json/list`)).json();
-const target = list.find(
-  (t) => t.type === 'page' && t.url.includes('pddikti.kemdiktisaintek.go.id'),
-);
+// Host tab harus persis pddikti.kemdiktisaintek.go.id. Perbandingan substring
+// salah: api-pddikti.kemdiktisaintek.go.id juga memuat "pddikti.kemdiktisaintek.go.id".
+const isTabSitus = (t) => {
+  try {
+    return new URL(t.url).hostname === 'pddikti.kemdiktisaintek.go.id';
+  } catch {
+    return false;
+  }
+};
+const target = list.find((t) => t.type === 'page' && isTabSitus(t));
 if (!target) {
   console.error(
     'Tab PDDikti tidak ditemukan. Buka Chrome headed dengan:\n' +
@@ -121,6 +128,7 @@ const ev = async (expr) => {
 const panggil = async (path, tries = 8) => {
   const script = `(async () => {
     const KEY = ${JSON.stringify(SITE_KEY)};
+    if (typeof grecaptcha === 'undefined') return JSON.stringify({ status: 0, error: 'grecaptcha tidak termuat' });
     const token = () => new Promise((res, rej) => {
       grecaptcha.ready(() => grecaptcha.execute(KEY, { action: 'api_request' }).then(res, rej));
       setTimeout(() => rej(new Error('token timeout')), 15000);
@@ -339,11 +347,34 @@ async function fase2() {
 
 console.log('tab:', target.url);
 
-// reCAPTCHA hanya termuat utuh di beranda, dan token yang dibuat dari tab
-// yang sedang menampilkan challenge akan ditolak. Buka beranda dulu.
-await send('Page.navigate', { url: SITES + '/' });
-await sleep(9000);
-console.log('grecaptcha:', await ev('typeof grecaptcha'));
+/**
+ * Pastikan tab berada di beranda yang sudah memuat reCAPTCHA.
+ *
+ * Kalau IP kena "__VERIFIKASI KEAMANAN__" (CrowdSec + Turnstile), situs
+ * mengganti halamannya dan grecaptcha hilang. Memuat ulang beranda adalah
+ * satu-satunya jalan keluar yang wajar; kalau challenge tetap muncul, API
+ * sedang memblokir IP kita dan skrip harus berhenti dengan pesan jelas.
+ */
+async function pastikanRecaptcha() {
+  for (let i = 0; i < 4; i++) {
+    await send('Page.navigate', { url: SITES + '/' });
+    await sleep(9000);
+    const status = await ev(`typeof grecaptcha`);
+    if (status === 'object') return true;
+    console.error(`[browser] grecaptcha belum termuat (percobaan ${i + 1}) — memuat ulang beranda`);
+  }
+  const judul = await ev('document.title');
+  console.error(
+    `\nGagal: reCAPTCHA tidak tersedia di tab PDDikti (judul halaman: "${judul}").\n` +
+      'Kalau halaman menampilkan "Verifikasi Keamanan", IP ini sedang diblokir\n' +
+      'CrowdSec/Turnstile. Tunggu cooldown, atau buka PDDikti manual di browser\n' +
+      'ini sampai halaman normal muncul, lalu jalankan ulang skrip.',
+  );
+  return false;
+}
+
+if (!(await pastikanRecaptcha())) process.exit(1);
+console.log('grecaptcha: object');
 
 if (!DRY && !HANYA_RAKIT) {
   await fase1();
