@@ -81,6 +81,8 @@ export async function GET(req: Request) {
       // Nama yang biasa dipakai orang ("UIN SYARIF HIDAYATULLAH JAKARTA").
       // Null kalau sama dengan nama resmi.
       nama_populer: i.namaPopuler && i.namaPopuler !== i.nama ? i.namaPopuler : null,
+      // Nama singkat resmi PDDikti ("UIN Jakarta").
+      nama_singkat: i.singkat && i.singkat !== i.nama ? i.singkat : null,
       kota: i.kota,
       jenis: i.jenis,
       punya_ukt: Boolean(i.ukt),

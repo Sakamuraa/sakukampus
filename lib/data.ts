@@ -22,8 +22,12 @@ export type InstitutionIndex = {
    * tidak bisa ditarik, jadi ini disimpan dari dekrit KMA 204/2026.
    */
   namaPopuler: string | null;
-  /** Kabupaten/kotaaccording to PDDikti, mis. "Bogor". */
+  /** Kabupaten/kota according to PDDikti, mis. "Bogor". */
   kota: string | null;
+  /** Semua kota untuk nama yang dipakai lebih dari satu kampus. */
+  kotaAlternatif: string[];
+  /** Nama singkat resmi PDDikti, mis. "UIN Jakarta". */
+  singkat: string | null;
   /** Blok UKT PTKIN yang terpasang, atau null kalau kampus belum punya data. */
   ukt: PtkIn | null;
 };
@@ -75,7 +79,10 @@ for (const blok of (
  */
 const aliasByNama = (
   aliasesSeed as unknown as {
-    alias: Record<string, { kota?: string; prov?: string; singkat?: string }>;
+    alias: Record<
+      string,
+      { kota?: string; prov?: string; singkat?: string; kotaAlt?: string[] }
+    >;
   }
 ).alias ?? {};
 
@@ -87,6 +94,8 @@ export const institutions: InstitutionIndex[] = PT_ROWS.map(([kode, nama]) => {
     jenis: JENIS(nama),
     namaPopuler: namaPopulerByKode.get(kode) ?? null,
     kota: a?.kota && a.kota !== 'Tidak Diisi' ? a.kota : null,
+    kotaAlternatif: a?.kotaAlt ?? [],
+    singkat: a?.singkat || null,
     ukt: uktByKode.get(kode) ?? null,
   };
 });
@@ -137,16 +146,31 @@ const SINGKATAN: Record<string, string[]> = {
 const haystackCache = new Map<string, string>();
 
 /**
- * Teks yang dicari: nama resmi + nama populer ("UIN SYARIF HIDAYATULLAH
- * JAKARTA") + kota ("BOGOR"). Huruf besar. Nama populer muncul juga tanpa
- * prefiks UIN/IAI, supaya "syarif hidayatullah jakarta" tetap kena.
+ * Teks yang dicari. Huruf besar, disusun dari:
+ *   nama resmi  — "UNIVERSITAS ISLAM NEGERI SYARIF HIDAYATULLAH"
+ *   nama populer — "UIN SYARIF HIDAYATULLAH JAKARTA" (dari dekrit KMA)
+ *   nama singkat — "UIN Jakarta" (dari PDDikti; sering memuat kata kota)
+ *   kota + alternatif — "BOGOR", "DELI SERDANG"
+ *
+ * Nama populer juga diikutkan TANPA prefiks UIN/IAI supaya "syarif
+ * hidayatullah jakarta" tetap kena.
  */
 function haystack(i: InstitutionIndex): string {
   let h = haystackCache.get(i.kode);
   if (h === undefined) {
     const populer = i.namaPopuler ?? '';
     const tanpaPrefiks = populer.replace(/^(UIN|IAIN)\s+/i, '');
-    h = [i.nama, populer, tanpaPrefiks, i.kota ?? ''].filter(Boolean).join(' ').toUpperCase();
+    h = [
+      i.nama,
+      populer,
+      tanpaPrefiks,
+      i.singkat ?? '',
+      i.kota ?? '',
+      ...i.kotaAlternatif,
+    ]
+      .filter(Boolean)
+      .join(' ')
+      .toUpperCase();
     haystackCache.set(i.kode, h);
   }
   return h;

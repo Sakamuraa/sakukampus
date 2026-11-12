@@ -9,11 +9,22 @@
 // Kebidanan Binalita Sudama Deli Serdang". Tanpa kota, semua pencarian berbasis
 // lokasi nihil.
 //
+// Dua hal dari lapangan yang membentuk desain file ini:
+//
+// 1. `nama_singkat` itu singkatan resmi ("UIN Jakarta", "STIES KHAS AL JAELAN"),
+//    BUKAN nama kota. Tapi karena isinya sering memuat kata kota ("UIN
+//    Jakarta"), tetap berguna sebagai kata kunci pencarian.
+//
+// 2. 48 nama punya lebih dari satu kampus di kota berbeda ("AKADEMI KEBIDANAN
+//    JAKARTA MITRA SEJAHTERA" ada di Jakarta Pusat DAN Jambi). Satu nama ->
+//    banyak kota, jadi semua kota disimpan sebagai alternatif dan semuanya
+//    diindeks; yang ditampilkan ke user adalah kota pertama.
+//
 // Key memakai nama ternormalisasi (bukan urutan baris), jadi file ini aman
 // ditulis ulang kapan pun tanpa harus sinkron dengan seed.
 //
 // Pakai:
-//   node scripts/fetch-alias-bulk.mjs   # tarik data wilayah (satu request)
+//   node scripts/fetch-alias-bulk.mjs   # tarik data wilayah (1 request)
 //   node scripts/build-aliases.mjs      # rakit alias
 import fs from 'node:fs';
 import path from 'node:path';
@@ -34,17 +45,36 @@ const norm = (s) =>
 /** Buang imbuhan wilayah yang tidak pernah jadi kata kunci pencarian. */
 const BUANG_WILAYAH = /^(KOTA|KAB\.?|KABUPATEN|PROV\.?|PROVINSI)\s+/i;
 
+/** "Tidak Diisi" = PDDikti sendiri tidak tahu kotanya. */
+const KOSONG = /^(tidak diisi|-|—)?$/i;
+
 const meta = new Map();
 let baris = 0;
 
 const catat = (r) => {
   const n = norm(r.nama_pt);
-  if (!n || meta.has(n)) return;
-  meta.set(n, {
-    kota: String(r.kab_kota_pt ?? '').replace(BUANG_WILAYAH, '').trim(),
-    prov: String(r.provinsi_pt ?? '').replace(BUANG_WILAYAH, '').trim(),
-    singkat: String(r.nama_singkat ?? '').trim(),
-  });
+  if (!n) return;
+  const kota = String(r.kab_kota_pt ?? '').replace(BUANG_WILAYAH, '').trim();
+  const prov = String(r.provinsi_pt ?? '').replace(BUANG_WILAYAH, '').trim();
+  const singkat = String(r.nama_singkat ?? '').trim();
+  const ada = meta.get(n);
+  if (!ada) {
+    meta.set(n, {
+      kota: kota && !KOSONG.test(kota) ? kota : '',
+      prov: prov && !KOSONG.test(prov) ? prov : '',
+      singkat,
+      kotaAlt: [],
+    });
+  }
+  if (kota && !KOSONG.test(kota) && !meta.get(n).kotaAlt.includes(kota)) {
+    meta.get(n).kotaAlt.push(kota);
+  }
+  // Singkatan yang lebih panjang/berbeda menambah varian pencarian.
+  if (singkat && singkat !== meta.get(n).singkat) {
+    meta.get(n).singkat = meta.get(n).singkat
+      ? `${meta.get(n).singkat} | ${singkat}`
+      : singkat;
+  }
 };
 
 if (fs.existsSync(BULK)) {
@@ -78,8 +108,9 @@ fs.writeFileSync(
     {
       _meta: {
         generated_at: new Date().toISOString(),
-        source: 'pddikti.kemdiktisaintek.go.id/api/v2/pt/search/filter',
-        note: 'Key = nama ternormalisasi. Nilai: kota, provinsi, nama singkat.',
+        source: 'pddikti.kemdiktisaintek.go.id/api/pt/search/filter (v1) + /api/v2/pt/search/filter',
+        note:
+          'Key = nama ternormalisasi. Nilai: kota (utama), prov, singkat, kotaAlt (semua kota untuk nama yg dipakai >1 kampus).',
         rows_scanned: baris,
         entries: Object.keys(alias).length,
       },
