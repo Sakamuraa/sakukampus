@@ -3,9 +3,9 @@
     "generated_at": "2026-10-29T00:00:00Z",
     "note": "Setiap entri WAJIB punya source_url + last_verified_at. Syarat UKT pada beasiswa nasional dinyatakan dalam RUPIAH (ukt_max_idr), bukan nomor golongan — lihat lib/eligibility/engine.ts dan plan §5.",
     "normalized_at": "2026-11-12T00:00:00Z",
-    "normalized_count": 30,
-    "entry_count": 30,
-    "unique_count": 30
+    "normalized_count": 28,
+    "entry_count": 28,
+    "unique_count": 28
   },
   "scholarships": [
     {
@@ -1709,99 +1709,6 @@
             "op": "eq",
             "value": false,
             "label": "Tidak sedang menerima beasiswa dari perusahaan swasta lain"
-          }
-        ]
-      }
-    },
-    {
-      "slug": "hkpfs-2027-2028",
-      "name": "Hong Kong PhD Fellowship Scheme 2027/28",
-      "provider": "Research Grants Council Hong Kong (UGC)",
-      "tier": "pemerintah",
-      "scope": "nasional",
-      "coverage": "full",
-      "benefit_summary": "Stipend HK$344.400/tahun plus tunjangan riset HK$14.400/tahun selama maksimal 3 tahun di 8 universitas Hong Kong",
-      "jenjang": [
-        "S3"
-      ],
-      "url_pendaftaran": "https://cerg1.ugc.edu.hk/hkpfs/InitApplication.jsp",
-      "source_url": "https://cerg1.ugc.edu.hk/hkpfs/apply.html",
-      "source_kind": "resmi",
-      "confidence": 96,
-      "last_verified_at": "2026-11-12T00:00:00Z",
-      "academic_year": "2027/2028",
-      "stages": [
-        {
-          "name": "pendaftaran",
-          "opens_at": "2026-09-01T04:00:00Z",
-          "closes_at": "2026-12-01T04:00:00Z"
-        }
-      ],
-      "rule": {
-        "all": [
-          {
-            "fact": "jenjang",
-            "op": "in",
-            "value": [
-              "S3"
-            ],
-            "label": "Pelamar program doktor (PhD) penuh waktu"
-          },
-          {
-            "fact": "skor_bahasa",
-            "op": "exists",
-            "value": true,
-            "label": "Skor bahasa Inggris valid sesuai syarat universitas"
-          }
-        ]
-      }
-    },
-    {
-      "slug": "fulbright-master-phd-2027",
-      "name": "Fulbright Master’s & PhD Scholarship 2027",
-      "provider": "AMINEF / Pemerintah Amerika Serikat",
-      "tier": "pemerintah",
-      "scope": "nasional",
-      "coverage": "full",
-      "benefit_summary": "Biaya kuliah penuh, tunjangan hidup, asuransi, dan tiket pulang-pergi untuk S2 atau S3 di Amerika Serikat",
-      "jenjang": [
-        "S2",
-        "S3"
-      ],
-      "url_pendaftaran": "https://www.aminef.or.id/grants-for-indonesians/fulbright-programs/scholarship/",
-      "source_url": "https://www.aminef.or.id/grants-for-indonesians/deadlines-timeline/",
-      "source_kind": "resmi",
-      "confidence": 94,
-      "last_verified_at": "2026-11-12T00:00:00Z",
-      "academic_year": "2027/2028",
-      "stages": [
-        {
-          "name": "pendaftaran",
-          "closes_at": "2027-02-15T23:59:00Z"
-        }
-      ],
-      "rule": {
-        "all": [
-          {
-            "fact": "jenjang",
-            "op": "in",
-            "value": [
-              "S2",
-              "S3"
-            ],
-            "label": "Lulusan S1 untuk S2, atau S2 untuk S3"
-          },
-          {
-            "fact": "ipk",
-            "op": "gte",
-            "value": 3,
-            "label": "IPK minimal 3,00"
-          },
-          {
-            "fact": "skor_bahasa",
-            "op": "exists",
-            "value": true,
-            "label": "Skor TOEFL/IELTS valid"
           }
         ]
       }
