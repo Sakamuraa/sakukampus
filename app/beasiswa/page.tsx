@@ -29,10 +29,17 @@ const STATUS: Record<StageStatus, { label: string; variant: 'ok' | 'warn' | 'neu
   buka: { label: 'Buka', variant: 'ok' },
   akan_datang: { label: 'Segera dibuka', variant: 'warn' },
   tutup: { label: 'Ditutup', variant: 'neutral' },
+  tanpa_tenggat: { label: 'Tanpa tenggat', variant: 'warn' },
   tanpa_jadwal: { label: 'Tanpa jadwal', variant: 'neutral' },
 };
 
-const ORDER: Record<StageStatus, number> = { buka: 0, akan_datang: 1, tanpa_jadwal: 2, tutup: 3 };
+const ORDER: Record<StageStatus, number> = {
+  buka: 0,
+  tanpa_tenggat: 1,
+  akan_datang: 2,
+  tanpa_jadwal: 3,
+  tutup: 4,
+};
 
 export default async function BeasiswaPage({
   searchParams,
@@ -53,7 +60,8 @@ export default async function BeasiswaPage({
         a.s.name.localeCompare(b.s.name),
     );
 
-  const count = (t?: string) => semua.filter((x) => !t || x.s.tier === t).length;
+  const countTier = (t?: string) => semua.filter((x) => !t || x.s.tier === t).length;
+  const countStatus = (st: StageStatus) => semua.filter((x) => x.st === st).length;
   const on = (t?: string) => (!tier && !status) || (!!t && tier === t && !status);
 
   return (
@@ -97,7 +105,7 @@ export default async function BeasiswaPage({
                   : 'border-line-strong bg-surface text-ink-dim hover:border-ink hover:text-ink'
               }`}
             >
-              {TIER_LABEL[t]} ({count(t)})
+              {TIER_LABEL[t]} ({countTier(t)})
             </Link>
           ))}
           <Link
@@ -108,7 +116,7 @@ export default async function BeasiswaPage({
                 : 'border-line-strong bg-surface text-ink-dim hover:border-ink hover:text-ink'
             }`}
           >
-            Masih terbuka ({count('buka')})
+            Masih terbuka ({countStatus('buka')})
           </Link>
         </div>
       </div>

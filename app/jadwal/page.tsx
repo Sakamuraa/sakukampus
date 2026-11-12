@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowUpRight } from '@phosphor-icons/react/dist/ssr/ArrowUpRight';
 import { scholarships } from '@/lib/data';
+import { REGISTRATION_STAGES } from '@/lib/match';
 import { tanggal, sisaHari } from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -18,14 +19,12 @@ export const metadata: Metadata = {
   openGraph: { title: 'Jadwal Tenggat Beasiswa', url: '/jadwal' },
 };
 
-const DEADLINE_STAGES = new Set(['pendaftaran', 'pendaftaran_akun', 'mandiri_ptn_pts']);
-
 export default function JadwalPage() {
   const now = Date.now();
 
   const baris = scholarships.flatMap((s) =>
     s.stages
-      .filter((st) => DEADLINE_STAGES.has(st.name) && st.closes_at)
+      .filter((st) => REGISTRATION_STAGES.includes(st.name) && st.closes_at)
       .map((st) => ({
         slug: s.slug,
         nama: s.name,

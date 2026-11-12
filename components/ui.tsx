@@ -40,6 +40,7 @@ const STATE_TONE: Record<DisplayState, 'ok' | 'warn' | 'neutral'> = {
 export const STAGE_LABEL: Record<StageStatus, string> = {
   buka: 'Sedang dibuka',
   akan_datang: 'Belum dibuka',
+  tanpa_tenggat: 'Dibuka, tenggat menyusul',
   tutup: 'Sudah tutup',
   tanpa_jadwal: 'Jadwal menyusul',
 };

@@ -131,14 +131,25 @@ export function buildFacts(input: MatchInput): { facts: Facts; uktNominal: numbe
   return { facts, uktNominal, unverified };
 }
 
-const DEADLINE_STAGES = ['pendaftaran', 'pendaftaran_akun', 'mandiri_ptn_pts'];
+/**
+ * Tahap yang menentukan "masih bisa didaftar".
+ *
+ * Seleksi administrasi, tes, wawancara, dan pengumuman juga punya tanggal —
+ * tapi itu bukan pintu pendaftaran. Memakai tanggal terakhir dari SEMUA tahap
+ * membuat katalog bilang "Buka" padahal pendaftaran sudah tutup sebulan lalu
+ * (kasus LPDP Tahap 2: daftar tutup 31 Jul, seleksi substansi baru tutup 20 Nov).
+ */
+export const REGISTRATION_STAGES = ['pendaftaran', 'pendaftaran_akun', 'mandiri_ptn_pts'];
+
+export function registrationStages(s: ScholarshipSeed) {
+  return s.stages.filter((st) => REGISTRATION_STAGES.includes(st.name));
+}
 
 /** Batas waktu terdekat yang masih akan datang (atau yang paling baru lewat). */
 export function nextDeadline(s: ScholarshipSeed, now: number): number | null {
   const times: number[] = [];
-  for (const st of s.stages) {
+  for (const st of registrationStages(s)) {
     if (!st.closes_at) continue;
-    if (!DEADLINE_STAGES.includes(st.name)) continue;
     const t = Date.parse(st.closes_at);
     if (Number.isFinite(t)) times.push(t);
   }
@@ -147,7 +158,7 @@ export function nextDeadline(s: ScholarshipSeed, now: number): number | null {
   return upcoming ?? times.sort((a, b) => b - a)[0];
 }
 
-export type StageStatus = 'buka' | 'tutup' | 'akan_datang' | 'tanpa_jadwal';
+export type StageStatus = 'buka' | 'tutup' | 'akan_datang' | 'tanpa_tenggat' | 'tanpa_jadwal';
 
 /**
  * Label tampilan. `tutup` hanya muncul kalau jadwal pendaftaran sudah lewat;
@@ -159,17 +170,27 @@ export function displayState(verdict: Candidate['verdict'], status: StageStatus)
   return status === 'tutup' ? 'tutup' : verdict;
 }
 
+/**
+ * Status pendaftaran — hanya dihitung dari tahap pendaftaran.
+ *
+ * Sebelumnya fungsi ini membaca `s.stages` mentah, jadi tahap seleksi/wawancara/
+ * pengumuman yang tanggalnya masih di depan menahan status di "buka" padahal
+ * pintu pendaftaran sudah tutup. Sekarang hanya `REGISTRATION_STAGES` yang dihitung.
+ */
 export function stageStatus(s: ScholarshipSeed, now: number): StageStatus {
-  const opens = s.stages
+  const regs = registrationStages(s);
+  const opens = regs
     .map((st) => (st.opens_at ? Date.parse(st.opens_at) : NaN))
     .filter((t) => Number.isFinite(t));
-  const closes = s.stages
+  const closes = regs
     .map((st) => (st.closes_at ? Date.parse(st.closes_at) : NaN))
     .filter((t) => Number.isFinite(t));
 
-  if (closes.length === 0 && opens.length === 0) return 'tanpa_jadwal';
-  if (opens.length && now < Math.min(...opens)) return 'akan_datang';
+  if (regs.length === 0 || (opens.length === 0 && closes.length === 0)) return 'tanpa_jadwal';
   if (closes.length && now > Math.max(...closes)) return 'tutup';
+  if (opens.length && now < Math.min(...opens)) return 'akan_datang';
+  // Pendaftaran sudah dibuka tapi tanggal tutupnya belum diumumkan.
+  if (closes.length === 0) return 'tanpa_tenggat';
   return 'buka';
 }
 

@@ -81,7 +81,9 @@ describe('POST /api/v1/eligibility/check', () => {
     const r = await postCheck(req('http://x', { method: 'POST', body: body() }));
     const j = await r.json();
     for (const h of j.data.hasil) {
-      expect(['buka', 'tutup', 'akan_datang', 'tanpa_jadwal']).toContain(h.stageStatus);
+      expect(['buka', 'tutup', 'akan_datang', 'tanpa_tenggat', 'tanpa_jadwal']).toContain(
+        h.stageStatus,
+      );
       expect(['lolos', 'perlu_data', 'tidak', 'tutup']).toContain(h.displayState);
       // Inti perbaikan: yang tutup tidak pernah tampil sebagai perlu data.
       if (h.stageStatus === 'tutup') expect(h.displayState).toBe('tutup');

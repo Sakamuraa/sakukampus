@@ -156,12 +156,21 @@ describe('jadwal', () => {
     expect(nextDeadline(kip, NOW)).toBe(Date.parse('2026-10-31T23:59:00Z'));
   });
 
-  it('Djarum sudah tutup per 17 Sep 2026? belum — tes pengumuman 1 Okt 2026', () => {
+  it('Djarum sudah tutup per 17 Sep 2026 walau tahap wawancara baru tutup 26 Sep', () => {
     const dj = seed.scholarships.find((s) => s.slug === 'djarum-beasiswa-plus-2026')!;
-    // closes terakhir 26 Sep 2026 -> masih buka pada 17 Sep
-    expect(stageStatus(dj, NOW)).toBe('buka');
-    // dan sudah tutup pada 30 Sep
-    expect(stageStatus(dj, Date.parse('2026-09-30T00:00:00Z'))).toBe('tutup');
+    // Pendaftaran tutup 10 Jun 2026. Tahap tes/wawancara yang tutup 26 Sep
+    // BUKAN pintu pendaftaran, jadi statusnya harus tutup sejak 11 Jun.
+    expect(stageStatus(dj, NOW)).toBe('tutup');
+    expect(stageStatus(dj, Date.parse('2026-06-11T00:00:00Z'))).toBe('tutup');
+    expect(stageStatus(dj, Date.parse('2026-06-09T00:00:00Z'))).toBe('buka');
+  });
+
+  it('pendaftaran buka tanpa tanggal tutup -> tanpa_tenggat, bukan buka', () => {
+    const saa = seed.scholarships.find(
+      (s) => s.slug === 'student-achievement-awards-uin-2026',
+    )!;
+    expect(stageStatus(saa, NOW)).toBe('tanpa_tenggat');
+    expect(nextDeadline(saa, NOW)).toBeNull();
   });
 
   it('beasiswa tanpa jadwal ditandai jelas, bukan dianggap buka', () => {
@@ -219,7 +228,9 @@ describe('displayState: beasiswa yang sudah tutup tidak pernah "perlu data"', ()
       profile: { jenjang: 'S1' },
     }, NOW);
     for (const c of hasil) {
-      expect(['buka', 'tutup', 'akan_datang', 'tanpa_jadwal']).toContain(c.stageStatus);
+      expect(['buka', 'tutup', 'akan_datang', 'tanpa_tenggat', 'tanpa_jadwal']).toContain(
+        c.stageStatus,
+      );
       expect(['lolos', 'perlu_data', 'tidak', 'tutup']).toContain(c.displayState);
       if (c.stageStatus === 'tutup') expect(c.displayState).toBe('tutup');
       else expect(c.displayState).toBe(c.verdict);
