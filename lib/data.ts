@@ -6,6 +6,7 @@
  * fungsi-fungsi di sini yang diganti implementasinya — rute API tidak berubah.
  */
 import institutionsSeed from '@/data/institutions.seed.json';
+import aliasesSeed from '@/data/aliases.seed.json';
 import uktSeed from '@/data/ukt-ptkin.seed.json';
 import scholarshipsSeed from '@/data/scholarships.seed.json';
 import type { PtkIn } from '@/lib/kma-ukt';
@@ -21,6 +22,8 @@ export type InstitutionIndex = {
    * tidak bisa ditarik, jadi ini disimpan dari dekrit KMA 204/2026.
    */
   namaPopuler: string | null;
+  /** Kabupaten/kotaaccording to PDDikti, mis. "Bogor". */
+  kota: string | null;
   /** Blok UKT PTKIN yang terpasang, atau null kalau kampus belum punya data. */
   ukt: PtkIn | null;
 };
@@ -42,6 +45,14 @@ for (const block of (uktSeed as unknown as { ptkin: (PtkIn & { kodePt: string | 
 
 const PT_ROWS = (institutionsSeed as unknown as { pt: [string, string][] }).pt;
 
+/** Normalisasi nama: huruf besar, spasi rapat, tanda baca dibuang. */
+const normNama = (s: string): string =>
+  String(s ?? '')
+    .toUpperCase()
+    .replace(/\s+/g, ' ')
+    .replace(/[",.]/g, '')
+    .trim();
+
 /**
  * Nama populer per kode PT. PTKIN punya nama yang berbeda dari nama resmi
  * PDDikti: "UNIVERSITAS ISLAM NEGERI SYARIF HIDAYATULLAH" (nama resmi)
@@ -57,13 +68,28 @@ for (const blok of (
   if (blok.kodePt && blok.kampus) namaPopulerByKode.set(blok.kodePt, blok.kampus);
 }
 
-export const institutions: InstitutionIndex[] = PT_ROWS.map(([kode, nama]) => ({
-  kode,
-  nama,
-  jenis: JENIS(nama),
-  namaPopuler: namaPopulerByKode.get(kode) ?? null,
-  ukt: uktByKode.get(kode) ?? null,
-}));
+/**
+ * Alias wilayah per nama ternormalisasi, dari data/aliases.seed.json
+ * (dibangun scripts/build-aliases.mjs). Dipakai supaya pencarian bisa
+ * mencocokkan kota: "Akademi Kebidanan Binalita Sudama Deli Serdang".
+ */
+const aliasByNama = (
+  aliasesSeed as unknown as {
+    alias: Record<string, { kota?: string; prov?: string; singkat?: string }>;
+  }
+).alias ?? {};
+
+export const institutions: InstitutionIndex[] = PT_ROWS.map(([kode, nama]) => {
+  const a = aliasByNama[normNama(nama)];
+  return {
+    kode,
+    nama,
+    jenis: JENIS(nama),
+    namaPopuler: namaPopulerByKode.get(kode) ?? null,
+    kota: a?.kota && a.kota !== 'Tidak Diisi' ? a.kota : null,
+    ukt: uktByKode.get(kode) ?? null,
+  };
+});
 
 export const institutionsByKode = new Map(institutions.map((i) => [i.kode, i]));
 
@@ -112,15 +138,15 @@ const haystackCache = new Map<string, string>();
 
 /**
  * Teks yang dicari: nama resmi + nama populer ("UIN SYARIF HIDAYATULLAH
- * JAKARTA"). Huruf besar. Nama populer muncul juga tanpa prefiks UIN/IAI,
- * supaya "syarif hidayatullah jakarta" tetap kena.
+ * JAKARTA") + kota ("BOGOR"). Huruf besar. Nama populer muncul juga tanpa
+ * prefiks UIN/IAI, supaya "syarif hidayatullah jakarta" tetap kena.
  */
 function haystack(i: InstitutionIndex): string {
   let h = haystackCache.get(i.kode);
   if (h === undefined) {
     const populer = i.namaPopuler ?? '';
     const tanpaPrefiks = populer.replace(/^(UIN|IAIN)\s+/i, '');
-    h = [i.nama, populer, tanpaPrefiks].filter(Boolean).join(' ').toUpperCase();
+    h = [i.nama, populer, tanpaPrefiks, i.kota ?? ''].filter(Boolean).join(' ').toUpperCase();
     haystackCache.set(i.kode, h);
   }
   return h;

@@ -66,6 +66,13 @@ describe('searchInstitutions', () => {
     expect(uin.namaPopuler).toBe('UIN SYARIF HIDAYATULLAH JAKARTA');
     expect(searchInstitutions('syarif hidayatullah jakarta').map((i) => i.kode)).toContain('201001');
   });
+
+  it('mencocokkan kota dari data alias PDDikti', () => {
+    // "AKADEMI KEPERAWATAN BINALITA SUDAMA" ada di Kab. Deli Serdang.
+    const hasil = searchInstitutions('binalita sudama deli serdang');
+    expect(hasil.length).toBeGreaterThan(0);
+    expect(hasil[0].nama).toContain('BINALITA SUDAMA');
+  });
 });
 
 describe('seed beasiswa', () => {

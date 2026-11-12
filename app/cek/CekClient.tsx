@@ -33,6 +33,7 @@ type KampusRingkas = {
   kode: string;
   nama: string;
   nama_populer?: string | null;
+  kota?: string | null;
   jenis: string;
   punya_ukt: boolean;
   jumlah_prodi: number;
@@ -326,6 +327,7 @@ export default function CekClient() {
                         </p>
                         <p className="mt-0.5 truncate text-[12.5px] text-ink-faint">
                           {k.nama_populer ? `${k.nama} · ` : ''}
+                          {k.kota ? `${k.kota} · ` : ''}
                           {k.kode} · {k.jenis.toLowerCase()} ·{' '}
                           {k.punya_ukt ? `${k.jumlah_prodi} prodi berdata` : 'UKT manual'}
                         </p>

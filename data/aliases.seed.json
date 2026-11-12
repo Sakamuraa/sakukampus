@@ -1,0 +1,2511 @@
+{
+ "_meta": {
+  "generated_at": "2026-11-12T05:06:05.130Z",
+  "source": "pddikti.kemdiktisaintek.go.id/api/v2/pt/search/filter",
+  "note": "Key = nama ternormalisasi. Nilai: kota, provinsi, nama singkat.",
+  "rows_scanned": 500,
+  "entries": 500
+ },
+ "alias": {
+  "AKADEMI KEPERAWATAN BINALITA SUDAMA": {
+   "kota": "Deli Serdang",
+   "prov": "Sumatera Utara",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI EKONOMI DAN BISNIS ISLAM PERSATUAN UMMAT ISLAM BOGOR JAWA BARAT": {
+   "kota": "Bogor",
+   "prov": "Jawa Barat",
+   "singkat": ""
+  },
+  "AKADEMI KEBIDANAN DAYANG SURI": {
+   "kota": "Tidak Diisi",
+   "prov": "Riau",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI ILMU ADMINISTRASI AAN": {
+   "kota": "Yogyakarta",
+   "prov": "D.I. Yogyakarta",
+   "singkat": "STIA \"AAN\""
+  },
+  "SEKOLAH TINGGI AGAMA ISLAM PELITA NUSA BANDUNG BARAT": {
+   "kota": "Bandung",
+   "prov": "Jawa Barat",
+   "singkat": "STAI PENUS"
+  },
+  "UNIVERSITAS ISLAM NEGERI AR-RANIRY BANDA ACEH": {
+   "kota": "Banda Aceh",
+   "prov": "Aceh",
+   "singkat": "UINAR"
+  },
+  "STAI ASY-SYUKRIYYAH TANGERANG": {
+   "kota": "Tangerang",
+   "prov": "Banten",
+   "singkat": "STAI Asy-Syukriyyah"
+  },
+  "STT SRIWIJAYA PALEMBANG": {
+   "kota": "Banyuasin",
+   "prov": "Sumatera Selatan",
+   "singkat": "STTS"
+  },
+  "AKADEMI FARMASI YAYASAN TENAGA PEMBANGUNAN ARJUNA LAGUBOTI": {
+   "kota": "Toba Samosir",
+   "prov": "Sumatera Utara",
+   "singkat": "Akademi Farmasi"
+  },
+  "AKADEMI TEKNOLOGI BANK DARAH SURAKARTA": {
+   "kota": "Surakarta",
+   "prov": "Jawa Tengah",
+   "singkat": ""
+  },
+  "STEI AR RISALAH CIAMIS JAWA BARAT": {
+   "kota": "Ciamis",
+   "prov": "Jawa Barat",
+   "singkat": "STEI Ar-Risalah Ciam"
+  },
+  "AKADEMI KEBIDANAN EUNICE RAJAWALI BINJAI": {
+   "kota": "Binjai",
+   "prov": "Sumatera Utara",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI DESAIN INTERSTUDI": {
+   "kota": "Jakarta Selatan",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "STDI Interstudi"
+  },
+  "POLITEKNIK NEGERI BENGKALIS": {
+   "kota": "Bengkalis",
+   "prov": "Riau",
+   "singkat": "Polbeng"
+  },
+  "SEKOLAH TINGGI ILMU PELAYARAN JAKARTA": {
+   "kota": "Jakarta Utara",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "STIP"
+  },
+  "UNIVERSITAS KOMPUTER INDONESIA": {
+   "kota": "Bandung",
+   "prov": "Jawa Barat",
+   "singkat": "UNIKOM"
+  },
+  "AKADEMI KEBIDANAN MADINA HUSADA": {
+   "kota": "Mandailing Natal",
+   "prov": "Sumatera Utara",
+   "singkat": "AKBID MADINA HUSADA"
+  },
+  "SEKOLAH TINGGI TEKNOLOGI WARGA SURAKARTA": {
+   "kota": "Sukoharjo",
+   "prov": "Jawa Tengah",
+   "singkat": "STT \"WARGA\""
+  },
+  "UNIVERSITAS MUHAMMADIYAH BEKASI KARAWANG": {
+   "kota": "Bekasi",
+   "prov": "Jawa Barat",
+   "singkat": "UMBK"
+  },
+  "SEKOLAH TINGGI AGAMA ISLAM AN-NUR KH M BADRUDDIN": {
+   "kota": "Malang",
+   "prov": "Jawa Timur",
+   "singkat": ""
+  },
+  "STT INTIM MAKASSAR": {
+   "kota": "Makassar",
+   "prov": "Sulawesi Selatan",
+   "singkat": ""
+  },
+  "UNIVERSITAS MUHAMMADIYAH JAKARTA": {
+   "kota": "Jakarta Pusat",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "UMJ"
+  },
+  "INSTITUT MARITIM PRASETIYA MANDIRI": {
+   "kota": "Bandar Lampung",
+   "prov": "Lampung",
+   "singkat": "IMPM"
+  },
+  "SEKOLAH TINGGI ILMU TARBIYAH (STIT) ISLAMIYAH NUSA TENGGARA BARAT": {
+   "kota": "Lombok Utara",
+   "prov": "Nusa Tenggara Barat",
+   "singkat": "STIT ISLAMIYAH NTB"
+  },
+  "SEKOLAH TINGGI ILMU MANAJEMEN INDONESIA YAPMI": {
+   "kota": "Makassar",
+   "prov": "Sulawesi Selatan",
+   "singkat": "STIMI YAPMI Makassar"
+  },
+  "STAI AL-FURQAN MAKASSAR SULAWESI SELATAN": {
+   "kota": "Makassar",
+   "prov": "Sulawesi Selatan",
+   "singkat": "STAI Al Furqan MKS"
+  },
+  "SEKOLAH TINGGI ILMU EKONOMI BALIKPAPAN": {
+   "kota": "Balikpapan",
+   "prov": "Kalimantan Timur",
+   "singkat": "STIE Balikpapan"
+  },
+  "AKADEMI TEKNOLOGI BOGOR": {
+   "kota": "Bogor",
+   "prov": "Jawa Barat",
+   "singkat": "Akatek"
+  },
+  "SEKOLAH TINGGI MANAJEMEN INFORMATIKA DAN KOMPUTER ICHSAN GORONTALO": {
+   "kota": "Gorontalo",
+   "prov": "Gorontalo",
+   "singkat": "STMIK Ichsan"
+  },
+  "SEKOLAH TINGGI TEKNOLOGI PAYAKUMBUH": {
+   "kota": "Payakumbuh",
+   "prov": "Sumatera Barat",
+   "singkat": "STT-PAYAKUMBUH"
+  },
+  "IKIP SARASWATI": {
+   "kota": "Tabanan",
+   "prov": "Bali",
+   "singkat": "IKIP SARASWATI"
+  },
+  "UNIVERSITAS ANNUQAYAH": {
+   "kota": "Sumenep",
+   "prov": "Jawa Timur",
+   "singkat": "UA"
+  },
+  "SEKOLAH TINGGI TEOLOGI SABDA AGUNG (STTSA)": {
+   "kota": "Surabaya",
+   "prov": "Jawa Timur",
+   "singkat": "STT Sabda Agung"
+  },
+  "AKADEMI KEPERAWATAN KRIDA HUSADA": {
+   "kota": "Kudus",
+   "prov": "Jawa Tengah",
+   "singkat": ""
+  },
+  "AKADEMI KESEHATAN GIGI KENDARI": {
+   "kota": "Kendari",
+   "prov": "Sulawesi Tenggara",
+   "singkat": ""
+  },
+  "INSTITUT BISNIS DAN TEKNOLOGI KALIMANTAN": {
+   "kota": "Banjarmasin",
+   "prov": "Kalimantan Selatan",
+   "singkat": "IBITEK"
+  },
+  "UNIVERSITAS PRASETIYA MULYA": {
+   "kota": "Jakarta Selatan",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "Prasmul"
+  },
+  "UNIVERSITAS MUHAMMADIYAH TASIKMALAYA": {
+   "kota": "Tasikmalaya",
+   "prov": "Jawa Barat",
+   "singkat": "UMTAS"
+  },
+  "INSTITUT MANAJEMEN WIYATA INDONESIA": {
+   "kota": "Sukabumi",
+   "prov": "Jawa Barat",
+   "singkat": "IMWI"
+  },
+  "AKADEMI SEKRETARI MANAJEMEN TANAH RENCONG": {
+   "kota": "Lhokseumawe",
+   "prov": "Aceh",
+   "singkat": "ASM T. Rencong"
+  },
+  "AKADEMI KEPERAWATAN MUHAMMADIYAH MAKASSAR": {
+   "kota": "Makassar",
+   "prov": "Sulawesi Selatan",
+   "singkat": "Akper Muhammadiyah M"
+  },
+  "SEKOLAH TINGGI AGAMA KRISTEN SABDA HOLISTIK MALANG": {
+   "kota": "Pasuruan",
+   "prov": "Jawa Timur",
+   "singkat": "STAK SABDA HOLISTIK"
+  },
+  "SEKOLAH TINGGI ILMU KESEHATAN BANTUL": {
+   "kota": "Bantul",
+   "prov": "D.I. Yogyakarta",
+   "singkat": ""
+  },
+  "INSTITUT AGAMA ISLAM WIDYA DHARMA PALEMBANG": {
+   "kota": "Palembang",
+   "prov": "Sumatera Selatan",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI ILMU TARBIYAH MUHAMMADIYAH TANJUNG REDEB BERAU": {
+   "kota": "Berau",
+   "prov": "Kalimantan Timur",
+   "singkat": "STITM Tanjung Redeb"
+  },
+  "SEKOLAH TINGGI ILMU KESEHATAN HAKLI": {
+   "kota": "Semarang",
+   "prov": "Jawa Tengah",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI ILMU KESEHATAN NOTOKUSUMO YOGYAKARTA": {
+   "kota": "Yogyakarta",
+   "prov": "D.I. Yogyakarta",
+   "singkat": ""
+  },
+  "POLITEKNIK PRASETIYA MANDIRI": {
+   "kota": "Bogor",
+   "prov": "Jawa Barat",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI ILMU KESEHATAN AISYIYAH YOGYAKARTA": {
+   "kota": "Sleman",
+   "prov": "D.I. Yogyakarta",
+   "singkat": "STIKES 'Aisyiyah Yog"
+  },
+  "AKADEMI KESEJAHTERAAN SOSIAL TARAKANITA": {
+   "kota": "Tidak Diisi",
+   "prov": "D.I. Yogyakarta",
+   "singkat": ""
+  },
+  "STMIK PRIMAKARA": {
+   "kota": "Denpasar",
+   "prov": "Bali",
+   "singkat": "Primakara"
+  },
+  "AKADEMI FARMASI 17 AGUSTUS 1945 SEMARANG": {
+   "kota": "Semarang",
+   "prov": "Jawa Tengah",
+   "singkat": "AKFAR 17-08-1945"
+  },
+  "SEKOLAH TINGGI ILMU ADMINISTRASI SAID PERINTAH": {
+   "kota": "Maluku Tengah",
+   "prov": "Maluku",
+   "singkat": "STIA SP"
+  },
+  "SEKOLAH TINGGI ILMU EKONOMI SYARIAH NAHDLATUL ULAMA BENGKULU": {
+   "kota": "Bengkulu",
+   "prov": "Bengkulu",
+   "singkat": "STIESNU BENGKULU"
+  },
+  "SEKOLAH TINGGI TEOLOGI HARAPAN BARU MEDAN": {
+   "kota": "Deli Serdang",
+   "prov": "Sumatera Utara",
+   "singkat": "STT HBM"
+  },
+  "STAIN ZAWIYAH COT KALA LANGSA": {
+   "kota": "Langsa",
+   "prov": "Aceh",
+   "singkat": "STAIN ZAWIYAH COT KA"
+  },
+  "UNIVERSITAS PAPUA": {
+   "kota": "Manokwari",
+   "prov": "Papua Barat",
+   "singkat": "UNIPA"
+  },
+  "SEKOLAH TINGGI AGAMA HINDU BHATARA GURU KENDARI SULAWESI TENGGARA": {
+   "kota": "Kendari",
+   "prov": "Sulawesi Tenggara",
+   "singkat": "STAH BGK"
+  },
+  "STKIP SULUH BANGSA": {
+   "kota": "tangerang Selatan",
+   "prov": "Banten",
+   "singkat": ""
+  },
+  "INSTITUT CITRA INTERNASIONAL": {
+   "kota": "Pangkalpinang",
+   "prov": "Bangka Belitung",
+   "singkat": "ICI"
+  },
+  "AKADEMI BAHASA ASING ST PIGNATELLI": {
+   "kota": "Surakarta",
+   "prov": "Jawa Tengah",
+   "singkat": "ABA Pignatelli"
+  },
+  "SEKOLAH TINGGI TEKNIK ISKANDAR THANI": {
+   "kota": "Banda Aceh",
+   "prov": "Aceh",
+   "singkat": "STTIT"
+  },
+  "AKADEMI KEBIDANAN IMELDA": {
+   "kota": "Medan",
+   "prov": "Sumatera Utara",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI ILMU TARBIYAH AL WAFI BOGOR": {
+   "kota": "Bogor",
+   "prov": "Jawa Barat",
+   "singkat": "STIT Al Wafi Bogor"
+  },
+  "UNIVERSITAS DOKTOR HUSNI INGRATUBUN PAPUA": {
+   "kota": "Jayapura",
+   "prov": "Papua",
+   "singkat": "Uningrat Papua"
+  },
+  "AKADEMI KEBIDANAN NAMIRA MADINA PANYABUNGAN": {
+   "kota": "Mandailing Natal",
+   "prov": "Sumatera Utara",
+   "singkat": "AKADEMI KEBIDANAN NA"
+  },
+  "SEKOLAH TINGGI ILMU KESEHATAN ALMA ATA YOGYAKARTA": {
+   "kota": "Bantul",
+   "prov": "D.I. Yogyakarta",
+   "singkat": "Stikes Alma Ata Yogy"
+  },
+  "UNIVERSITAS PAMULANG": {
+   "kota": "tangerang Selatan",
+   "prov": "Banten",
+   "singkat": "UNPAM"
+  },
+  "SEKOLAH TINGGI AGAMA ISLAM AL GAZALI BARRU": {
+   "kota": "Barru",
+   "prov": "Sulawesi Selatan",
+   "singkat": "STAI Al Gazali Barru"
+  },
+  "SEKOLAH TINGGI SANDI NEGARA": {
+   "kota": "Bogor",
+   "prov": "Jawa Barat",
+   "singkat": "STSN / POLTEK SSN"
+  },
+  "AKD TEKNIK RADIODIAG DAN RADIOTERAPI WIDYA DHARMA": {
+   "kota": "Palembang",
+   "prov": "Sumatera Selatan",
+   "singkat": ""
+  },
+  "UNIVERSITAS WERISAR": {
+   "kota": "Sorong Selatan",
+   "prov": "Papua Barat",
+   "singkat": "UNSAR"
+  },
+  "AKADEMI KEBIDANAN KARSA MULIA": {
+   "kota": "Semarang",
+   "prov": "Jawa Tengah",
+   "singkat": "Akbid Karsa Mulia"
+  },
+  "SEKOLAH TINGGI AGAMA ISLAM PANGERAN DHARMA KUSUMA SEGERAN INDRAMAYU": {
+   "kota": "Indramayu",
+   "prov": "Jawa Barat",
+   "singkat": "STAIS DHARMA"
+  },
+  "UNIVERSITAS INDONESIA MEMBANGUN": {
+   "kota": "Bandung",
+   "prov": "Jawa Barat",
+   "singkat": "Universitas Inaba"
+  },
+  "AKADEMI FARMASI PUTRA INDONESIA MALANG": {
+   "kota": "Malang",
+   "prov": "Jawa Timur",
+   "singkat": ""
+  },
+  "AKADEMI INFORMATIKA DAN KOMPUTER MEDICOM": {
+   "kota": "Medan",
+   "prov": "Sumatera Utara",
+   "singkat": "AMIK MEDICOM"
+  },
+  "POLITEKNIK ADIGUNA MARITIM INDONESIA MEDAN": {
+   "kota": "Medan",
+   "prov": "Sumatera Utara",
+   "singkat": "Poltek AMI Medan"
+  },
+  "POLITEKNIK ORANG TUA": {
+   "kota": "Jakarta Barat",
+   "prov": "D.K.I. Jakarta",
+   "singkat": ""
+  },
+  "INSTITUT AGAMA ISLAM LATIFAH MUBAROKIYAH (IAILM) SURYALAYA TASIKMALAYA": {
+   "kota": "Tasikmalaya",
+   "prov": "Jawa Barat",
+   "singkat": "IAILM Suryalaya"
+  },
+  "INSTITUT SENI BUDAYA INDONESIA BANDUNG": {
+   "kota": "Bandung",
+   "prov": "Jawa Barat",
+   "singkat": "ISBI Bandung"
+  },
+  "POLITEKNIK PRAKTISI BANDUNG": {
+   "kota": "Bandung",
+   "prov": "Jawa Barat",
+   "singkat": "Poltek Praktisi"
+  },
+  "AKADEMI KEPERAWATAN YAPENAS 21 MAROS": {
+   "kota": "Maros",
+   "prov": "Sulawesi Selatan",
+   "singkat": "YAPENAS MAROS"
+  },
+  "SEKOLAH TINGGI TEOLOGI ISTTO HIKMAT WAHYU": {
+   "kota": "Minahasa",
+   "prov": "Sulawesi Utara",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI PERTANIAN GUNUNG LEUSER": {
+   "kota": "Aceh Tenggara",
+   "prov": "Aceh",
+   "singkat": ""
+  },
+  "STAI BANI SALEH BEKASI": {
+   "kota": "Bekasi",
+   "prov": "Jawa Barat",
+   "singkat": "STAI BANI SALEH"
+  },
+  "INSTITUT BISNIS DAN INFORMATIKA KESATUAN": {
+   "kota": "Bogor",
+   "prov": "Jawa Barat",
+   "singkat": "IBI Kesatuan"
+  },
+  "SEKOLAH TINGGI ILMU SOSIAL DAN ILMU POLITIK BEKASI": {
+   "kota": "Bekasi",
+   "prov": "Jawa Barat",
+   "singkat": "STISIP BEKASI"
+  },
+  "AKADEMI KEPERAWATAN SAMAWA": {
+   "kota": "Sumbawa",
+   "prov": "Nusa Tenggara Barat",
+   "singkat": "Akper Samawa"
+  },
+  "SEKOLAH TINGGI ILMU KESEHATAN HUSADA GEMILANG": {
+   "kota": "Indragiri Hilir",
+   "prov": "Riau",
+   "singkat": "STIKES HUGE"
+  },
+  "SEKOLAH TINGGI ILMU KESEHATAN IBNU SINA BATAM": {
+   "kota": "Batam",
+   "prov": "Kepulauan Riau",
+   "singkat": "STIKes Ibnu Sina Bat"
+  },
+  "SEKOLAH TINGGI ILMU KESEHATAN ST ELISABETH KEUSKUPAN MAUMERE": {
+   "kota": "Sikka",
+   "prov": "Nusa Tenggara Timur",
+   "singkat": "STIKES ELMA"
+  },
+  "UNIVERSITAS HALMAHERA": {
+   "kota": "halmahera Utara",
+   "prov": "Maluku Utara",
+   "singkat": "UNIERA"
+  },
+  "SEKOLAH TINGGI EKONOMI ISLAM HAJI ABDUL MALIK CIKARANG BARAT": {
+   "kota": "Bekasi",
+   "prov": "Jawa Barat",
+   "singkat": ""
+  },
+  "STIT AL-QURANIYAH MANNA BENGKULU SELATAN": {
+   "kota": "Bengkulu Selatan",
+   "prov": "Bengkulu",
+   "singkat": "STITQ"
+  },
+  "STAI AL-KARIMIYAH SAWANGAN DEPOK": {
+   "kota": "Depok",
+   "prov": "Jawa Barat",
+   "singkat": "STAISKA"
+  },
+  "AKADEMI PELAYARAN NIAGA INDONESIA SEMARANG": {
+   "kota": "Semarang",
+   "prov": "Jawa Tengah",
+   "singkat": "AKPELNI"
+  },
+  "SEKOLAH TINGGI TEOLOGI PARAUSORAT NAULI JAKARTA": {
+   "kota": "Jakarta Timur",
+   "prov": "D.K.I. Jakarta",
+   "singkat": ""
+  },
+  "AMIK VETERAN PURWOKERTO": {
+   "kota": "Banyumas",
+   "prov": "Jawa Tengah",
+   "singkat": "AMIK Veteran"
+  },
+  "AKADEMI KEUANGAN PERBANKAN NUSANTARA": {
+   "kota": "Aceh Timur",
+   "prov": "Aceh",
+   "singkat": "AKUBANK NUSANTARA"
+  },
+  "SEKOLAH TINGGI PARIWISATA PELITA HARAPAN": {
+   "kota": "Tangerang",
+   "prov": "Banten",
+   "singkat": ""
+  },
+  "INSTITUT TEKNOLOGI HARAPAN BANGSA": {
+   "kota": "Bandung",
+   "prov": "Jawa Barat",
+   "singkat": "ITHB"
+  },
+  "STAI TUANKU TAMBUSAI": {
+   "kota": "Rokan Hulu",
+   "prov": "Riau",
+   "singkat": "STAI Tuanku Tambusai"
+  },
+  "POLITEKNIK MITRA KUSUMA": {
+   "kota": "Bekasi",
+   "prov": "Jawa Barat",
+   "singkat": ""
+  },
+  "POLITEKNIK STIBISNIS": {
+   "kota": "Tegal",
+   "prov": "Jawa Tengah",
+   "singkat": "Politeknik STiBISNIS"
+  },
+  "SEKOLAH TINGGI TEOLOGI TABERNAKEL LAWANG": {
+   "kota": "Malang",
+   "prov": "Jawa Timur",
+   "singkat": ""
+  },
+  "AKADEMI AKUNTANSI BIMA SAKAPENTA": {
+   "kota": "Tegal",
+   "prov": "Jawa Tengah",
+   "singkat": "AKUBISA"
+  },
+  "SEKOLAH TINGGI ILMU EKONOMI CIPASUNG": {
+   "kota": "Tasikmalaya",
+   "prov": "Jawa Barat",
+   "singkat": "STIE Cipasung"
+  },
+  "SEKOLAH TINGGI ILMU KESEHATAN BUDI MULIA SRIWIJAYA": {
+   "kota": "Palembang",
+   "prov": "Sumatera Selatan",
+   "singkat": "STIKES BMS"
+  },
+  "UNIVERSITAS MUHAMMADIYAH BANDUNG": {
+   "kota": "Bandung",
+   "prov": "Jawa Barat",
+   "singkat": "UM Bandung"
+  },
+  "SEKOLAH TINGGI ILMU HUKUM CARITAS PAPUA": {
+   "kota": "Manokwari",
+   "prov": "Papua Barat",
+   "singkat": ""
+  },
+  "AKADEMI PERTANIAN MUHAMMADIYAH PEMALANG": {
+   "kota": "Pemalang",
+   "prov": "Jawa Tengah",
+   "singkat": ""
+  },
+  "POLITEKNIK KESEHATAN BHAKTI PERTIWI HUSADA": {
+   "kota": "Cirebon",
+   "prov": "Jawa Barat",
+   "singkat": "Poltekes BPH Cirebon"
+  },
+  "AKADEMI KEPERAWATAN PUTRA PERTIWI": {
+   "kota": "Mamuju",
+   "prov": "Sulawesi Barat",
+   "singkat": ""
+  },
+  "AKADEMI KOMUNIKASI RADYA BINATAMA": {
+   "kota": "Sleman",
+   "prov": "D.I. Yogyakarta",
+   "singkat": "AKRB"
+  },
+  "UNIVERSITAS JAKARTA INTERNASIONAL": {
+   "kota": "Jakarta Barat",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "UNIJI"
+  },
+  "AKADEMI KEBIDANAN AISYAH KABUPATEN PANGKEP": {
+   "kota": "Pangkajene Kepulauan",
+   "prov": "Sulawesi Selatan",
+   "singkat": "AKBID AISYAH PANGKEP"
+  },
+  "SEKOLAH TINGGI FILSAFAT THEOLOGIA SURYA NUSANTARA": {
+   "kota": "Pematang Siantar",
+   "prov": "Sumatera Utara",
+   "singkat": ""
+  },
+  "STIKES SARI MULIA": {
+   "kota": "Banjarmasin",
+   "prov": "Kalimantan Selatan",
+   "singkat": "STIKES Sari Mulia"
+  },
+  "UNIVERSITAS KRISTEN PAPUA": {
+   "kota": "Sorong",
+   "prov": "Papua Barat",
+   "singkat": "UKiP"
+  },
+  "SEKOLAH TINGGI KEGURUAN DAN ILMU PENDIDIKAN SURYA KASIH": {
+   "kota": "Timor Tengah Utara",
+   "prov": "Nusa Tenggara Timur",
+   "singkat": "STKIP SURYA KASIH"
+  },
+  "UNIVERSITAS SARI MULIA": {
+   "kota": "Banjarmasin",
+   "prov": "Kalimantan Selatan",
+   "singkat": "UNISM"
+  },
+  "SEKOLAH TINGGI TEKNOLOGI PEKANBARU": {
+   "kota": "Pekanbaru",
+   "prov": "Riau",
+   "singkat": "STTP"
+  },
+  "POLITEKNIK BISNIS LAMDA": {
+   "kota": "Samarinda",
+   "prov": "Kalimantan Timur",
+   "singkat": ""
+  },
+  "AKADEMI KEBIDANAN TUNAS HARAPAN BANGSA": {
+   "kota": "Palembang",
+   "prov": "Sumatera Selatan",
+   "singkat": "THB"
+  },
+  "INSTITUT AGAMA ISLAM KANZUL ULUM CIREBON": {
+   "kota": "Cirebon",
+   "prov": "Jawa Barat",
+   "singkat": "IAIKU"
+  },
+  "SEKOLAH TINGGI ILMU TARBIYAH NAHDLATUL ULAMA (STITNU) AL-FARABI PANGANDARAN": {
+   "kota": "Pangandaran",
+   "prov": "Jawa Barat",
+   "singkat": ""
+  },
+  "UNIVERSITAS MEGAREZKY": {
+   "kota": "Makassar",
+   "prov": "Sulawesi Selatan",
+   "singkat": "UNIMERZ"
+  },
+  "SEKOLAH TINGGI TEOLOGI INJILI INDONESIA AMBON": {
+   "kota": "Maluku Tengah",
+   "prov": "Maluku",
+   "singkat": "STTII AMBON"
+  },
+  "UNIVERSITAS BUNG KARNO": {
+   "kota": "Jakarta Pusat",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "YPS"
+  },
+  "STIS FAQIH ASY`ARI": {
+   "kota": "Kediri",
+   "prov": "Jawa Timur",
+   "singkat": "STIS Faqih Asy'ari"
+  },
+  "POLITEKNIK LINGGA": {
+   "kota": "Lingga",
+   "prov": "Kepulauan Riau",
+   "singkat": ""
+  },
+  "UNIVERSITAS YAYASAN PENDIDIKAN IMAM BONJOL MAJALENGKA": {
+   "kota": "Majalengka",
+   "prov": "Jawa Barat",
+   "singkat": "Univ YPIB / UYPIB"
+  },
+  "STIKES DARMAIS PADANGSIDIMPUAN": {
+   "kota": "Padang Sidempuan",
+   "prov": "Sumatera Utara",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI ILMU ADMINISTRASI AMUNTAI": {
+   "kota": "Hulu Sungai Utara",
+   "prov": "Kalimantan Selatan",
+   "singkat": "STIA AMUNTAI"
+  },
+  "SEKOLAH TINGGI ILMU EKONOMI PEMNAS INDONESIA": {
+   "kota": "Malang",
+   "prov": "Jawa Timur",
+   "singkat": "STIE PEMNAS INDO MLG"
+  },
+  "POLITEKNIK ILMU PELAYARAN SEMARANG": {
+   "kota": "Semarang",
+   "prov": "Jawa Tengah",
+   "singkat": "PIP Semarang"
+  },
+  "IAIN KENDARI": {
+   "kota": "Kendari",
+   "prov": "Sulawesi Tenggara",
+   "singkat": ""
+  },
+  "UNIVERSITAS ISLAM NEGERI SYEKH WASIL KEDIRI": {
+   "kota": "Kediri",
+   "prov": "Jawa Timur",
+   "singkat": "UIN KEDIRI"
+  },
+  "AKADEMI PARIWISATA PATRIA INDONESIA": {
+   "kota": "Jakarta Selatan",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "APPI"
+  },
+  "SEKOLAH TINGGI ALKITAB SURABAYA": {
+   "kota": "Surabaya",
+   "prov": "Jawa Timur",
+   "singkat": "STAS"
+  },
+  "AKADEMI AKUNTANSI RIAU": {
+   "kota": "Dumai",
+   "prov": "Riau",
+   "singkat": ""
+  },
+  "UNIVERSITAS INDONESIA MANDIRI": {
+   "kota": "Bekasi",
+   "prov": "Jawa Barat",
+   "singkat": "UIM"
+  },
+  "STMIK BINA SARANA GLOBAL": {
+   "kota": "Tangerang",
+   "prov": "Banten",
+   "singkat": "STMIK GLOBAL"
+  },
+  "UNIVERSITAS KRISTEN KRIDA WACANA": {
+   "kota": "Jakarta Barat",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "UKRIDA"
+  },
+  "AKADEMI KEBIDANAN HENDERSON": {
+   "kota": "Pematang Siantar",
+   "prov": "Sumatera Utara",
+   "singkat": ""
+  },
+  "AKADEMI KOMUNITAS DEWINATALIA": {
+   "kota": "Pinrang",
+   "prov": "Sulawesi Selatan",
+   "singkat": "AK DENA"
+  },
+  "SEKOLAH TINGGI TEOLOGI YESTOYA MALANG": {
+   "kota": "Malang",
+   "prov": "Jawa Timur",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI TEOLOGI INJILI INDONESIA PURWOKERTO": {
+   "kota": "Tidak Diisi",
+   "prov": "Jawa Tengah",
+   "singkat": "STTII Purwokerto"
+  },
+  "STAI KUALA KAPUAS KALIMANTAN TENGAH": {
+   "kota": "Kapuas",
+   "prov": "Kalimantan Tengah",
+   "singkat": "STAI KUALA KAPUAS"
+  },
+  "AKADEMI KESEHATAN GIGI DITKESAD JAKARTA": {
+   "kota": "Jakarta Pusat",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "AKG Ditkesad"
+  },
+  "AKADEMI SEKRETARIS DAN MANAJEMEN KENCANA BANDUNG": {
+   "kota": "Bandung",
+   "prov": "Jawa Barat",
+   "singkat": "ASMKB"
+  },
+  "SEKOLAH TINGGI TEKNIK CIKARANG": {
+   "kota": "Bekasi",
+   "prov": "Jawa Barat",
+   "singkat": ""
+  },
+  "INSTITUT AGAMA KRISTEN NEGERI TARUTUNG": {
+   "kota": "Tapanuli Utara",
+   "prov": "Sumatera Utara",
+   "singkat": "IAKN Tarutung"
+  },
+  "SEKOLAH TINGGI MANAJEMEN INFORMATIKA DAN KOMPUTER HORIZON KARAWANG": {
+   "kota": "Karawang",
+   "prov": "Jawa Barat",
+   "singkat": "STMIK HORIZON"
+  },
+  "STISIP MARGARANA": {
+   "kota": "Tabanan",
+   "prov": "Bali",
+   "singkat": "STISIP Margarana"
+  },
+  "INSTITUT AGAMA ISLAM HASAN JUFRI BAWEAN": {
+   "kota": "Gresik",
+   "prov": "Jawa Timur",
+   "singkat": "INHAFI"
+  },
+  "POLITEKNIK KRAKATAU": {
+   "kota": "Cilegon",
+   "prov": "Banten",
+   "singkat": "POLKA"
+  },
+  "UNIVERSITAS KRISTEN INDONESIA TOMOHON": {
+   "kota": "Tomohon",
+   "prov": "Sulawesi Utara",
+   "singkat": "UKIT"
+  },
+  "STKIP PGRI TULUNGAGUNG": {
+   "kota": "Tulungagung",
+   "prov": "Jawa Timur",
+   "singkat": "STKIP PGRI TA"
+  },
+  "STKIP YAPIS DOMPU": {
+   "kota": "Dompu",
+   "prov": "Nusa Tenggara Barat",
+   "singkat": "STKIP Yapis Dompu"
+  },
+  "UNIVERSITAS MUHAMMADIYAH BREBES": {
+   "kota": "Brebes",
+   "prov": "Jawa Tengah",
+   "singkat": "UMBS"
+  },
+  "STAI NAHDLATUL ULAMA (STAINU) JAKARTA": {
+   "kota": "Jakarta Pusat",
+   "prov": "D.K.I. Jakarta",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI ILMU TARBIYAH ASSUNNIYAH TAMBARANGAN RANTAU TAPIN": {
+   "kota": "Tapin",
+   "prov": "Kalimantan Selatan",
+   "singkat": "STITAT"
+  },
+  "AKADEMI TEKNOLOGI SEMARANG": {
+   "kota": "Semarang",
+   "prov": "Jawa Tengah",
+   "singkat": "ATS"
+  },
+  "STIT ISLAMIC VILLAGE TANGERANG BANTEN": {
+   "kota": "Tangerang",
+   "prov": "Banten",
+   "singkat": "STIT Isvill"
+  },
+  "POLITEKNIK KELAUTAN DAN PERIKANAN BITUNG": {
+   "kota": "Bitung",
+   "prov": "Sulawesi Utara",
+   "singkat": ""
+  },
+  "UNIVERSITAS ISLAM NEGERI SUNAN KALIJAGA": {
+   "kota": "Sleman",
+   "prov": "D.I. Yogyakarta",
+   "singkat": "UIN SUKA"
+  },
+  "POLITEKNIK MANUFAKTUR NEGERI BANGKA BELITUNG": {
+   "kota": "Bangka",
+   "prov": "Bangka Belitung",
+   "singkat": "Polmanbabel"
+  },
+  "INSTITUT SAINS DAN TEKNOLOGI AKPRIND": {
+   "kota": "Yogyakarta",
+   "prov": "D.I. Yogyakarta",
+   "singkat": "IST AKPRIND"
+  },
+  "AKADEMI KEPERAWATAN BALA KESELAMATAN": {
+   "kota": "Palu",
+   "prov": "Sulawesi Tengah",
+   "singkat": "AKPER BK PALU"
+  },
+  "SEKOLAH TINGGI PENERBANGAN AVIASI": {
+   "kota": "Jakarta Selatan",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "STP AVIASI"
+  },
+  "STIKES CUT NYAK DHIEN LANGSA": {
+   "kota": "Langsa",
+   "prov": "Aceh",
+   "singkat": ""
+  },
+  "STMIK PROACTIVE": {
+   "kota": "Tidak Diisi",
+   "prov": "D.I. Yogyakarta",
+   "singkat": ""
+  },
+  "AKADEMI PERPAJAKAN TRIDARMA": {
+   "kota": "Bandar Lampung",
+   "prov": "Lampung",
+   "singkat": ""
+  },
+  "AKADEMIK TEKNIK OTOMOTIF BANDA ACEH": {
+   "kota": "Banda Aceh",
+   "prov": "Aceh",
+   "singkat": ""
+  },
+  "POLITEKNIK KOTABARU": {
+   "kota": "Kota Baru",
+   "prov": "Kalimantan Selatan",
+   "singkat": "POLITEKNIK KOTABARU"
+  },
+  "POLITEKNIK WILMAR BISNIS INDONESIA": {
+   "kota": "Deli Serdang",
+   "prov": "Sumatera Utara",
+   "singkat": "WBI"
+  },
+  "SEKOLAH TINGGI ILMU SYARIAH AL-SYAIKH ABDUL WAHID BAU-BAU": {
+   "kota": "Baubau",
+   "prov": "Sulawesi Tenggara",
+   "singkat": "STIS SAW"
+  },
+  "SEKOLAH TINGGI ILMU EKONOMI MITRA LAMPUNG": {
+   "kota": "Bandar Lampung",
+   "prov": "Lampung",
+   "singkat": "STIE Mitra Lampung"
+  },
+  "INSTITUT AGAMA ISLAM KOTAMOBAGU": {
+   "kota": "Kota. Kotamobagu",
+   "prov": "Sulawesi Utara",
+   "singkat": "IAI Kotamobagu"
+  },
+  "SEKOLAH TINGGI ILMU EKONOMI STUDI EKONOMI MODERN": {
+   "kota": "Sukoharjo",
+   "prov": "Jawa Tengah",
+   "singkat": "STIE STEKOM"
+  },
+  "UNIVERSITAS NAHDLATUL ULAMA BANGIL": {
+   "kota": "Pasuruan",
+   "prov": "Jawa Timur",
+   "singkat": "UNUBA"
+  },
+  "SEKOLAH TINGGI AGAMA ISLAM TANBIHUL GHOFILIN BANJARNEGARA": {
+   "kota": "Banjarnegara",
+   "prov": "Jawa Tengah",
+   "singkat": "STAI Tangho"
+  },
+  "STIMIK SUPRA": {
+   "kota": "Jakarta Timur",
+   "prov": "D.K.I. Jakarta",
+   "singkat": ""
+  },
+  "AKADEMI KEBIDANAN DUTA DHARMA PATI": {
+   "kota": "Pati",
+   "prov": "Jawa Tengah",
+   "singkat": "AKBID DD"
+  },
+  "UNIVERSITAS MUHAMMADIYAH SAMPIT": {
+   "kota": "Kotawaringin Timur",
+   "prov": "Kalimantan Tengah",
+   "singkat": "UMSA"
+  },
+  "STAIN MALIKUSSALEH": {
+   "kota": "Lhokseumawe",
+   "prov": "Aceh",
+   "singkat": "STAINMAL"
+  },
+  "SEKOLAH TINGGI ILMU KESEHATAN TARUMANAGARA": {
+   "kota": "Jakarta Selatan",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "STIKes Tarumanagara"
+  },
+  "AKADEMI ANALIS KESEHATAN DELIMA HUSADA GRESIK": {
+   "kota": "Gresik",
+   "prov": "Jawa Timur",
+   "singkat": "AAK DHG"
+  },
+  "UNIVERSITAS MUHAMMADIYAH AHMAD DAHLAN PALEMBANG": {
+   "kota": "Palembang",
+   "prov": "Sumatera Selatan",
+   "singkat": "UM-AD Palembang"
+  },
+  "SEKOLAH TINGGI TEOLOGI TABGHA BATAM": {
+   "kota": "Batam",
+   "prov": "Kepulauan Riau",
+   "singkat": "ST3B"
+  },
+  "UNIVERSITAS KALTARA": {
+   "kota": "Bulungan",
+   "prov": "Kalimantan Utara",
+   "singkat": "UNIKALTAR"
+  },
+  "STIKES AMANAH MAKASSAR": {
+   "kota": "Makassar",
+   "prov": "Sulawesi Selatan",
+   "singkat": "STIKMA"
+  },
+  "SEKOLAH TINGGI TEKNIK ATLAS NUSANTARA": {
+   "kota": "Malang",
+   "prov": "Jawa Timur",
+   "singkat": "STTAR"
+  },
+  "AKADEMI PARIWISATA DAN PERHOTELAN GANESHA": {
+   "kota": "Malang",
+   "prov": "Jawa Timur",
+   "singkat": "APARTEL GANESHA"
+  },
+  "AKADEMI KEBIDANAN MUHAMMADIYAH BANDA ACEH": {
+   "kota": "Banda Aceh",
+   "prov": "Aceh",
+   "singkat": "AKBID Muhammadiyah B"
+  },
+  "UNIVERSITAS ASAHAN": {
+   "kota": "Asahan",
+   "prov": "Sumatera Utara",
+   "singkat": "Universitas Asahan"
+  },
+  "UNIVERSITAS BINA SEHAT PPNI MOJOKERTO": {
+   "kota": "Mojokerto",
+   "prov": "Jawa Timur",
+   "singkat": "UBS PPNI"
+  },
+  "SEKOLAH TINGGI PARIWISATA BOGOR": {
+   "kota": "Bogor",
+   "prov": "Jawa Barat",
+   "singkat": "STPB"
+  },
+  "AKADEMI FARMASI PROPINSI JAMBI": {
+   "kota": "Jambi",
+   "prov": "Jambi",
+   "singkat": "AKFAR PROVINSI JAMBI"
+  },
+  "INSTITUT KEISLAMAN HASYIM AS`ARI (IKAHA) TEBUIRENG JOMBANG": {
+   "kota": "Jombang",
+   "prov": "Jawa Timur",
+   "singkat": "IKAHA"
+  },
+  "INSTITUT AGAMA ISLAM MIFTAHUL ULUM LUMAJANG": {
+   "kota": "Lumajang",
+   "prov": "Jawa Timur",
+   "singkat": "IAIM LUMAJANG"
+  },
+  "SEKOLAH TINGGI ILMU KESEHATAN KENDEDES": {
+   "kota": "Malang",
+   "prov": "Jawa Timur",
+   "singkat": ""
+  },
+  "STKIP MUHAMMADIYAH PALOPO": {
+   "kota": "Palopo",
+   "prov": "Sulawesi Selatan",
+   "singkat": ""
+  },
+  "AKADEMI ILMU KOMUNIKASI PADANG": {
+   "kota": "Padang",
+   "prov": "Sumatera Barat",
+   "singkat": ""
+  },
+  "AKADEMI KEBIDANAN MEDICA ALAS LEUSER": {
+   "kota": "Aceh Tenggara",
+   "prov": "Aceh",
+   "singkat": "Akademi Kebidanan Me"
+  },
+  "AKADEMIK KEBIDANAN ARMINA CENTRE PANYABUNGAN": {
+   "kota": "Mandailing Natal",
+   "prov": "Sumatera Utara",
+   "singkat": "akbid armina centre"
+  },
+  "SEKOLAH TINGGI ILMU EKONOMI RAHMANIYAH": {
+   "kota": "Musi Banyu Asin",
+   "prov": "Sumatera Selatan",
+   "singkat": ""
+  },
+  "STAI DDI MANGKOSO BARRU SULAWESI SELATAN": {
+   "kota": "Barru",
+   "prov": "Sulawesi Selatan",
+   "singkat": "STAI DDI Mangkoso"
+  },
+  "SEKOLAH TINGGI EKONOMI DAN BISNIS ISLAM (STEBIS) MUHAMMADIYAH SUMEDANG": {
+   "kota": "Sumedang",
+   "prov": "Jawa Barat",
+   "singkat": "STEBISMu"
+  },
+  "UNIVERSITAS NAHDLATUL ULAMA KALIMANTAN SELATAN": {
+   "kota": "Banjar",
+   "prov": "Kalimantan Selatan",
+   "singkat": "UNUKASE"
+  },
+  "AKADEMI KEBIDANAN UMMI KHASANAH": {
+   "kota": "Bantul",
+   "prov": "D.I. Yogyakarta",
+   "singkat": ""
+  },
+  "INSTITUT TEKNOLOGI INDONESIA": {
+   "kota": "tangerang Selatan",
+   "prov": "Banten",
+   "singkat": "ITI"
+  },
+  "SEKOLAH TINGGI ILMU ADMINISTRASI SATYA NEGARA": {
+   "kota": "Palembang",
+   "prov": "Sumatera Selatan",
+   "singkat": "STIA Satya Negara"
+  },
+  "STISIP PUSAKA NUSANTARA": {
+   "kota": "Jakarta Timur",
+   "prov": "D.K.I. Jakarta",
+   "singkat": ""
+  },
+  "STEBI GLOBAL MULIA CIKARANG": {
+   "kota": "Bekasi",
+   "prov": "Jawa Barat",
+   "singkat": "STEBI GM"
+  },
+  "SEKOLAH TINGGI GURU HURIA HKBP SIPOHOLON": {
+   "kota": "Tapanuli Utara",
+   "prov": "Sumatera Utara",
+   "singkat": "STGH HKBP"
+  },
+  "AKADEMI MANAJEMEN GUNUNG LEUSER": {
+   "kota": "Tasikmalaya",
+   "prov": "Jawa Barat",
+   "singkat": ""
+  },
+  "AKADEMI ANALIS KESEHATAN YPM SIDOARJO": {
+   "kota": "Sidoarjo",
+   "prov": "Jawa Timur",
+   "singkat": "AAK YPM"
+  },
+  "UNIVERSITAS MUHAMMADIYAH KOTABUMI": {
+   "kota": "Lampung Utara",
+   "prov": "Lampung",
+   "singkat": "UMKO"
+  },
+  "STAI SYARIF MUHAMMAD RAHA MUNA SULAWESI TENGGARA": {
+   "kota": "Muna",
+   "prov": "Sulawesi Tenggara",
+   "singkat": "STAI Syarif Muhammad"
+  },
+  "SEKOLAH TINGGI MANAJEMEN TAMAN PENDIDIKAN 45": {
+   "kota": "Denpasar",
+   "prov": "Bali",
+   "singkat": "STIMAN TP. 45 DENPAS"
+  },
+  "AKADEMI AKUNTANSI YAI JAKARTA": {
+   "kota": "Jakarta Pusat",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "AA YAI"
+  },
+  "SEKOLAH TINGGI ILMU EKONOMI STEMBI": {
+   "kota": "Bandung",
+   "prov": "Jawa Barat",
+   "singkat": "STIE STEMBI Bandung"
+  },
+  "SEKOLAH TINGGI PENYULUHAN PERTANIAN GOWA": {
+   "kota": "Gowa",
+   "prov": "Sulawesi Selatan",
+   "singkat": "STPP Gowa"
+  },
+  "UNIVERSITAS POTENSI UTAMA": {
+   "kota": "Medan",
+   "prov": "Sumatera Utara",
+   "singkat": "UPU"
+  },
+  "SEKOLAH TINGGI ILMU KESEHATAN BHAKTI HUSADA BENGKULU": {
+   "kota": "Bengkulu",
+   "prov": "Bengkulu",
+   "singkat": "STIKes Bhakti Husada"
+  },
+  "UNIVERSITAS KATOLIK DE LA SALLE MANADO": {
+   "kota": "Manado",
+   "prov": "Sulawesi Utara",
+   "singkat": "UKDLSM"
+  },
+  "STI EKONOMI SYARI`AH BAKTIYA ACEH UTARA": {
+   "kota": "Aceh Utara",
+   "prov": "Aceh",
+   "singkat": "STIES"
+  },
+  "AKADEMI MANAJEMEN BISNIS KENDARI": {
+   "kota": "Kendari",
+   "prov": "Sulawesi Tenggara",
+   "singkat": "AMB KENDARI"
+  },
+  "UNIVERSITAS MUHAMMADIYAH METRO": {
+   "kota": "Metro",
+   "prov": "Lampung",
+   "singkat": "UM METRO"
+  },
+  "POLITEKNIK BELITUNG": {
+   "kota": "Belitung",
+   "prov": "Bangka Belitung",
+   "singkat": "POLBEL"
+  },
+  "STMIK AUB SURAKARTA": {
+   "kota": "Surakarta",
+   "prov": "Jawa Tengah",
+   "singkat": "STMIK AUB"
+  },
+  "STMIK BUDI DARMA": {
+   "kota": "Medan",
+   "prov": "Sumatera Utara",
+   "singkat": "STMIK BD"
+  },
+  "STMIK SURABAYA": {
+   "kota": "Surabaya",
+   "prov": "Jawa Timur",
+   "singkat": ""
+  },
+  "STIT DINIYYAH PUTERI RAHMAH EL-YUNUSIYYAH KOTA PADANG PANJANG": {
+   "kota": "Padang Panjang",
+   "prov": "Sumatera Barat",
+   "singkat": "STIT Diniyyah Puteri"
+  },
+  "STT TABERNAKEL INDONESIA SURABAYA": {
+   "kota": "Surabaya",
+   "prov": "Jawa Timur",
+   "singkat": "STTIA"
+  },
+  "SEKOLAH TINGGI ILMU KESEHATAN PATRIOT BANGSA LAMPUNG": {
+   "kota": "Bandar Lampung",
+   "prov": "Lampung",
+   "singkat": ""
+  },
+  "POLTEKKES KEMENKES TASIKMALAYA": {
+   "kota": "Tasikmalaya",
+   "prov": "Jawa Barat",
+   "singkat": "POLTEKKES TASIK"
+  },
+  "SEKOLAH TINGGI ILMU EKONOMI PARIPURNA": {
+   "kota": "Depok",
+   "prov": "Jawa Barat",
+   "singkat": "STIE PARIPURNA"
+  },
+  "SEKOLAH TINGGI ILMU EKONOMI KBP": {
+   "kota": "Padang",
+   "prov": "Sumatera Barat",
+   "singkat": "STIE \"KBP\" PADANG"
+  },
+  "POLITEKNIK INDUSTRI FURNITUR DAN PENGOLAHAN KAYU": {
+   "kota": "Kendal",
+   "prov": "Jawa Tengah",
+   "singkat": "POLIFURNEKA"
+  },
+  "SEKOLAH TINGGI ILMU EKONOMI PELITA BANGSA": {
+   "kota": "Bekasi",
+   "prov": "Jawa Barat",
+   "singkat": ""
+  },
+  "UNIVERSITAS GALUH": {
+   "kota": "Ciamis",
+   "prov": "Jawa Barat",
+   "singkat": "Unigal"
+  },
+  "STIKOM MUHAMMADIYAH JAYAPURA": {
+   "kota": "Jayapura",
+   "prov": "Papua",
+   "singkat": "stikom"
+  },
+  "POLITEKNIK JAMBI": {
+   "kota": "Jambi",
+   "prov": "Jambi",
+   "singkat": "Politeknik Jambi"
+  },
+  "SEKOLAH TINGGI AGAMA HINDU NEGERI JAWA DWIPA KLATEN JAWA TENGAH": {
+   "kota": "Klaten",
+   "prov": "Jawa Tengah",
+   "singkat": "STAHN Japa"
+  },
+  "INSTITUT ISLAM NAHDLATUL ULAMA TEMANGGUNG": {
+   "kota": "Temanggung",
+   "prov": "Jawa Tengah",
+   "singkat": "INISNU TEMANGGUNG"
+  },
+  "STAI AL-HAMIDIYAH BANGKALAN": {
+   "kota": "Bangkalan",
+   "prov": "Jawa Timur",
+   "singkat": "STAMIDIYA"
+  },
+  "AKADEMI MANAJEMEN BANDA ACEH": {
+   "kota": "Aceh Tamiang",
+   "prov": "Aceh",
+   "singkat": "AMBA"
+  },
+  "SEKOLAH TINGGI ILMU AGAMA BUDDHA JINARAKKHITA": {
+   "kota": "Bandar Lampung",
+   "prov": "Lampung",
+   "singkat": "STIAB Jinarakkhita"
+  },
+  "STKIP SILIWANGI": {
+   "kota": "Cimahi",
+   "prov": "Jawa Barat",
+   "singkat": "STKIP Siliwangi"
+  },
+  "SEKOLAH TINGGI ILMU USHULUDDIN MASJID AL AKBAR SURABAYA JAWA TIMUR": {
+   "kota": "Surabaya",
+   "prov": "Jawa Timur",
+   "singkat": "STIU"
+  },
+  "UNIVERSITAS KARYA HUSADA SEMARANG": {
+   "kota": "Semarang",
+   "prov": "Jawa Tengah",
+   "singkat": "Unkaha"
+  },
+  "AKADEMI KEPERAWATAN DR SOEDONO MADIUN PROV JAWA TIMUR": {
+   "kota": "Madiun",
+   "prov": "Jawa Timur",
+   "singkat": "Akper Dr.Soedono Mad"
+  },
+  "STAI AZZAKIYAH UJUNGBERUNG BANDUNG": {
+   "kota": "Bandung",
+   "prov": "Jawa Barat",
+   "singkat": ""
+  },
+  "STMIK PGRI TANGERANG": {
+   "kota": "Tangerang",
+   "prov": "Banten",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI ILMU EKONOMI Y P KAMPUS": {
+   "kota": "Padang Sidempuan",
+   "prov": "Sumatera Utara",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI ILMU AL-QUR'AN ASH-SHIDDIQ": {
+   "kota": "Deli Serdang",
+   "prov": "Sumatera Utara",
+   "singkat": "STIQ ASH-SHIDDIQ"
+  },
+  "AKADEMI PERTANIAN HKTI BANYUMAS": {
+   "kota": "Banyumas",
+   "prov": "Jawa Tengah",
+   "singkat": ""
+  },
+  "POLTEKKES KEMENKES MANADO": {
+   "kota": "Manado",
+   "prov": "Sulawesi Utara",
+   "singkat": "Polkesdo"
+  },
+  "AKADEMI FISIOTERAPI ST LUKAS TOMOHON": {
+   "kota": "Tomohon",
+   "prov": "Sulawesi Utara",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI ILMU EKONOMI TAMAN SISWA": {
+   "kota": "Jakarta Pusat",
+   "prov": "D.K.I. Jakarta",
+   "singkat": ""
+  },
+  "AKADEMI PIMPINAN PERUSAHAAN": {
+   "kota": "Jakarta Selatan",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "APP"
+  },
+  "AKADEMI BISNIS AS-SYIFA": {
+   "kota": "Subang",
+   "prov": "Jawa Barat",
+   "singkat": ""
+  },
+  "AKADEMI TEKNIK INDUSTRI MAKASSAR": {
+   "kota": "Makassar",
+   "prov": "Sulawesi Selatan",
+   "singkat": "ATIM"
+  },
+  "POLITEKNIK PERIKANAN NEGERI TUAL": {
+   "kota": "Maluku Tenggara",
+   "prov": "Maluku",
+   "singkat": "Polikant Tual"
+  },
+  "UNIVERSITAS SULBAR MANARANG": {
+   "kota": "Mamuju",
+   "prov": "Sulawesi Barat",
+   "singkat": ""
+  },
+  "STAI ALMA ATA YOGYAKARTA": {
+   "kota": "Tidak Diisi",
+   "prov": "D.I. Yogyakarta",
+   "singkat": "STIA Alma Ata Yogyak"
+  },
+  "AKADEMI KEPERAWATAN GUNUNGSITOLI PEMERINTAH KABUPATEN NIAS": {
+   "kota": "Nias",
+   "prov": "Sumatera Utara",
+   "singkat": "AKPER Gunungsitoli P"
+  },
+  "SEKOLAH TINGGI AGAMA KATOLIK NEGERI PONTIANAK": {
+   "kota": "Kuburaya",
+   "prov": "Kalimantan Barat",
+   "singkat": "STAKatN Pontianak"
+  },
+  "SEKOLAH TINGGI TEOLOGI INALTA": {
+   "kota": "Jakarta Selatan",
+   "prov": "D.K.I. Jakarta",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI TEOLOGI AGAPE MANADO": {
+   "kota": "Manado",
+   "prov": "Sulawesi Utara",
+   "singkat": ""
+  },
+  "AKADEMI KEPERAWATAN SUMBER WARAS": {
+   "kota": "Jakarta Barat",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "AKPER SUMBER WARAS"
+  },
+  "UNIVERSITAS MUHAMMADIYAH JEMBER": {
+   "kota": "Jember",
+   "prov": "Jawa Timur",
+   "singkat": "Unmuh Jember"
+  },
+  "STKIP SERA": {
+   "kota": "Tangerang",
+   "prov": "Banten",
+   "singkat": "STKIP SERA"
+  },
+  "UNIVERSITAS PRADITA": {
+   "kota": "Jakarta Utara",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "Universitas Pradita"
+  },
+  "SEKOLAH TINGGI ILMU SYARI`AH MIFTAHUL ULUM LUMAJANG": {
+   "kota": "Lumajang",
+   "prov": "Jawa Timur",
+   "singkat": "STISMU Lumajang"
+  },
+  "UNIVERSITAS BRAWIJAYA": {
+   "kota": "Malang",
+   "prov": "Jawa Timur",
+   "singkat": "UB"
+  },
+  "AKADEMI TEKNIK RADIODIAGNOSTIK DAN RADIOTERAPI PERSADA NUSANTARA BEKASI": {
+   "kota": "Bekasi",
+   "prov": "Jawa Barat",
+   "singkat": ""
+  },
+  "STAI BABUNNAJAH PANDEGLANG BANTEN": {
+   "kota": "Pandeglang",
+   "prov": "Banten",
+   "singkat": "STAI Babunnajah"
+  },
+  "INSTITUT TEKNOLOGI DAN BISNIS ARUNGPALAKKA": {
+   "kota": "Bone",
+   "prov": "Sulawesi Selatan",
+   "singkat": "ITB Arungpalakka"
+  },
+  "UNIVERSITAS ISLAM LAMONGAN": {
+   "kota": "Lamongan",
+   "prov": "Jawa Timur",
+   "singkat": "UNISLA"
+  },
+  "POLITEKNIK SENI YOGYAKARTA": {
+   "kota": "Sleman",
+   "prov": "D.I. Yogyakarta",
+   "singkat": "Poliseni"
+  },
+  "AKADEMI KEPERAWATAN TEUNGKU FAKINAH BANDA ACEH": {
+   "kota": "Banda Aceh",
+   "prov": "Aceh",
+   "singkat": "AKPER TGK FAKINAH"
+  },
+  "POLITEKNIK PALOPO": {
+   "kota": "Palopo",
+   "prov": "Sulawesi Selatan",
+   "singkat": "POLITEKNIK PALOPO"
+  },
+  "SEKOLAH TINGGI BAHASA ASING PRAYOGA": {
+   "kota": "Padang",
+   "prov": "Sumatera Barat",
+   "singkat": "STBA Prayoga Padang"
+  },
+  "UNIVERSITAS AL-QOLAM MALANG": {
+   "kota": "Malang",
+   "prov": "Jawa Timur",
+   "singkat": "UQM"
+  },
+  "UNIVERSITAS SAINS DAN TEKNOLOGI JAYAPURA": {
+   "kota": "Jayapura",
+   "prov": "Papua",
+   "singkat": "USTJ"
+  },
+  "POLITEKNIK META INDUSTRI CIKARANG": {
+   "kota": "Bekasi",
+   "prov": "Jawa Barat",
+   "singkat": "MIP"
+  },
+  "POLITEKNIK MALINAU": {
+   "kota": "Malinau",
+   "prov": "Kalimantan Utara",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI ILMU MARITIM AMI": {
+   "kota": "Jakarta Timur",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "STIMar \"AMI\""
+  },
+  "SEKOLAH TINGGI BAHASA ASING CAKRAWALA NUSANTARA": {
+   "kota": "Kupang",
+   "prov": "Nusa Tenggara Timur",
+   "singkat": "STIBA CNK"
+  },
+  "POLITEKNIK WAHDAH ISLAMIYAH MAKASSAR": {
+   "kota": "Makassar",
+   "prov": "Sulawesi Selatan",
+   "singkat": "POLTEKWIM"
+  },
+  "SEKOLAH TINGGI TEKNOLOGI JAWA BARAT": {
+   "kota": "Bandung",
+   "prov": "Jawa Barat",
+   "singkat": "STT Jabar"
+  },
+  "SEKOLAH TINGGI ILMU KESEHATAN PANTI WILASA": {
+   "kota": "Semarang",
+   "prov": "Jawa Tengah",
+   "singkat": "STIKES Panti Wilasa"
+  },
+  "STIKES WIJAYA HUSADA BOGOR": {
+   "kota": "Bogor",
+   "prov": "Jawa Barat",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI ILMU EKONOMI MIFTAHUL HUDA": {
+   "kota": "Subang",
+   "prov": "Jawa Barat",
+   "singkat": "STIE Miftahul Huda S"
+  },
+  "AKADEMI KEBIDANAN AR-RAHMA": {
+   "kota": "Pasuruan",
+   "prov": "Jawa Timur",
+   "singkat": "AKBID AR RAHMA"
+  },
+  "AKADEMI KEPERAWATAN PURNA BHAKTI HUSADA": {
+   "kota": "Tanah Datar",
+   "prov": "Sumatera Barat",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI ILMU KEHUTANAN PANTE KULU": {
+   "kota": "Banda Aceh",
+   "prov": "Aceh",
+   "singkat": "STIK Pante Kulu"
+  },
+  "AKADEMI PERKERETAAPIAN INDONESIA MADIUN": {
+   "kota": "Madiun",
+   "prov": "Jawa Timur",
+   "singkat": ""
+  },
+  "STIKES MUHAMMADIYAH TASIKMALAYA": {
+   "kota": "Tasikmalaya",
+   "prov": "Jawa Barat",
+   "singkat": "stikes mutas"
+  },
+  "AKADEMI ANALIS KESEHATAN UNMUH SURABAYA": {
+   "kota": "Surabaya",
+   "prov": "Jawa Timur",
+   "singkat": ""
+  },
+  "STIKES PAMENANG": {
+   "kota": "Kediri",
+   "prov": "Jawa Timur",
+   "singkat": "STIKES PAMENANG"
+  },
+  "INSTITUT BIO SCIENTIA INTERNASIONAL INDONESIA": {
+   "kota": "Jakarta Timur",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "i3L"
+  },
+  "AKADEMI KEBIDANAN BUNGA BANGSAKU BANGKA": {
+   "kota": "Ogan Komering Ilir",
+   "prov": "Sumatera Selatan",
+   "singkat": "AKBID BUNGA BANGSAKU"
+  },
+  "INSTITUT STUDI ISLAM AL-AMIN INDRAMAYU": {
+   "kota": "Indramayu",
+   "prov": "Jawa Barat",
+   "singkat": ""
+  },
+  "AKADEMI KEBIDANAN ANNISA JAYA": {
+   "kota": "Bogor",
+   "prov": "Jawa Barat",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI ILMU BUDAYA ISLAM SYEKH JANGKUNG PATI": {
+   "kota": "Pati",
+   "prov": "Jawa Tengah",
+   "singkat": "STIBI Syekh Jangkung"
+  },
+  "SEKOLAH TINGGI EKONOMI ISLAM FITRAH INSANI": {
+   "kota": "Bandung Barat",
+   "prov": "Jawa Barat",
+   "singkat": "STEI FITRAH INSANI"
+  },
+  "POLITEKNIK NEGERI KETAPANG": {
+   "kota": "Ketapang",
+   "prov": "Kalimantan Barat",
+   "singkat": "Politap"
+  },
+  "AKADEMI KEPERAWATAN KERTA CENDEKIA SIDOARJO": {
+   "kota": "Sidoarjo",
+   "prov": "Jawa Timur",
+   "singkat": "AKPER Kerta Cendekia"
+  },
+  "STAI DARUSSALAM MARTAPURA KALIMANTAN SELATAN": {
+   "kota": "Banjar",
+   "prov": "Kalimantan Selatan",
+   "singkat": "STAI Darussalam"
+  },
+  "SEKOLAH TINGGI ILMU EKONOMI MUHAMMADIYAH PALOPO": {
+   "kota": "Palopo",
+   "prov": "Sulawesi Selatan",
+   "singkat": "STIE Muhammadiyah Pa"
+  },
+  "POLTEKKES KEMENKES PALANGKARAYA": {
+   "kota": "Palangka Raya",
+   "prov": "Kalimantan Tengah",
+   "singkat": "Polkesraya"
+  },
+  "SEKOLAH TINGGI ALKITAB JEMBER": {
+   "kota": "Jember",
+   "prov": "Jawa Timur",
+   "singkat": "STAJ"
+  },
+  "AKADEMI KOMUNITAS DARUSSALAM BLOKAGUNG": {
+   "kota": "Banyuwangi",
+   "prov": "Jawa Timur",
+   "singkat": "AKD BLOKAGUNG"
+  },
+  "INSTITUT JAMBATAN BULAN": {
+   "kota": "Mimika",
+   "prov": "Papua",
+   "singkat": "JAMBATAN BULAN"
+  },
+  "INSTITUT AGAMA ISLAM KH SUFYAN TSAURI MAJENANG": {
+   "kota": "Cilacap",
+   "prov": "Jawa Tengah",
+   "singkat": "INSIMA CILACAP"
+  },
+  "AKADEMI KEBIDANAN JAKARTA MITRA SEJAHTERA": {
+   "kota": "Jambi",
+   "prov": "Jambi",
+   "singkat": "AKBID JMS"
+  },
+  "UNIVERSITAS PANCA MARGA": {
+   "kota": "Probolinggo",
+   "prov": "Jawa Timur",
+   "singkat": "UPM"
+  },
+  "STT INSTITUT INJIL INDONESIA BATU (I-3)": {
+   "kota": "Batu",
+   "prov": "Jawa Timur",
+   "singkat": ""
+  },
+  "UNIVERSITAS DR DJAR WATTIHELUW": {
+   "kota": "Maluku Tengah",
+   "prov": "Maluku",
+   "singkat": ""
+  },
+  "POLITEKNIK PEKERJAAN UMUM": {
+   "kota": "Semarang",
+   "prov": "Jawa Tengah",
+   "singkat": "Politeknik PU"
+  },
+  "SEKOLAH TINGGI TEOLOGI SAAT": {
+   "kota": "Malang",
+   "prov": "Jawa Timur",
+   "singkat": "STT SAAT"
+  },
+  "SEKOLAH TINGGI TEOLOGI INJILI INDONESIA MANADO": {
+   "kota": "Manado",
+   "prov": "Sulawesi Utara",
+   "singkat": ""
+  },
+  "UNIVERSITAS NAHDLATUL ULAMA SIDOARJO": {
+   "kota": "Sidoarjo",
+   "prov": "Jawa Timur",
+   "singkat": "UNUSIDA"
+  },
+  "STAI AS`ADIYAH SENGKANG WAJO": {
+   "kota": "Wajo",
+   "prov": "Sulawesi Selatan",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI ILMU EKONOMI MUHAMMADIYAH SAMARINDA": {
+   "kota": "Samarinda",
+   "prov": "Kalimantan Timur",
+   "singkat": ""
+  },
+  "AKADEMI KEPERAWATAN DIRGAHAYU SAMARINDA": {
+   "kota": "Samarinda",
+   "prov": "Kalimantan Timur",
+   "singkat": "Akper Dirgahayu"
+  },
+  "STIT ULUWIYAH MOJOSARI MOJOKERTO": {
+   "kota": "Mojokerto",
+   "prov": "Jawa Timur",
+   "singkat": "STIT ULUWIYAH MOJOSA"
+  },
+  "SEKOLAH TINGGI ILMU ADMINISTRASI SANDIKTA": {
+   "kota": "Bekasi",
+   "prov": "Jawa Barat",
+   "singkat": "STIA Sandikta"
+  },
+  "INSTITUT AGAMA ISLAM LUKMAN EDY": {
+   "kota": "Pekanbaru",
+   "prov": "Riau",
+   "singkat": "IAILe"
+  },
+  "UNIVERSITAS MUHAMMADIYAH BUTON": {
+   "kota": "Baubau",
+   "prov": "Sulawesi Tenggara",
+   "singkat": "UM Buton"
+  },
+  "UNIVERSITAS ISLAM AL-KIFAYAH RIAU": {
+   "kota": "Pekanbaru",
+   "prov": "Riau",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI TEKNOLOGI DIRGANTARA MAKASSAR": {
+   "kota": "Makassar",
+   "prov": "Sulawesi Selatan",
+   "singkat": ""
+  },
+  "UNIVERSITAS ISLAM NUSANTARA": {
+   "kota": "Bandung",
+   "prov": "Jawa Barat",
+   "singkat": "Uninus"
+  },
+  "STIKES PANCA ATMA JAYA": {
+   "kota": "Klungkung",
+   "prov": "Bali",
+   "singkat": ""
+  },
+  "UNIVERSITAS LA TANSA MASHIRO": {
+   "kota": "Lebak",
+   "prov": "Banten",
+   "singkat": "UNILAM"
+  },
+  "AKADEMI ANGKATAN UDARA (AAU)": {
+   "kota": "Yogyakarta",
+   "prov": "D.I. Yogyakarta",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI ILMU KESEHATAN DUTA GAMA KLATEN": {
+   "kota": "Klaten",
+   "prov": "Jawa Tengah",
+   "singkat": "STIKES DUTA GAMA KLA"
+  },
+  "SEKOLAH TINGGI AGAMA KRISTEN MESIAS SORONG": {
+   "kota": "Sorong",
+   "prov": "Papua Barat",
+   "singkat": ""
+  },
+  "STMIK AKI PATI": {
+   "kota": "Pati",
+   "prov": "Jawa Tengah",
+   "singkat": "STMIK AKI"
+  },
+  "STT YESYURUN ARASTAMAR SERITI LUWU": {
+   "kota": "Luwu",
+   "prov": "Sulawesi Selatan",
+   "singkat": "STT YA"
+  },
+  "SEKOLAH TINGGI ILMU KESEHATAN PEMKAB PURWOREJO": {
+   "kota": "Purworejo",
+   "prov": "Jawa Tengah",
+   "singkat": "SPP"
+  },
+  "AKADEMI AKUNTANSI LAMPUNG": {
+   "kota": "Bandar Lampung",
+   "prov": "Lampung",
+   "singkat": ""
+  },
+  "UNIVERSITAS SATYAGAMA": {
+   "kota": "Jakarta Barat",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "UGAMA"
+  },
+  "AKADEMI KEBIDANAN MEDICA OBGIN": {
+   "kota": "Bandung",
+   "prov": "Jawa Barat",
+   "singkat": "Akademi Kebidanan Me"
+  },
+  "UNIVERSITAS TOMPOTIKA LUWUK": {
+   "kota": "Banggai",
+   "prov": "Sulawesi Tengah",
+   "singkat": "UNTIKA Luwuk"
+  },
+  "SEKOLAH TINGGI ILMU SYARIAH HAJI ABDUL RASYID LOMBOK TENGAH": {
+   "kota": "Lombok Tengah",
+   "prov": "Nusa Tenggara Barat",
+   "singkat": "STIS HARSYI"
+  },
+  "SEKOLAH TINGGI ILMU ADMINISTRASI MALANG": {
+   "kota": "Malang",
+   "prov": "Jawa Timur",
+   "singkat": "STIA MALANG"
+  },
+  "SEKOLAH TINGGI BAHASA ASING JIA": {
+   "kota": "Bekasi",
+   "prov": "Jawa Barat",
+   "singkat": "STBA JIA"
+  },
+  "STKIP MUHAMMADIYAH LUMAJANG": {
+   "kota": "Lumajang",
+   "prov": "Jawa Timur",
+   "singkat": "STKIP MUH. LUMAJANG"
+  },
+  "SEKOLAH TINGGI ILMU PSIKOLOGI HARAPAN BANGSA": {
+   "kota": "Banda Aceh",
+   "prov": "Aceh",
+   "singkat": "STIP Harapan Bangsa"
+  },
+  "AMIK TOMAKAKA": {
+   "kota": "Majene",
+   "prov": "Sulawesi Barat",
+   "singkat": ""
+  },
+  "AKADEMI PERIKANAN QOMARUDDIN": {
+   "kota": "Gresik",
+   "prov": "Jawa Timur",
+   "singkat": ""
+  },
+  "STT INJILI DI PALEMBANG": {
+   "kota": "Palembang",
+   "prov": "Sumatera Selatan",
+   "singkat": ""
+  },
+  "UNIVERSITAS KATOLIK WEETEBULA": {
+   "kota": "Sumba Barat Daya",
+   "prov": "Nusa Tenggara Timur",
+   "singkat": "UNIKA WEETEBULA"
+  },
+  "UNIVERSITAS ABDUL AZIS LAMADJIDO": {
+   "kota": "Palu",
+   "prov": "Sulawesi Tengah",
+   "singkat": "UNAZLAM"
+  },
+  "STIKES SEBELAS APRIL SUMEDANG": {
+   "kota": "Sumedang",
+   "prov": "Jawa Barat",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI TEOLOGI BEREA SALATIGA": {
+   "kota": "Salatiga",
+   "prov": "Jawa Tengah",
+   "singkat": "STT Berea"
+  },
+  "SEKOLAH TINGGI ILMU HUKUM DHARMA ANDHIGA": {
+   "kota": "Bogor",
+   "prov": "Jawa Barat",
+   "singkat": "STIH-DA"
+  },
+  "AKADEMI KEBIDANAN KELUARGA BUNDA JAMBI": {
+   "kota": "Jambi",
+   "prov": "Jambi",
+   "singkat": "akb jambi"
+  },
+  "STT ARASTAMAR MATARAM": {
+   "kota": "Mataram",
+   "prov": "Nusa Tenggara Barat",
+   "singkat": "STTAM"
+  },
+  "IAIN BUKITTINGGI": {
+   "kota": "Agam",
+   "prov": "Sumatera Barat",
+   "singkat": "IAIN Bukittinggi"
+  },
+  "UNIVERSITAS ARS INTERNASIONAL": {
+   "kota": "Bandung",
+   "prov": "Jawa Barat",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI ILMU DAKWAH SURAKARTA (STIDS)": {
+   "kota": "Tidak Diisi",
+   "prov": "Jawa Tengah",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI ALKITAB BATU MALANG": {
+   "kota": "Batu",
+   "prov": "Jawa Timur",
+   "singkat": "STA Batu"
+  },
+  "POLITEKNIK GUSDURIAN": {
+   "kota": "Banyumas",
+   "prov": "Jawa Tengah",
+   "singkat": "POLTEKGUS"
+  },
+  "STKIP AL HIKMAH SURABAYA": {
+   "kota": "Surabaya",
+   "prov": "Jawa Timur",
+   "singkat": "STKIP Al Hikmah"
+  },
+  "AKADEMI KEBIDANAN WIRA BUANA": {
+   "kota": "Metro",
+   "prov": "Lampung",
+   "singkat": "Akbid Wira Buana"
+  },
+  "STAI DDI PAREPARE SULAWESI SELATAN": {
+   "kota": "Pare-Pare",
+   "prov": "Sulawesi Selatan",
+   "singkat": "STAI DDI Parepare"
+  },
+  "STAI ASSHIDDIQIYAH KARAWANG": {
+   "kota": "Karawang",
+   "prov": "Jawa Barat",
+   "singkat": "STAIAS"
+  },
+  "UNIVERSITAS SARI MUTIARA INDONESIA": {
+   "kota": "Medan",
+   "prov": "Sumatera Utara",
+   "singkat": "USM-Indonesia"
+  },
+  "SEKOLAH TINGGI KEGURUAN DAN ILMU PENDIDIKAN INVADA CIREBON": {
+   "kota": "Cirebon",
+   "prov": "Jawa Barat",
+   "singkat": "STKIP INVADA"
+  },
+  "UNIVERSITAS BORNEO TARAKAN": {
+   "kota": "Tarakan",
+   "prov": "Kalimantan Timur",
+   "singkat": ""
+  },
+  "INSTITUTE AGAMA BUDDHA NASIONAL DIVYARAJYA": {
+   "kota": "Jakarta Utara",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "FU-IABN"
+  },
+  "STAI HASANUDDIN PARE KEDIRI": {
+   "kota": "Kediri",
+   "prov": "Jawa Timur",
+   "singkat": "STAIH"
+  },
+  "SEKOLAH TINGGI FILSAFAT ISLAM (STFI) SADRA JAKARTA": {
+   "kota": "Jakarta Selatan",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "STFI Sadra"
+  },
+  "SEKOLAH TINGGI AGAMA ISLAM RAUDLATUL ULUUM LABUHANBATU": {
+   "kota": "Labuhan Batu",
+   "prov": "Sumatera Utara",
+   "singkat": "STAIRU LABUHANBATU"
+  },
+  "SEKOLAH TINGGI ILMU TARBIYAH MISBAHUDIN AHMAD": {
+   "kota": "Blitar",
+   "prov": "Jawa Timur",
+   "singkat": "STITMA BLITAR"
+  },
+  "SEKOLAH TINGGI TEKNIK MULTIMEDIA INTERNASIONAL MALANG": {
+   "kota": "Malang",
+   "prov": "Jawa Timur",
+   "singkat": ""
+  },
+  "INSTITUT KH AHMAD SANUSI SUKABUMI": {
+   "kota": "Sukabumi",
+   "prov": "Jawa Barat",
+   "singkat": "INKHAS Sukabumi"
+  },
+  "UNIVERSITAS HARAPAN MEDAN": {
+   "kota": "Medan",
+   "prov": "Sumatera Utara",
+   "singkat": "UnHar Medan"
+  },
+  "STKIP MUHAMMADIYAH PRINGSEWU": {
+   "kota": "Pringsewu",
+   "prov": "Lampung",
+   "singkat": "STKIP MPL"
+  },
+  "AKADEMI KEPERAWATAN YAYASAN DHARMA BHAKTI JAKARTA": {
+   "kota": "Jakarta Selatan",
+   "prov": "D.K.I. Jakarta",
+   "singkat": ""
+  },
+  "INSTITUT AL-MASTHURIYAH SUKABUMI": {
+   "kota": "Sukabumi",
+   "prov": "Jawa Barat",
+   "singkat": ""
+  },
+  "POLITEKNIK MANUFAKTUR ASTRA": {
+   "kota": "Jakarta Utara",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "Polman Astra"
+  },
+  "STIKES BINA SEHAT PPNI MOJOKERTO": {
+   "kota": "Mojokerto",
+   "prov": "Jawa Timur",
+   "singkat": "Bina Sehat PPNI"
+  },
+  "STIKESMAS NUSANTARA": {
+   "kota": "Palembang",
+   "prov": "Sumatera Selatan",
+   "singkat": "STIKESMAS Nusantara"
+  },
+  "UNIVERSITAS JANABADRA": {
+   "kota": "Yogyakarta",
+   "prov": "D.I. Yogyakarta",
+   "singkat": "UJB"
+  },
+  "STMIK BINA BANGSA": {
+   "kota": "Lhokseumawe",
+   "prov": "Aceh",
+   "singkat": ""
+  },
+  "AKADEMI AKUNTANSI INDONESIA PADANG": {
+   "kota": "Padang",
+   "prov": "Sumatera Barat",
+   "singkat": "AAI"
+  },
+  "UNIVERSITAS TJUT NYAK DHIEN": {
+   "kota": "Medan",
+   "prov": "Sumatera Utara",
+   "singkat": "UTND"
+  },
+  "STMIK WIDYA DHARMA": {
+   "kota": "Pontianak",
+   "prov": "Kalimantan Barat",
+   "singkat": "WD"
+  },
+  "AKADEMI KEBIDANAN MEDISTRA LUBUK PAKAM": {
+   "kota": "Deli Serdang",
+   "prov": "Sumatera Utara",
+   "singkat": ""
+  },
+  "AKADEMI PARIWISATA INDONESIA JAKARTA": {
+   "kota": "Jakarta Timur",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "AKPINDO"
+  },
+  "AKADEMI KEPERAWATAN PEMKAB GRESIK": {
+   "kota": "Gresik",
+   "prov": "Jawa Timur",
+   "singkat": "AKPER Pemkab Gresik"
+  },
+  "STIT MUHAMMADIYAH BOJONEGORO": {
+   "kota": "Bojonegoro",
+   "prov": "Jawa Timur",
+   "singkat": "STIT Muhammadiyah"
+  },
+  "AKADEMI KEPERAWATAN KESDAM I/BUKIT BARISAN BINJAI": {
+   "kota": "Binjai",
+   "prov": "Sumatera Utara",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI THEOLOGIA INJILI INDONESIA PONTIANAK": {
+   "kota": "Pontianak",
+   "prov": "Kalimantan Barat",
+   "singkat": "STTII-P"
+  },
+  "AKADEMI KEBIDANAN PEMKAB KARO KABANJAHE": {
+   "kota": "Karo",
+   "prov": "Sumatera Utara",
+   "singkat": ""
+  },
+  "UNIVERSITAS DIRGANTARA MARSEKAL SURYADARMA": {
+   "kota": "Jakarta Timur",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "Unsurya"
+  },
+  "SEKOLAH TINGGI AGAMA ISLAM SALAHUDDIN (STAIS) PASURUAN": {
+   "kota": "Pasuruan",
+   "prov": "Jawa Timur",
+   "singkat": "STAI SALAHUDDIN PASU"
+  },
+  "INSTITUT KESEHATAN WIDYA DHARMA HUSADA TANGERANG": {
+   "kota": "tangerang Selatan",
+   "prov": "Banten",
+   "singkat": ""
+  },
+  "AKADEMI KEBIDANAN KARTINI BALI": {
+   "kota": "Denpasar",
+   "prov": "Bali",
+   "singkat": "AKKB"
+  },
+  "INSTITUT SWADIRI": {
+   "kota": "Jayapura",
+   "prov": "Papua",
+   "singkat": "ISWA"
+  },
+  "AKADEMI KEBIDANAN IBRAHIMY SITUBONDO": {
+   "kota": "Situbondo",
+   "prov": "Jawa Timur",
+   "singkat": "AKBID Ibrahimy"
+  },
+  "SEKOLAH TINGGI ILMU EKONOMI DHARMA ANDALAS": {
+   "kota": "Padang",
+   "prov": "Sumatera Barat",
+   "singkat": "STIE DA"
+  },
+  "GEORGETOWN UNIVERSITY": {
+   "kota": "Jakarta Pusat",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "GU"
+  },
+  "STIKES BHAKTI PERTIWI LUWU RAYA": {
+   "kota": "Palopo",
+   "prov": "Sulawesi Selatan",
+   "singkat": "STIKES BPLR"
+  },
+  "STKIP PESISIR SELATAN": {
+   "kota": "Pesisir Selatan",
+   "prov": "Sumatera Barat",
+   "singkat": "STKIP PESSEL"
+  },
+  "POLITEKNIK ENERGI DAN MINERAL AKAMIGAS": {
+   "kota": "Blora",
+   "prov": "Jawa Tengah",
+   "singkat": "PEM Akamigas"
+  },
+  "UNIVERSITAS SANGGA BUANA": {
+   "kota": "Bandung",
+   "prov": "Jawa Barat",
+   "singkat": "USB-YPKP"
+  },
+  "AKADEMI KEPERAWATAN YPSBR MUARA BULIAN": {
+   "kota": "Batang Hari",
+   "prov": "Jambi",
+   "singkat": ""
+  },
+  "STKIP INSAN MADANI AIRMOLEK": {
+   "kota": "Indragiri Hulu",
+   "prov": "Riau",
+   "singkat": "STKIP INSAN MADANI A"
+  },
+  "INSTITUT AGAMA ISLAM NURUL JADID PAITON PROBOLINGGO (IAINJ)": {
+   "kota": "Probolinggo",
+   "prov": "Jawa Timur",
+   "singkat": "IAINJ"
+  },
+  "AKADEMI KEBIDANAN MENARA BUNDA": {
+   "kota": "Kolaka",
+   "prov": "Sulawesi Tenggara",
+   "singkat": "AKBID MENARA BUNDA"
+  },
+  "STIKES INSAN UNGGUL SURABAYA": {
+   "kota": "Sidoarjo",
+   "prov": "Jawa Timur",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI TEOLOGI APOSTOLIC JAKARTA": {
+   "kota": "Tidak Diisi",
+   "prov": "D.K.I. Jakarta",
+   "singkat": ""
+  },
+  "STKIP MODERN NGAWI": {
+   "kota": "Ngawi",
+   "prov": "Jawa Timur",
+   "singkat": ""
+  },
+  "UNIVERSITAS NEGERI MEDAN": {
+   "kota": "Medan",
+   "prov": "Sumatera Utara",
+   "singkat": "UNIMED"
+  },
+  "AKADEMI PEREKAM MEDIK DAN INFOKES IMELDA": {
+   "kota": "Medan",
+   "prov": "Sumatera Utara",
+   "singkat": ""
+  },
+  "AKADEMI KEPERAWATAN YKY YOGYAKARTA": {
+   "kota": "Bantul",
+   "prov": "D.I. Yogyakarta",
+   "singkat": "AKPER \"YKY\""
+  },
+  "INSTITUT BAHRI ASYIQ GALIS BANGKALAN": {
+   "kota": "Bangkalan",
+   "prov": "Jawa Timur",
+   "singkat": "Instiba"
+  },
+  "UNIVERSITAS MUHAMMADIYAH KUDUS": {
+   "kota": "Kudus",
+   "prov": "Jawa Tengah",
+   "singkat": "UMKU"
+  },
+  "AKADEMI KEBIDANAN ABDURAHMAN": {
+   "kota": "Palembang",
+   "prov": "Sumatera Selatan",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI ILMU TARBIYAH RAKEYAN SANTANG KARAWANG JAWA BARAT": {
+   "kota": "Karawang",
+   "prov": "Jawa Barat",
+   "singkat": "STIT RAKEYAN SANTANG"
+  },
+  "AKADEMI MANAJEMEN INDUSTRI SURAKARTA": {
+   "kota": "Surakarta",
+   "prov": "Jawa Tengah",
+   "singkat": ""
+  },
+  "UNIVERSITAS MUHAMMADIYAH PURWOREJO": {
+   "kota": "Purworejo",
+   "prov": "Jawa Tengah",
+   "singkat": "UMPwr"
+  },
+  "STT GEREJA INJILI DI INDONESIA": {
+   "kota": "Jayapura",
+   "prov": "Papua",
+   "singkat": "STT GIDI Papua"
+  },
+  "SEKOLAH TINGGI HUKUM INDONESIA JENTERA": {
+   "kota": "Jakarta Selatan",
+   "prov": "D.K.I. Jakarta",
+   "singkat": ""
+  },
+  "AKADEMI BAHASA ASING BOROBUDUR": {
+   "kota": "Jakarta Timur",
+   "prov": "D.K.I. Jakarta",
+   "singkat": ""
+  },
+  "STAI AL-KAUTSAR": {
+   "kota": "Bengkalis",
+   "prov": "Riau",
+   "singkat": "STAI AL KAUTSAR BENG"
+  },
+  "UNIVERSITAS MADANI": {
+   "kota": "Bantul",
+   "prov": "D.I. Yogyakarta",
+   "singkat": "UMAD"
+  },
+  "STAI AL-AZHAR GOWA SULAWESI SELATAN": {
+   "kota": "Makassar",
+   "prov": "Sulawesi Selatan",
+   "singkat": "STAI-AG"
+  },
+  "UNIVERSITAS MAHENDRADATTA": {
+   "kota": "Denpasar",
+   "prov": "Bali",
+   "singkat": "UNMAR"
+  },
+  "SEKOLAH TINGGI ILMU EKONOMI URIP SUMOHARDJO": {
+   "kota": "Surabaya",
+   "prov": "Jawa Timur",
+   "singkat": ""
+  },
+  "AKADEMI KEBIDANAN WIJAYA HUSADA": {
+   "kota": "Bogor",
+   "prov": "Jawa Barat",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI AGAMA ISLAM AL HAYAH": {
+   "kota": "Sumedang",
+   "prov": "Jawa Barat",
+   "singkat": "SAH"
+  },
+  "POLITEKNIK KELAUTAN DAN PERIKANAN SORONG": {
+   "kota": "Sorong",
+   "prov": "Papua Barat",
+   "singkat": "Politeknik KP Sorong"
+  },
+  "UNIVERSITAS WIRA BHAKTI": {
+   "kota": "Makassar",
+   "prov": "Sulawesi Selatan",
+   "singkat": "UWIBHA"
+  },
+  "SEKOLAH TINGGI ILMU SYARIAH HUSNUL KHOTIMAH (STISHK) KUNINGAN": {
+   "kota": "Kuningan",
+   "prov": "Jawa Barat",
+   "singkat": "STIS Husnul Khotimah"
+  },
+  "AKADEMI KEBIDANAN PERSADA PALEMBANG": {
+   "kota": "Palembang",
+   "prov": "Sumatera Selatan",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI KEUANGAN NIAGA & NEGARA PEMBANGUNAN": {
+   "kota": "Jakarta Selatan",
+   "prov": "D.K.I. Jakarta",
+   "singkat": ""
+  },
+  "STMIK SAMARINDA": {
+   "kota": "Samarinda",
+   "prov": "Kalimantan Timur",
+   "singkat": "STMIK SAMARINDA"
+  },
+  "AKADEMI KEPERAWATAN NOTOKUSUMO": {
+   "kota": "Yogyakarta",
+   "prov": "D.I. Yogyakarta",
+   "singkat": "AKPER Notokusumo"
+  },
+  "AKADEMI KEBIDANAN MUHAMMADIYAH PRINGSEWU": {
+   "kota": "Tulang Bawang Barat",
+   "prov": "Lampung",
+   "singkat": ""
+  },
+  "AKADEMI AKUNTANSI YKPN": {
+   "kota": "Yogyakarta",
+   "prov": "D.I. Yogyakarta",
+   "singkat": "AA YKPN"
+  },
+  "POLITEKNIK DARMA GANESHA": {
+   "kota": "Belitung",
+   "prov": "Bangka Belitung",
+   "singkat": ""
+  },
+  "POLITEKNIK KESEHATAN SITEBA": {
+   "kota": "Padang",
+   "prov": "Sumatera Barat",
+   "singkat": "POLTEKES SITEBA"
+  },
+  "UNIVERSITAS ISLAM DARUD DA`WAH WAL-IRSYAD AGH ABDURRAHMAN AMBO DALLE": {
+   "kota": "Polewali Mamasa",
+   "prov": "Sulawesi Barat",
+   "singkat": "UI DDI AD"
+  },
+  "SEKOLAH TINGGI AGAMA ISLAM AL-BAHJAH CIREBON": {
+   "kota": "Cirebon",
+   "prov": "Jawa Barat",
+   "singkat": "STAI Al Bahjah"
+  },
+  "AKADEMI KEBIDANAN PRESTASI AGUNG": {
+   "kota": "Jakarta Timur",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "Prestasi Agung"
+  },
+  "SEKOLAH TINGGI ILMU EKONOMI SYARIAH RIYADLUL JANNAH MOJOKERTO JAWA TIMUR": {
+   "kota": "Mojokerto",
+   "prov": "Jawa Timur",
+   "singkat": "STIES RIJAN"
+  },
+  "UNIVERSITAS SEBELAS MARET": {
+   "kota": "Surakarta",
+   "prov": "Jawa Tengah",
+   "singkat": "UNS"
+  },
+  "UNIVERSITAS TRI TUNGGAL": {
+   "kota": "Surabaya",
+   "prov": "Jawa Timur",
+   "singkat": "UTS"
+  },
+  "POLITEKNIK INSAN TAZAKKA": {
+   "kota": "Karawang",
+   "prov": "Jawa Barat",
+   "singkat": "POLTEK INSAN TAZAKKA"
+  },
+  "POLITEKNIK LAMANDAU": {
+   "kota": "Lamandau",
+   "prov": "Kalimantan Tengah",
+   "singkat": "POLILAMAN"
+  },
+  "STKIP MUHAMMADIYAH BANGKA BELITUNG": {
+   "kota": "Pangkalpinang",
+   "prov": "Bangka Belitung",
+   "singkat": "STKIP MBB"
+  },
+  "STIT PEMALANG": {
+   "kota": "Pemalang",
+   "prov": "Jawa Tengah",
+   "singkat": "STIT PEMALANG"
+  },
+  "INSTITUT AGAMA ISLAM UMMUL AYMAN PIDIE JAYA": {
+   "kota": "Pidie Jaya",
+   "prov": "Aceh",
+   "singkat": ""
+  },
+  "STKIP PARACENDEKIA N W SUMBAWA": {
+   "kota": "Sumbawa",
+   "prov": "Nusa Tenggara Barat",
+   "singkat": "STKIP Paracendekia"
+  },
+  "AKADEMI KEPERAWATAN PEMKAB PIDIE DI SIGLI": {
+   "kota": "Pidie",
+   "prov": "Aceh",
+   "singkat": "AKPER PEMKAB PIDIE"
+  },
+  "UNIVERSITAS ISLAM TEBO": {
+   "kota": "Tebo",
+   "prov": "Jambi",
+   "singkat": ""
+  },
+  "POLTEKKES KEMENKES MAKASSAR": {
+   "kota": "Makassar",
+   "prov": "Sulawesi Selatan",
+   "singkat": "polkesmakassar"
+  },
+  "SEKOLAH TINGGI TEOLOGI GLOBAL JAKARTA": {
+   "kota": "Jakarta Pusat",
+   "prov": "D.K.I. Jakarta",
+   "singkat": ""
+  },
+  "SEKOLAH TINGGI ILMU EKONOMI DAHANI DAHANAI BUNTOK": {
+   "kota": "Barito Selatan",
+   "prov": "Kalimantan Tengah",
+   "singkat": "STIE Dahani Dahanai"
+  },
+  "SEKOLAH TINGGI EKONOMI ISLAM PERMATA BOJONEGORO": {
+   "kota": "Bojonegoro",
+   "prov": "Jawa Timur",
+   "singkat": "STEI PERMATA"
+  },
+  "UNIVERSITAS BANI SALEH": {
+   "kota": "Bekasi",
+   "prov": "Jawa Barat",
+   "singkat": "UBS"
+  },
+  "SEKOLAH TINGGI ILMU KOMPUTER 22 JANUARI KENDARI": {
+   "kota": "Kendari",
+   "prov": "Sulawesi Tenggara",
+   "singkat": "STIKOM 22 J Kendari"
+  },
+  "AKADEMI FARMASI MITRA SEHAT MANDIRI SIDOARJO": {
+   "kota": "Sidoarjo",
+   "prov": "Jawa Timur",
+   "singkat": "AKFARMITSEDA"
+  },
+  "STISIP SAMUDERA INDONESIA SELATAN": {
+   "kota": "Garut",
+   "prov": "Jawa Barat",
+   "singkat": ""
+  },
+  "UNIVERSITAS MUHAMMADIYAH MUARA BUNGO": {
+   "kota": "Bungo",
+   "prov": "Jambi",
+   "singkat": "UMMUBA"
+  },
+  "INSTITUT KEUANGAN-PERBANKAN DAN INFORMATIKA ASIA PERBANAS": {
+   "kota": "Jakarta Selatan",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "IKPIA Perbanas"
+  },
+  "SEKOLAH TINGGI TEKNIK YPLN": {
+   "kota": "Jakarta Barat",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "STT-PLN"
+  },
+  "SEKOLAH TINGGI ILMU SOSIAL DAN POLITIK FAJAR TIMUR": {
+   "kota": "Belu",
+   "prov": "Nusa Tenggara Timur",
+   "singkat": ""
+  },
+  "POLITEKNIK KOMPUTER NIAGA LPKIA": {
+   "kota": "Bandung",
+   "prov": "Jawa Barat",
+   "singkat": ""
+  },
+  "AKADEMI KEBIDANAN ANUGRAH ABADI": {
+   "kota": "Sumbawa",
+   "prov": "Nusa Tenggara Barat",
+   "singkat": ""
+  },
+  "UNIVERSITAS MANDALA BHAKTI": {
+   "kota": "Karanganyar",
+   "prov": "Jawa Tengah",
+   "singkat": ""
+  },
+  "STAI RASYIDIYAH KHALIDIYAH (RAKHA) AMUNTAI KALIMANTAN SELATAN": {
+   "kota": "Tidak Diisi",
+   "prov": "Kalimantan Selatan",
+   "singkat": "STAI RAKHA Amuntai"
+  },
+  "STIPER SAWAHLUNTO SIJUNJUNG": {
+   "kota": "Sawahlunto/ Sijunjung",
+   "prov": "Sumatera Barat",
+   "singkat": "STIPER"
+  },
+  "STIKES SAKINAH HUSADA TANJUNG BALAI": {
+   "kota": "Tanjung Balai",
+   "prov": "Sumatera Utara",
+   "singkat": ""
+  },
+  "AKADEMI KEPERAWATAN KENDAL": {
+   "kota": "Kendal",
+   "prov": "Jawa Tengah",
+   "singkat": ""
+  },
+  "INSTITUT ILMU KESEHATAN BHAKTI WIYATA KEDIRI": {
+   "kota": "Kediri",
+   "prov": "Jawa Timur",
+   "singkat": "IIK Bhakta"
+  },
+  "UNIVERSITAS MUHAMMADIYAH TEGAL": {
+   "kota": "Tegal",
+   "prov": "Jawa Tengah",
+   "singkat": "UMTEGAL"
+  },
+  "STT POKOK ANGGUR JAKARTA": {
+   "kota": "Jakarta Barat",
+   "prov": "D.K.I. Jakarta",
+   "singkat": "STT Pokok Anggur JKT"
+  },
+  "SEKOLAH TINGGI MANAJEMEN INFORMATIKA DAN KOMPUTER PGRI ARUNGBINANG KEBUMEN": {
+   "kota": "Kebumen",
+   "prov": "Jawa Tengah",
+   "singkat": ""
+  },
+  "AKADEMI TEKNIK YKPN": {
+   "kota": "Yogyakarta",
+   "prov": "D.I. Yogyakarta",
+   "singkat": ""
+  },
+  "INSTITUT ALIF MUHAMMAD IMAM SYAFI'I": {
+   "kota": "Lamongan",
+   "prov": "Jawa Timur",
+   "singkat": "INAMIS"
+  },
+  "SEKOLAH TINGGI TEOLOGI INJILI INDONESIA SAMARINDA": {
+   "kota": "Samarinda",
+   "prov": "Kalimantan Timur",
+   "singkat": "STTII Samarida"
+  },
+  "DEAKIN UNIVERSITY": {
+   "kota": "Bandung",
+   "prov": "Jawa Barat",
+   "singkat": ""
+  },
+  "STIT SIROJUL FALAH BOGOR": {
+   "kota": "Bogor",
+   "prov": "Jawa Barat",
+   "singkat": "STIT SIFA Bogor"
+  },
+  "STIT AS-SALAMA TUAL MALUKU TENGGARA MALUKU": {
+   "kota": "Kota. Tual",
+   "prov": "Maluku",
+   "singkat": "STIT As-Salama Tual"
+  },
+  "AKADEMI KOMUNITAS KEBUN ANOM": {
+   "kota": "Jember",
+   "prov": "Jawa Timur",
+   "singkat": ""
+  },
+  "STES ISLAMIC VILLAGE TANGERANG": {
+   "kota": "Tangerang",
+   "prov": "Banten",
+   "singkat": "STES Islamic Village"
+  },
+  "UNIVERSITAS NURUL JADID": {
+   "kota": "Probolinggo",
+   "prov": "Jawa Timur",
+   "singkat": "UNUJA"
+  },
+  "AKADEMI KEBIDANAN PRIMA HUSADA": {
+   "kota": "Bogor",
+   "prov": "Jawa Barat",
+   "singkat": "AKBID PRIMA HUSADA"
+  }
+ }
+}

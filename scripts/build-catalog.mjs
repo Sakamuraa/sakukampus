@@ -55,6 +55,8 @@ const SITE_KEY = '6LdqjDstAAAAAMW1whjCNKyvqmPBOIssWETjbLbh';
 const args = process.argv.slice(2);
 const DRY = args.includes('--dry-run');
 const MULAI_KODE = args.includes('--kode');
+/** Tarik alias kota dari cache lalu rakit seed, tanpa menarik halaman baru. */
+const HANYA_RAKIT = args.includes('--rakit');
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -106,10 +108,17 @@ const ev = async (expr) => {
 };
 
 /**
- * Satu request API dari dalam browser, dengan token reCAPTCHA baru.
+ * Satu request API dari dalam browser, dengan token reCAPTCHA BARU.
+ *
+ * Token reCAPTCHA v3 bersifat sekali pakai di sisi PDDikti: token yang sudah
+ * dipakai akan ditolak (403). selain itu reCAPTCHA sendiri kadang menerbitkan
+ * token dengan skor rendah yang juga ditolak — pengukuran lapangan menunjukkan
+ * ±40% request ditolak walau jeda sudah 2,5 detik. Jadi: token baru + retry
+ * sampai berhasil, dengan jeda antar percobaan.
+ *
  * Mengembalikan { status, body } supaya pemanggil bisa menilai sendiri.
  */
-const panggil = async (path, tries = 4) => {
+const panggil = async (path, tries = 8) => {
   const script = `(async () => {
     const KEY = ${JSON.stringify(SITE_KEY)};
     const token = () => new Promise((res, rej) => {
@@ -123,11 +132,22 @@ const panggil = async (path, tries = 4) => {
           headers: { 'X-Recaptcha-Token': t },
         });
         const txt = await r.text();
-        if (!txt.trimStart().startsWith('{')) return JSON.stringify({ status: r.status, body: txt.slice(0, 200) });
+        if (!txt.trimStart().startsWith('{')) {
+          if (attempt === ${tries} - 1) return JSON.stringify({ status: r.status, body: txt.slice(0, 200) });
+          await new Promise(r2 => setTimeout(r2, 4000));
+          continue;
+        }
+        const j = JSON.parse(txt);
+        if (j.status !== 'success') {
+          // 403 reCAPTCHA -> token baru, coba lagi.
+          if (attempt === ${tries} - 1) return JSON.stringify({ status: r.status, body: txt });
+          await new Promise(r2 => setTimeout(r2, 4000));
+          continue;
+        }
         return JSON.stringify({ status: r.status, body: txt });
       } catch (e) {
         if (attempt === ${tries} - 1) return JSON.stringify({ status: 0, error: String(e.message) });
-        await new Promise(r2 => setTimeout(r2, 5000));
+        await new Promise(r2 => setTimeout(r2, 4000));
       }
     }
   })()`;
@@ -157,31 +177,97 @@ const norm = (s) =>
 
 /* --------------------------------------------------------------- FASE 1 */
 
+/**
+ * Tarik katalog PT.
+ *
+ * Dua jalur, untuk preferred:
+ *
+ *   A) SATU request ke /api/pt/search/filter?limit=20000
+ *      Endpoint v1 tidak membungkus hasil dan mengabaikan paginasi — satu
+ *      request mengembalikan SELURUH katalog (6.8k baris, diukur Nov 2026).
+ *      Ini jalur utama: satu token, bukan 70.
+ *
+ *   B) Paginasi /api/v2/pt/search/filter?page=N&limit=100
+ *      Cadangan kalau v1 berubah. Butuh ~70 request, jadi jauh lebih lambat dan
+ *      rawan kena penolakan reCAPTCHA.
+ */
 async function fase1() {
+  fs.mkdirSync(CACHE_DIR, { recursive: true });
+
+  // Jalur A: satu request untuk semuanya.
+  console.log('[fase 1] mencoba jalur A (satu request penuh)...');
+  for (let percobaan = 1; percobaan <= 6; percobaan++) {
+    const r = await panggil('/api/pt/search/filter?limit=20000');
+    if (r.status === 200 && !r.error) {
+      const j = JSON.parse(r.body);
+      const rows = Array.isArray(j.data)
+        ? j.data
+        : j.data && Array.isArray(j.data.data)
+          ? j.data.data
+          : [];
+      if (rows.length > 6000) {
+        fs.writeFileSync(
+          PAGES_JSONL,
+          JSON.stringify({ page: 1, rows, totalItems: rows.length, totalPages: 1 }) + '\n',
+        );
+        console.log(`[fase 1] jalur A berhasil: ${rows.length} baris dalam satu request`);
+        return;
+      }
+      console.error(`[fase 1] jalur A percobaan ${percobaan}: hanya ${rows.length} baris`);
+    } else {
+      console.error(
+        `[fase 1] jalur A percobaan ${percobaan} gagal: ${r.error || 'HTTP ' + r.status}`,
+      );
+    }
+    await sleep(percobaan * 20_000);
+  }
+
+  // Jalur B: paginasi, resumable per halaman.
+  console.log('[fase 1] jatuh ke jalur B (paginasi)...');
   const sudah = new Set(bacaJsonl(PAGES_JSONL).map((h) => h.page));
   console.log(`[fase 1] halaman di cache: ${sudah.size}`);
-  fs.mkdirSync(CACHE_DIR, { recursive: true });
 
   let totalPages = 0;
   let totalItems = 0;
   for (let page = 1; page <= 200; page++) {
     if (sudah.has(page)) continue;
-    const r = await panggil(`/api/v2/pt/search/filter?page=${page}&limit=100`);
-    if (r.status !== 200 || r.error) {
-      console.error(`[fase 1] halaman ${page} gagal: ${r.error || 'HTTP ' + r.status}`);
-      await sleep(8000);
+    // Halaman yang gagal DIULANG, bukan dilewati: satu halaman hilang = 100
+    // kampus hilang dari katalog. Jeda panjang setelah gagal, karena reCAPTCHA
+    // sedang menurunkan skor token kita.
+    let berhasil = false;
+    for (let percobaan = 1; percobaan <= 8 && !berhasil; percobaan++) {
+      const r = await panggil(`/api/v2/pt/search/filter?page=${page}&limit=100`);
+      if (r.status !== 200 || r.error) {
+        console.error(
+          `[fase 1] halaman ${page} percobaan ${percobaan} gagal: ${r.error || 'HTTP ' + r.status}`,
+        );
+        await sleep(percobaan * 20_000);
+        continue;
+      }
+      const j = JSON.parse(r.body);
+      if (j.status !== 'success') {
+        console.error(`[fase 1] halaman ${page}: ${j.message || j.status}`);
+        await sleep(percobaan * 20_000);
+        continue;
+      }
+      const d = j.data && j.data.data ? j.data : j;
+      fs.appendFileSync(
+        PAGES_JSONL,
+        JSON.stringify({
+          page,
+          rows: d.data || [],
+          totalItems: d.totalItems,
+          totalPages: d.totalPages,
+        }) + '\n',
+      );
+      totalItems = d.totalItems ?? totalItems;
+      totalPages = d.totalPages ?? totalPages;
+      berhasil = true;
+    }
+    if (!berhasil) {
+      console.error(`[fase 1] halaman ${page} GAGAL TOTAL — dilewati (kurang ${100} baris)`);
       continue;
     }
-    const j = JSON.parse(r.body);
-    if (j.status !== 'success') {
-      console.error(`[fase 1] halaman ${page}: ${j.message || j.status}`);
-      await sleep(8000);
-      continue;
-    }
-    const d = j.data && j.data.data ? j.data : j;
-    fs.appendFileSync(PAGES_JSONL, JSON.stringify({ page, rows: d.data || [] }) + '\n');
-    totalItems = d.totalItems ?? totalItems;
-    totalPages = d.totalPages ?? totalPages;
     if (page % 5 === 0 || page === 1) {
       console.log(`[fase 1] halaman ${page}/${totalPages || '?'}`);
     }
@@ -252,9 +338,14 @@ async function fase2() {
 /* ---------------------------------------------------------------- UTAMA */
 
 console.log('tab:', target.url);
+
+// reCAPTCHA hanya termuat utuh di beranda, dan token yang dibuat dari tab
+// yang sedang menampilkan challenge akan ditolak. Buka beranda dulu.
+await send('Page.navigate', { url: SITES + '/' });
+await sleep(9000);
 console.log('grecaptcha:', await ev('typeof grecaptcha'));
 
-if (!DRY) {
+if (!DRY && !HANYA_RAKIT) {
   await fase1();
   await fase2();
 }
@@ -271,6 +362,31 @@ for (const h of halaman) {
   }
 }
 console.log(`baris unik katalog: ${baris.length}`);
+
+/**
+ * GUARD: jangan pernah menulis seed dari katalog yang belum lengkap.
+ * Cache 5 halaman berisi 500 baris — memakainya berarti katalog 6.891
+ * jadi 500 dan seluruh UKT PTKIN ikut hilang. Katalog hanya dianggap lengkap
+ * kalau jumlah halamannya sama dengan totalPages yang diumumkan API (dan
+ * tidak ada halaman yang tercatat gagal).
+ */
+const halamanGagal = halaman.filter((h) => h.error).map((h) => h.page);
+const totalPagesApi = halaman.find((h) => h.totalPages)?.totalPages ?? 0;
+if (halamanGagal.length) {
+  console.error(`\nBATAL: ${halamanGagal.length} halaman gagal: ${halamanGagal.join(', ')}`);
+  process.exit(1);
+}
+if (totalPagesApi && halaman.length < totalPagesApi) {
+  console.error(
+    `\nBATAL: katalog belum lengkap — ${halaman.length} dari ${totalPagesApi} halaman. ` +
+      'Seed lama dipertahankan.',
+  );
+  process.exit(1);
+}
+if (baris.length < 6000) {
+  console.error(`\nBATAL: hanya ${baris.length} baris — jauh di bawah 6.000. Seed lama dipertahankan.`);
+  process.exit(1);
+}
 
 const seedLama = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'institutions.seed.json'), 'utf8'));
 const kodeLama = new Map(seedLama.pt.map(([kode, nama]) => [norm(nama), kode]));
