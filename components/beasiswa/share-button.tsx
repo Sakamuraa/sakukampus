@@ -98,7 +98,7 @@ export function ShareScholarshipButton({
                 'text/plain': new Blob([text], { type: 'text/plain' }),
               }),
             ]);
-            setMessage('Kartu PNG dan tautan disalin. Tempelkan langsung ke Discord.');
+            setMessage('Kartu PNG dan tautan disalin.');
             return;
           } catch (error) {
             console.error('Gagal menyalin kartu beasiswa ke clipboard.', error);
