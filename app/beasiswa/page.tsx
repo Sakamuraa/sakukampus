@@ -146,7 +146,14 @@ export default async function BeasiswaPage({
                   <CardHeader>
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
-                        <CardTitle className="leading-snug">{s.name}</CardTitle>
+                        <CardTitle className="leading-snug">
+                          <Link
+                            href={`/beasiswa/${s.slug}`}
+                            className="decoration-accent decoration-1 underline-offset-4 hover:text-accent hover:underline"
+                          >
+                            {s.name}
+                          </Link>
+                        </CardTitle>
                         <CardDescription className="mt-1.5 flex items-center gap-1.5">
                           <SealCheck size={13} weight="bold" className="shrink-0 text-ok" />
                           {s.provider}
