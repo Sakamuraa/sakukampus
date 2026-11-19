@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { institutions, scholarships, seedsMeta } from '@/lib/data';
+import { getAllScholarships, institutions, seedsMeta } from '@/lib/data';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,6 +20,7 @@ export async function GET(req: Request) {
   }
 
   const masalah: string[] = [];
+  const scholarships = await getAllScholarships();
 
   if (institutions.length < 3000) masalah.push(`katalog kampus mencurigakan: ${institutions.length}`);
   const denganUkt = institutions.filter((i) => i.ukt).length;

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { institutions, seedsMeta, scholarships } from '@/lib/data';
+import { getAllScholarships, institutions, seedsMeta } from '@/lib/data';
 
-export const revalidate = 600;
+export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/v1/meta/sources
@@ -10,6 +10,7 @@ export const revalidate = 600;
  * angka di aplikasi bisa ditelusuri asalnya.
  */
 export async function GET() {
+  const scholarships = await getAllScholarships();
   const withUkt = institutions.filter((i) => i.ukt).length;
 
   return NextResponse.json({

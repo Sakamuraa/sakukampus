@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { institutionsByKode, scholarships, seedsMeta } from '@/lib/data';
+import { getAllScholarships, institutionsByKode, seedsMeta } from '@/lib/data';
 import { matchAll, type Profile } from '@/lib/match';
 
 export const dynamic = 'force-dynamic';
@@ -47,6 +47,7 @@ export async function POST(req: Request) {
 
   const now = Date.now();
   const profil: Profile = body.profil ?? {};
+  const scholarships = await getAllScholarships();
 
   const hasil = matchAll(
     scholarships,

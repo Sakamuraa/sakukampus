@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
-import { scholarships } from '@/lib/data';
+import { getAllScholarships } from '@/lib/data';
 import type { ScholarshipSeed } from '@/lib/match';
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
 /** GET /api/v1/calendar?from=&to= — tenggat semua beasiswa + tahapannya. */
 export async function GET() {
+  const scholarships = await getAllScholarships();
   const events = scholarships.flatMap((s: ScholarshipSeed) =>
     s.stages
       .filter((st) => st.closes_at)

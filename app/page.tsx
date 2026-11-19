@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight } from '@phosphor-icons/react/dist/ssr/ArrowRight';
 import { ArrowUpRight } from '@phosphor-icons/react/dist/ssr/ArrowUpRight';
-import { institutions, scholarships, seedsMeta } from '@/lib/data';
+import { getAllScholarships, institutions, seedsMeta } from '@/lib/data';
 import { stageStatus } from '@/lib/match';
 import { rp, tanggal } from '@/components/ui';
 import { Button } from '@/components/ui/button';
@@ -9,7 +9,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Reveal, Stagger } from '@/components/motion/reveal';
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 const RULES = [
   {
@@ -34,8 +35,9 @@ const RULES = [
   },
 ] as const;
 
-export default function Home() {
+export default async function Home() {
   const now = Date.now();
+  const scholarships = await getAllScholarships();
   const denganUkt = institutions.filter((i) => i.ukt).length;
 
   const jakarta = institutions.find((i) => i.kode === '201001')?.ukt;

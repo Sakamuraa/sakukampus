@@ -5,11 +5,12 @@ import { notFound } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { STAGE_LABEL, TIER_LABEL, rp, tanggal } from '@/components/ui';
 import { ShareScholarshipButton } from '@/components/beasiswa/share-button';
-import { institutionsByKode, scholarships } from '@/lib/data';
+import { getAllScholarships, institutionsByKode } from '@/lib/data';
 import type { Criterion, Rule } from '@/lib/eligibility/engine';
 import { stageStatus, type ScholarshipSeed, type StageStatus } from '@/lib/match';
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -52,10 +53,6 @@ const COVERAGE_LABELS: Record<string, string> = {
   ukt_penuh: 'UKT penuh',
   ukt_sebagian: 'Bantuan UKT sebagian',
 };
-
-function findScholarship(id: string): ScholarshipSeed | undefined {
-  return scholarships.find((scholarship) => scholarship.slug === id);
-}
 
 function getScopeLabel(scope: string): string {
   if (scope === 'nasional') return 'Nasional';
@@ -129,13 +126,9 @@ function SummaryItem({ label, children }: { label: string; children: React.React
   );
 }
 
-export async function generateStaticParams() {
-  return scholarships.map((scholarship) => ({ id: scholarship.slug }));
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const scholarship = findScholarship(id);
+  const scholarship = (await getAllScholarships()).find((item) => item.slug === id);
 
   if (!scholarship) {
     return { title: 'Beasiswa tidak ditemukan', robots: { index: false, follow: true } };
@@ -160,7 +153,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BeasiswaDetailPage({ params }: Props) {
   const { id } = await params;
-  const scholarship = findScholarship(id);
+  const scholarship = (await getAllScholarships()).find((item) => item.slug === id);
   if (!scholarship) notFound();
 
   const status = stageStatus(scholarship, Date.now());

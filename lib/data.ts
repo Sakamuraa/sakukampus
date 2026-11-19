@@ -11,6 +11,7 @@ import uktSeed from '@/data/ukt-ptkin.seed.json';
 import scholarshipsSeed from '@/data/scholarships.seed.json';
 import type { PtkIn } from '@/lib/kma-ukt';
 import type { ScholarshipSeed } from '@/lib/match';
+import { getPublishedScholarships } from '@/lib/scholarship-store';
 
 export type InstitutionIndex = {
   kode: string;
@@ -104,6 +105,22 @@ export const institutionsByKode = new Map(institutions.map((i) => [i.kode, i]));
 
 export const scholarships = (scholarshipsSeed as unknown as { scholarships: ScholarshipSeed[] })
   .scholarships;
+
+export async function getAllScholarships(): Promise<ScholarshipSeed[]> {
+  const published = await getPublishedScholarships();
+  if (published.length === 0) return scholarships;
+
+  const merged = new Map(scholarships.map((scholarship) => [scholarship.slug, scholarship]));
+  const sourceUrls = new Map(scholarships.map((scholarship) => [scholarship.source_url, scholarship.slug]));
+
+  for (const { scholarship } of published) {
+    const existingSlug = sourceUrls.get(scholarship.source_url);
+    if (existingSlug && existingSlug !== scholarship.slug) merged.delete(existingSlug);
+    merged.set(scholarship.slug, scholarship);
+  }
+
+  return [...merged.values()];
+}
 
 export const seedsMeta = {
   institutions: (institutionsSeed as unknown as { _meta: Record<string, unknown> })._meta,

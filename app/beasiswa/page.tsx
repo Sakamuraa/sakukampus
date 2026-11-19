@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SealCheck } from '@phosphor-icons/react/dist/ssr';
-import { scholarships } from '@/lib/data';
+import { getAllScholarships } from '@/lib/data';
 import { stageStatus, type StageStatus } from '@/lib/match';
 import { rp, TIER_LABEL } from '@/components/ui';
 import { Button } from '@/components/ui/button';
@@ -9,7 +9,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Reveal, Stagger } from '@/components/motion/reveal';
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: 'Katalog beasiswa',
@@ -48,6 +49,7 @@ export default async function BeasiswaPage({
 }) {
   const { tier, status } = await searchParams;
   const now = Date.now();
+  const scholarships = await getAllScholarships();
 
   const semua = scholarships.map((s) => ({ s, st: stageStatus(s, now) }));
   const list = semua

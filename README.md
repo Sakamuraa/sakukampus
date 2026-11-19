@@ -103,6 +103,43 @@ scripts/
    ini dilewati.
 4. `npm test`.
 
+## Penemuan beasiswa otomatis
+
+Endpoint `POST /api/cron/discover-scholarships` mencari program baru melalui
+DuckDuckGo HTML (tanpa API key berbayar), mengambil halaman sumber, lalu meminta router OpenAI-compatible untuk
+mengekstrak dan mengutip bukti. Program yang lolos validasi disimpan di
+PostgreSQL dan langsung ikut tampil di katalog, detail, jadwal, API, dan
+pemeriksa kelayakan; tidak perlu rebuild untuk setiap entri baru.
+
+Salin template [.env.example](./.env.example) ke pengaturan environment server
+dan ganti semua placeholder. Jangan commit file `.env` atau mengirim key lewat
+chat.
+
+| Variable | Isi |
+|---|---|
+| `CRON_SECRET` | Rahasia acak untuk header autentikasi cron |
+| `DATABASE_URL` | Connection string PostgreSQL; user harus boleh membuat tabel |
+| `SCHOLARSHIP_LLM_API_URL` | URL lengkap endpoint Chat Completions milik router |
+| `SCHOLARSHIP_LLM_MODEL` | Nama model pada router |
+| `SCHOLARSHIP_LLM_API_KEY` | Key router; opsional jika router tidak memerlukan autentikasi |
+
+Di cron-job.org, buat satu job tiap 12 atau 24 jam: method `POST`, URL endpoint
+di atas, dan header `Authorization: Bearer <CRON_SECRET>`. Atur timeout job dan
+proxy server agar mengizinkan proses hingga 90 detik.
+
+Setiap pemanggilan menjalankan beberapa kueri DuckDuckGo di belakang satu request
+cron dan memproses paling banyak enam halaman kandidat. HTML pencarian gratis
+tidak memiliki SLA dan dapat sewaktu-waktu dibatasi atau berubah format; jika itu
+terjadi, endpoint melaporkan error dan tidak menerbitkan kandidat yang gagal
+diverifikasi. Sistem hanya menerbitkan
+hasil dengan sumber yang dinilai resmi, kutipan bukti yang benar-benar ditemukan
+di halaman, syarat yang bisa dipetakan ke eligibility engine, periode akademik
+berjalan/berikutnya, serta confidence model minimal 90. Kandidat duplikat,
+ambigu, halaman yang gagal diambil, atau syarat yang belum didukung akan
+dilewati dan dicatat pada respons cron. Ini otomatis, tetapi confidence model
+bukan jaminan kebenaran mutlak; verifikasi sumber tetap penting untuk keputusan
+pendaftaran.
+
 ## Menambah kampus dengan UKT
 
 - **PTKIN**: seluruhnya sudah tercakup dari KMA. Kalau KMA baru terbit, ganti PDF di

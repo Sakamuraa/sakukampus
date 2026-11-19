@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
-import { scholarships } from '@/lib/data';
+import { getAllScholarships } from '@/lib/data';
 import { stageStatus } from '@/lib/match';
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
 /** GET /api/v1/scholarships?tier=&status=&q= */
 export async function GET(req: Request) {
+  const scholarships = await getAllScholarships();
   const url = new URL(req.url);
   const tier = url.searchParams.get('tier');
   const status = url.searchParams.get('status');

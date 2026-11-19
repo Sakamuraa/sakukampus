@@ -1,13 +1,14 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowUpRight } from '@phosphor-icons/react/dist/ssr/ArrowUpRight';
-import { institutions, scholarships, seedsMeta } from '@/lib/data';
+import { getAllScholarships, institutions, seedsMeta } from '@/lib/data';
 import DataPageClient from './DataPageClient';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Reveal, Stagger } from '@/components/motion/reveal';
 
-export const revalidate = 600;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: 'Status data dan sumber',
@@ -42,7 +43,8 @@ const GAPS: GapFn[] = [
   () => 'Sebagian blok PTKIN memakai nama berbeda dari katalog PDDikti.',
 ];
 
-export default function DataPage() {
+export default async function DataPage() {
+  const scholarships = await getAllScholarships();
   const denganUkt = institutions.filter((i) => i.ukt).length;
   const tanpaUkt = institutions.length - denganUkt;
   const lengkap = Number(seedsMeta.ukt.prodiGolonganLengkap);

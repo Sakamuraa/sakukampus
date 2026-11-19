@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowUpRight } from '@phosphor-icons/react/dist/ssr/ArrowUpRight';
-import { scholarships } from '@/lib/data';
+import { getAllScholarships } from '@/lib/data';
 import { REGISTRATION_STAGES } from '@/lib/match';
 import { tanggal, sisaHari } from '@/components/ui';
 import { Button } from '@/components/ui/button';
@@ -9,7 +9,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Reveal, Stagger } from '@/components/motion/reveal';
 
-export const revalidate = 1800;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: 'Jadwal dan tenggat beasiswa',
@@ -19,8 +20,9 @@ export const metadata: Metadata = {
   openGraph: { title: 'Jadwal Tenggat Beasiswa', url: '/jadwal' },
 };
 
-export default function JadwalPage() {
+export default async function JadwalPage() {
   const now = Date.now();
+  const scholarships = await getAllScholarships();
 
   const baris = scholarships.flatMap((s) =>
     s.stages
