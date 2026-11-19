@@ -85,62 +85,50 @@ export function ShareScholarshipButton({
     setMessage('');
 
     try {
-      const blob = await createCardBlob();
-      const file = new File([blob], `${scholarship.slug}.png`, { type: 'image/png' });
       const url = new URL(detailPath, window.location.origin).href;
       const text = `${scholarship.name}\n${url}`;
-      const supportsFileShare =
-        'share' in navigator && Boolean(navigator.canShare?.({ files: [file] }));
-      let clipboardCopied = false;
 
-      if (
-        supportsFileShare &&
-        window.matchMedia('(pointer: fine)').matches &&
-        navigator.clipboard?.write &&
-        typeof ClipboardItem !== 'undefined'
-      ) {
-        try {
-          await navigator.clipboard.write([
-            new ClipboardItem({
-              'image/png': blob,
-              'text/plain': new Blob([text], { type: 'text/plain' }),
-            }),
-          ]);
-          clipboardCopied = true;
-        } catch (error) {
-          console.error('Gagal menyalin kartu sebelum membuka dialog berbagi.', error);
+      if (window.matchMedia('(pointer: fine)').matches) {
+        const blobPromise = createCardBlob();
+        if (navigator.clipboard?.write && typeof ClipboardItem !== 'undefined') {
+          try {
+            await navigator.clipboard.write([
+              new ClipboardItem({
+                'image/png': blobPromise,
+                'text/plain': new Blob([text], { type: 'text/plain' }),
+              }),
+            ]);
+            setMessage('Kartu PNG dan tautan disalin. Tempelkan langsung ke Discord.');
+            return;
+          } catch (error) {
+            console.error('Gagal menyalin kartu beasiswa ke clipboard.', error);
+          }
         }
+
+        const blob = await blobPromise;
+        const linkCopy = navigator.clipboard?.writeText
+          ? navigator.clipboard.writeText(text)
+          : null;
+        downloadCard(blob);
+        if (linkCopy) {
+          try {
+            await linkCopy;
+            setMessage('PNG diunduh dan tautan disalin. Lampirkan PNG ke Discord.');
+          } catch (error) {
+            console.error('Gagal menyalin tautan beasiswa.', error);
+            setMessage(`PNG diunduh. Clipboard ditolak, salin tautan ini: ${url}`);
+          }
+        } else {
+          setMessage(`PNG diunduh. Clipboard tidak didukung, salin tautan ini: ${url}`);
+        }
+        return;
       }
 
-      if (supportsFileShare) {
-        try {
-          await navigator.share({
-            files: [file],
-            title: scholarship.name,
-            text,
-            url,
-          });
-          setMessage(
-            clipboardCopied
-              ? 'Kartu dan tautan disalin ke clipboard dan siap dibagikan.'
-              : 'Kartu dan tautan beasiswa siap dibagikan.',
-          );
-        } catch (error) {
-          if (error instanceof DOMException && error.name === 'AbortError') {
-            setMessage(
-              clipboardCopied
-                ? 'Berbagi dibatalkan. Kartu dan tautan tetap ada di clipboard.'
-                : 'Berbagi dibatalkan.',
-            );
-            return;
-          }
-          if (clipboardCopied) {
-            console.error('Dialog berbagi gagal dibuka.', error);
-            setMessage('Dialog berbagi gagal dibuka. Kartu dan tautan tetap ada di clipboard.');
-            return;
-          }
-          throw error;
-        }
+      const blob = await createCardBlob();
+      const file = new File([blob], `${scholarship.slug}.png`, { type: 'image/png' });
+      if (navigator.share && navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ files: [file], title: scholarship.name, text, url });
+        setMessage('Kartu dan tautan beasiswa siap dibagikan.');
         return;
       }
 
