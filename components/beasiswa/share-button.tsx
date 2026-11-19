@@ -41,75 +41,124 @@ export function ShareScholarshipButton({
   detailPath: string;
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
-  const [sharing, setSharing] = useState(false);
+  const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
 
-  const share = async () => {
-    if (!cardRef.current) {
-      setMessage('Kartu belum siap. Muat ulang halaman lalu coba lagi.');
-      return;
-    }
+  const createCardBlob = async () => {
+    const card = cardRef.current;
+    if (!card) throw new Error('Kartu belum siap.');
 
-    setSharing(true);
+    await document.fonts.ready;
+    await Promise.all(Array.from(card.querySelectorAll('img'), (image) => image.decode()));
+
+    const heading = document.querySelector('h1');
+    card.style.fontFamily = getComputedStyle(document.body).fontFamily;
+    const displayFont = heading
+      ? getComputedStyle(heading).fontFamily
+      : 'Georgia, "Times New Roman", serif';
+    card.querySelectorAll<HTMLElement>('[data-share-font="display"]').forEach((element) => {
+      element.style.fontFamily = displayFont;
+    });
+
+    const blob = await toBlob(card, {
+      backgroundColor: SHARE_CARD_COLORS.paper,
+      cacheBust: true,
+      pixelRatio: 2,
+    });
+    if (!blob) throw new Error('Renderer tidak menghasilkan gambar.');
+    return blob;
+  };
+
+  const downloadCard = (blob: Blob) => {
+    const imageUrl = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = imageUrl;
+    anchor.download = `${scholarship.slug}.png`;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    window.setTimeout(() => URL.revokeObjectURL(imageUrl), 1000);
+  };
+
+  const share = async () => {
+    setBusy(true);
     setMessage('');
 
     try {
-      await document.fonts.ready;
-      const card = cardRef.current;
-      const heading = document.querySelector('h1');
-      card.style.fontFamily = getComputedStyle(document.body).fontFamily;
-      const displayFont = heading
-        ? getComputedStyle(heading).fontFamily
-        : 'Georgia, "Times New Roman", serif';
-      card.querySelectorAll<HTMLElement>('[data-share-font="display"]').forEach((element) => {
-        element.style.fontFamily = displayFont;
-      });
-
-      const blob = await toBlob(card, {
-        backgroundColor: SHARE_CARD_COLORS.paper,
-        cacheBust: true,
-        pixelRatio: 2,
-      });
-
-      if (!blob) throw new Error('Renderer tidak menghasilkan gambar.');
-
+      const blob = await createCardBlob();
       const file = new File([blob], `${scholarship.slug}.png`, { type: 'image/png' });
       const url = new URL(detailPath, window.location.origin).href;
       const text = `${scholarship.name}\n${url}`;
+      const supportsFileShare =
+        'share' in navigator && Boolean(navigator.canShare?.({ files: [file] }));
+      let clipboardCopied = false;
 
-      if (navigator.share && navigator.canShare?.({ files: [file] })) {
-        await navigator.share({
-          files: [file],
-          title: scholarship.name,
-          text,
-          url,
-        });
-        setMessage('Kartu dan tautan beasiswa siap dibagikan.');
+      if (
+        supportsFileShare &&
+        window.matchMedia('(pointer: fine)').matches &&
+        navigator.clipboard?.write &&
+        typeof ClipboardItem !== 'undefined'
+      ) {
+        try {
+          await navigator.clipboard.write([
+            new ClipboardItem({
+              'image/png': blob,
+              'text/plain': new Blob([text], { type: 'text/plain' }),
+            }),
+          ]);
+          clipboardCopied = true;
+        } catch (error) {
+          console.error('Gagal menyalin kartu sebelum membuka dialog berbagi.', error);
+        }
+      }
+
+      if (supportsFileShare) {
+        try {
+          await navigator.share({
+            files: [file],
+            title: scholarship.name,
+            text,
+            url,
+          });
+          setMessage(
+            clipboardCopied
+              ? 'Kartu dan tautan disalin ke clipboard dan siap dibagikan.'
+              : 'Kartu dan tautan beasiswa siap dibagikan.',
+          );
+        } catch (error) {
+          if (error instanceof DOMException && error.name === 'AbortError') {
+            setMessage(
+              clipboardCopied
+                ? 'Berbagi dibatalkan. Kartu dan tautan tetap ada di clipboard.'
+                : 'Berbagi dibatalkan.',
+            );
+            return;
+          }
+          if (clipboardCopied) {
+            console.error('Dialog berbagi gagal dibuka.', error);
+            setMessage('Dialog berbagi gagal dibuka. Kartu dan tautan tetap ada di clipboard.');
+            return;
+          }
+          throw error;
+        }
         return;
       }
 
-      const imageUrl = URL.createObjectURL(blob);
-      const anchor = document.createElement('a');
-      anchor.href = imageUrl;
-      anchor.download = `${scholarship.slug}.png`;
-      document.body.appendChild(anchor);
-      anchor.click();
-      anchor.remove();
-      window.setTimeout(() => URL.revokeObjectURL(imageUrl), 1000);
+      downloadCard(blob);
 
       if (navigator.share) {
         await navigator.share({ title: scholarship.name, text, url });
         setMessage('Kartu diunduh dan tautan beasiswa dibagikan.');
-      } else if (navigator.clipboard) {
+      } else if (navigator.clipboard?.writeText) {
         try {
-          await navigator.clipboard.writeText(url);
+          await navigator.clipboard.writeText(text);
           setMessage('Kartu diunduh dan tautan beasiswa disalin.');
         } catch (error) {
           console.error('Gagal menyalin tautan beasiswa.', error);
-          setMessage('Kartu diunduh, tetapi tautan gagal disalin. Salin alamat halaman ini.');
+          setMessage(`Kartu diunduh. Salin tautan ini secara manual: ${url}`);
         }
       } else {
-        setMessage('Kartu diunduh. Salin alamat halaman ini untuk membagikan tautannya.');
+        setMessage(`Kartu diunduh. Salin tautan ini secara manual: ${url}`);
       }
     } catch (error) {
       if (error instanceof DOMException && error.name === 'AbortError') {
@@ -119,7 +168,7 @@ export function ShareScholarshipButton({
         setMessage('Kartu gagal dibuat. Coba lagi atau salin alamat halaman ini.');
       }
     } finally {
-      setSharing(false);
+      setBusy(false);
     }
   };
 
@@ -129,11 +178,11 @@ export function ShareScholarshipButton({
         type="button"
         variant="secondary"
         onClick={share}
-        disabled={sharing}
+        disabled={busy}
         aria-label={`Bagikan ${scholarship.name}`}
       >
         <ShareNetwork size={15} weight="bold" aria-hidden="true" />
-        {sharing ? 'Menyiapkan kartu...' : 'Bagikan'}
+        {busy ? 'Menyiapkan kartu...' : 'Bagikan'}
       </Button>
       {message && (
         <p className="w-full text-[12px] leading-relaxed text-ink-faint" aria-live="polite">
@@ -158,12 +207,7 @@ export function ShareScholarshipButton({
             style={{ borderColor: SHARE_CARD_COLORS.rule }}
           >
             <div className="flex items-center gap-4">
-              <span
-                className="flex h-12 w-12 items-center justify-center rounded-[10px] text-[16px] font-extrabold tracking-[-0.06em]"
-                style={{ backgroundColor: SHARE_CARD_COLORS.accent, color: SHARE_CARD_COLORS.white }}
-              >
-                SK
-              </span>
+              <img src="/logo.png" alt="" width={52} height={52} className="h-[52px] w-[52px] object-contain" />
               <span
                 className="text-[25px] font-bold tracking-[-0.04em]"
                 style={{ color: SHARE_CARD_COLORS.ink }}

@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowUpRight, SealCheck } from '@phosphor-icons/react/dist/ssr';
+import { SealCheck } from '@phosphor-icons/react/dist/ssr';
 import { scholarships } from '@/lib/data';
 import { stageStatus, type StageStatus } from '@/lib/match';
-import { rp, tanggal, TIER_LABEL } from '@/components/ui';
+import { rp, TIER_LABEL } from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -182,19 +182,9 @@ export default async function BeasiswaPage({
                     </div>
 
                     <div className="mt-auto flex flex-wrap items-center gap-2 pt-1">
-                      {s.url_pendaftaran && (
-                        <a href={s.url_pendaftaran} target="_blank" rel="noreferrer noopener">
-                          <Button size="sm">
-                            Buka pendaftaran
-                            <ArrowUpRight size={13} weight="bold" />
-                          </Button>
-                        </a>
-                      )}
-                      <a href={s.source_url} target="_blank" rel="noreferrer noopener">
-                        <Button size="sm" variant="ghost">
-                          Sumber · {tanggal(s.last_verified_at)}
-                        </Button>
-                      </a>
+                      <Link href={`/beasiswa/${s.slug}`}>
+                        <Button size="sm">Lihat lebih lengkap</Button>
+                      </Link>
                     </div>
                   </CardContent>
                 </Card>
