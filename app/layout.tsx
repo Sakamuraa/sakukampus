@@ -131,7 +131,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <ul className="mt-4 grid gap-2.5 text-[13.5px] text-ink-dim">
                 <li><Link href="/data" className="press hover:text-accent">Status data</Link></li>
                 <li><Link href="/data" className="press hover:text-accent">API publik</Link></li>
-                <li><span className="text-ink-faint">Sumber &amp; metode</span></li>
+                <li><Link href="/dokumentasi" className="press hover:text-accent">Dokumentasi</Link></li>
               </ul>
             </div>
           </div>
