@@ -4,6 +4,7 @@ import { Newsreader, Plus_Jakarta_Sans, IBM_Plex_Mono } from 'next/font/google';
 import './globals.css';
 import { TopNav, TabBar } from '@/components/nav';
 import { THEME_INIT_SCRIPT } from '@/components/theme-toggle';
+import WhatsNew from '@/components/ui/whats-new';
 
 /* Serif carries the editorial voice (headlines, section openers).
    Sans carries the reading. Mono carries every number. */
@@ -145,6 +146,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </footer>
 
         <TabBar />
+
+        {/* Sekali per sesi peramban, di halaman mana pun — termasuk kalau
+            pengunjung mendarat langsung di /jadwal. */}
+        <WhatsNew />
       </body>
     </html>
   );

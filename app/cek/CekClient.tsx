@@ -598,6 +598,21 @@ export default function CekClient() {
 
                               <Reasons reasons={h.reasons} />
 
+                              {h.catatan.length > 0 && (
+                                <div className="grid gap-1">
+                                  <p className="text-[13px] text-ink-faint">
+                                    Syarat tambahan dari sumber (periksa sendiri):
+                                  </p>
+                                  <ul className="grid gap-1 pl-4 text-[13px] text-ink-dim">
+                                    {h.catatan.map((note) => (
+                                      <li key={note} className="list-disc">
+                                        {note}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              )}
+
                               {h.missing.length > 0 && (
                                 <p className="text-[13px] text-ink-faint">
                                   Lengkapi: {h.missing.join(', ')}.

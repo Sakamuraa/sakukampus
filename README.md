@@ -106,10 +106,13 @@ scripts/
 ## Penemuan beasiswa otomatis
 
 Endpoint `POST /api/cron/discover-scholarships` mencari program baru melalui
-DuckDuckGo HTML (tanpa API key berbayar), mengambil halaman sumber, lalu meminta router OpenAI-compatible untuk
-mengekstrak dan mengutip bukti. Program yang lolos validasi disimpan di
-PostgreSQL dan langsung ikut tampil di katalog, detail, jadwal, API, dan
-pemeriksa kelayakan; tidak perlu rebuild untuk setiap entri baru.
+DuckDuckGo HTML (tanpa API key berbayar). Jika akses langsung dari server
+diblokir, pencarian dicoba ulang ke Bing, lalu melalui Jina Reader, seperti
+fallback `web_search` di ai-chat. Hasilnya dipakai untuk mengambil halaman
+sumber, lalu router OpenAI-compatible mengekstrak dan mengutip bukti. Program
+yang lolos validasi disimpan di PostgreSQL dan langsung ikut tampil di katalog,
+detail, jadwal, API, dan pemeriksa kelayakan; tidak perlu rebuild untuk setiap
+entri baru.
 
 Salin template [.env.example](./.env.example) ke pengaturan environment server
 dan ganti semua placeholder. Jangan commit file `.env` atau mengirim key lewat
@@ -118,19 +121,29 @@ chat.
 | Variable | Isi |
 |---|---|
 | `CRON_SECRET` | Rahasia acak untuk header autentikasi cron |
+| `SCHOLARSHIP_DISCOVERY_AUTO` | Opsional; set `0` untuk mematikan scheduler internal |
+| `SCHOLARSHIP_DISCOVERY_INTERVAL_HOURS` | Opsional; interval scheduler internal, default `12` |
 | `DATABASE_URL` | Connection string PostgreSQL; user harus boleh membuat tabel |
 | `SCHOLARSHIP_LLM_API_URL` | URL lengkap endpoint Chat Completions milik router |
-| `SCHOLARSHIP_LLM_MODEL` | Nama model pada router |
+| `SCHOLARSHIP_LLM_MODEL` | Nama model pada router; pilih model yang patuh instruksi JSON, mis. `claude-opus-5-5` |
 | `SCHOLARSHIP_LLM_API_KEY` | Key router; opsional jika router tidak memerlukan autentikasi |
 
-Di cron-job.org, buat satu job tiap 12 atau 24 jam: method `POST`, URL endpoint
-di atas, dan header `Authorization: Bearer <CRON_SECRET>`. Atur timeout job dan
-proxy server agar mengizinkan proses hingga 90 detik.
+Jika memakai manager deployment `Vercel-Project/server.js`, scheduler internal
+akan berjalan otomatis ketika `CRON_SECRET` tersedia: run pertama sekitar dua
+menit setelah server mulai, lalu setiap 12 jam. Atur
+`SCHOLARSHIP_DISCOVERY_INTERVAL_HOURS=24` untuk sekali sehari, atau
+`SCHOLARSHIP_DISCOVERY_AUTO=0` untuk menonaktifkannya. Scheduler memanggil port
+lokal dengan batas tunggu 300 detik, jadi tidak terkena batas timeout
+cron-job.org dan tidak memerlukan cron sistem. Cron-job.org tetap bisa dipakai
+opsional dengan method `POST` dan header `Authorization: Bearer <CRON_SECRET>`.
+Request ke router ditunggu hingga 120 detik dan mendukung respons JSON maupun
+SSE.
 
-Setiap pemanggilan menjalankan beberapa kueri DuckDuckGo di belakang satu request
-cron dan memproses paling banyak enam halaman kandidat. HTML pencarian gratis
-tidak memiliki SLA dan dapat sewaktu-waktu dibatasi atau berubah format; jika itu
-terjadi, endpoint melaporkan error dan tidak menerbitkan kandidat yang gagal
+Setiap pemanggilan menjalankan beberapa kueri pencarian di belakang satu request
+dan memproses paling banyak enam halaman kandidat. Pengambilan tiap halaman
+sumber dibatasi 30 detik. Layanan pencarian gratis
+dan Jina Reader tidak memiliki SLA dan dapat sewaktu-waktu dibatasi atau berubah
+format; jika semuanya gagal, endpoint melaporkan error dan tidak menerbitkan kandidat yang gagal
 diverifikasi. Sistem hanya menerbitkan
 hasil dengan sumber yang dinilai resmi, kutipan bukti yang benar-benar ditemukan
 di halaman, syarat yang bisa dipetakan ke eligibility engine, periode akademik

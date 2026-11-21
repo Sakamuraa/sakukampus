@@ -31,6 +31,12 @@ export type ScholarshipSeed = {
   academic_year?: string;
   stages: { name: string; opens_at?: string; closes_at?: string }[];
   rule: Rule;
+  /**
+   * Syarat yang tertulis di sumber tetapi belum bisa diperiksa engine (mis.
+   * batas usia atau status perkawinan). Disimpan apa adanya supaya pengguna
+   * tetap melihat syarat lengkapnya, bukan malah kehilangan beasiswanya.
+   */
+  catatan?: string[];
 };
 
 export type Candidate = {
@@ -50,6 +56,8 @@ export type Candidate = {
   confidence: number;
   /** Syarat UKT yang benar-benar dipakai, untuk ditampilkan di UI. */
   uktRequirement: string | null;
+  /** Syarat sumber yang belum bisa diperiksa engine; ditampilkan sebagai catatan. */
+  catatan: string[];
   /** true bila UKT user diambil dari input manual (belum terverifikasi). */
   uktUnverified: boolean;
   /**
@@ -84,6 +92,14 @@ export type Profile = {
   pt_mitra?: boolean;
   kondisi_ekonomi_lemah?: boolean;
   surat_aktif_fakultas?: boolean;
+  /** Umur pemohon saat mendaftar, dalam tahun. */
+  usia?: number;
+  /** 'belum_menikah' atau 'menikah'. */
+  status_perkawinan?: string;
+  /** true bila sedang bekerja penuh waktu / terikat dinas. */
+  bekerja?: boolean;
+  /** true bila sedang di tahap akhir studi (mis. menyusun tugas akhir). */
+  tahap_akhir?: boolean;
   [key: string]: unknown;
 };
 
@@ -219,6 +235,7 @@ export function matchOne(
       last_verified_at: s.last_verified_at,
       confidence: s.confidence,
       uktRequirement: null,
+      catatan: s.catatan ?? [],
       uktUnverified: false,
       stageStatus: stageStatus(s, now),
       displayState: 'tutup',
@@ -254,6 +271,7 @@ export function matchOne(
     last_verified_at: s.last_verified_at,
     confidence: s.confidence,
     uktRequirement,
+    catatan: s.catatan ?? [],
     uktUnverified: unverified,
     stageStatus: status,
     displayState: displayState(result.verdict, status),

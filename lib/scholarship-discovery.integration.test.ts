@@ -23,6 +23,12 @@ const envKeys = [
 ] as const;
 const originalEnv = Object.fromEntries(envKeys.map((key) => [key, process.env[key]]));
 const originalFetch = globalThis.fetch;
+let directSearchUnavailable = false;
+let bingUnavailable = false;
+let readerUnavailable = false;
+let routerStreamsResponse = false;
+let routerTruncatesFirstResponse = false;
+let routerRequests = 0;
 
 const pageUrl = 'https://beasiswa.example.org/afirmasi-2027';
 const quotes = {
@@ -89,9 +95,26 @@ const searchHtml = `<div class="result">
   <a class="result__a" href="https://duckduckgo.com/l/?uddg=${encodeURIComponent(pageUrl)}">Beasiswa Afirmasi 2027</a>
   <a class="result__snippet">Program bantuan.</a>
 </div>`;
+const searchMarkdown = `Title: Beasiswa Afirmasi 2027 at DuckDuckGo
+
+## [Beasiswa Afirmasi 2027](https://duckduckgo.com/l/?uddg=${encodeURIComponent(pageUrl)})
+
+Program bantuan.`;
+const bingSearchHtml = `<html><body><ol id="b_results">
+  <li class="b_algo">
+    <h2><a href="https://www.bing.com/ck/a?!&&p=abc&u=a1${Buffer.from(pageUrl).toString('base64url')}&ntb=1">Beasiswa Afirmasi 2027</a></h2>
+    <div class="b_caption"><p>Program bantuan.</p></div>
+  </li>
+</ol></body></html>`;
 
 describe('automated discovery pipeline', () => {
   beforeEach(() => {
+    directSearchUnavailable = false;
+    bingUnavailable = false;
+    readerUnavailable = false;
+    routerStreamsResponse = false;
+    routerTruncatesFirstResponse = false;
+    routerRequests = 0;
     process.env.DATABASE_URL = 'postgres://test';
     process.env.SCHOLARSHIP_LLM_API_URL = 'https://router.example/v1/chat/completions';
     process.env.SCHOLARSHIP_LLM_MODEL = 'test-model';
@@ -116,11 +139,45 @@ describe('automated discovery pipeline', () => {
         typeof input === 'string' ? input : input instanceof URL ? input.href : input.url,
       );
       if (url.hostname === 'html.duckduckgo.com') {
+        if (directSearchUnavailable) throw new Error('direct search blocked');
         return new Response(searchHtml, {
           headers: { 'content-type': 'text/html; charset=utf-8' },
         });
       }
+      if (url.hostname === 'www.bing.com') {
+        if (bingUnavailable) throw new Error('bing blocked');
+        return new Response(bingSearchHtml, {
+          headers: { 'content-type': 'text/html; charset=utf-8' },
+        });
+      }
+      if (url.hostname === 'r.jina.ai') {
+        if (readerUnavailable) return new Response('reader blocked', { status: 403 });
+        return new Response(searchMarkdown, {
+          headers: { 'content-type': 'text/plain; charset=utf-8' },
+        });
+      }
       if (url.hostname === 'router.example' && init?.method === 'POST') {
+        routerRequests += 1;
+        if (routerTruncatesFirstResponse && routerRequests === 1) {
+          return Response.json({
+            choices: [{
+              message: { content: '{"items":[{"source_url":"https://beasiswa.example.org/afirmasi-2027","scholarship":{' },
+              finish_reason: 'length',
+            }],
+          });
+        }
+        if (routerStreamsResponse) {
+          const content = JSON.stringify({ items: [extractedItem] });
+          const midpoint = Math.floor(content.length / 2);
+          const events = [content.slice(0, midpoint), content.slice(midpoint)]
+            .map((chunk) =>
+              `data: ${JSON.stringify({ choices: [{ delta: { content: chunk } }] })}\n\n`,
+            )
+            .join('');
+          return new Response(`${events}data: [DONE]\n\n`, {
+            headers: { 'content-type': 'text/event-stream' },
+          });
+        }
         return Response.json({
           choices: [{ message: { content: JSON.stringify({ items: [extractedItem] }) } }],
         });
@@ -144,7 +201,7 @@ describe('automated discovery pipeline', () => {
     const result = await discoverScholarships();
 
     expect(result).toMatchObject({
-      queried: 3,
+      queried: 6,
       search_errors: 0,
       fetched: 1,
       published: 1,
@@ -156,5 +213,108 @@ describe('automated discovery pipeline', () => {
       source_kind: 'resmi',
       scope: 'nasional',
     });
+  });
+
+  it('parses streamed SSE responses from the router', async () => {
+    routerStreamsResponse = true;
+
+    const result = await discoverScholarships();
+
+    expect(result).toMatchObject({
+      fetched: 1,
+      published: 1,
+      skipped: 0,
+    });
+  });
+
+  it('uses Jina Reader when direct DuckDuckGo requests are blocked', async () => {
+    directSearchUnavailable = true;
+
+    const result = await discoverScholarships();
+
+    expect(result).toMatchObject({
+      queried: 6,
+      search_errors: 0,
+      fetched: 1,
+      published: 1,
+      skipped: 0,
+    });
+    expect(
+      vi.mocked(globalThis.fetch).mock.calls.filter(([input]) => {
+        const url = new URL(
+          typeof input === 'string' ? input : input instanceof URL ? input.href : input.url,
+        );
+        return url.hostname === 'r.jina.ai';
+      }),
+    ).toHaveLength(6);
+  });
+
+  it('falls back to Bing when direct DuckDuckGo and Jina Reader are blocked', async () => {
+    directSearchUnavailable = true;
+    readerUnavailable = true;
+
+    const result = await discoverScholarships();
+
+    expect(result).toMatchObject({
+      queried: 6,
+      search_errors: 0,
+      fetched: 1,
+      published: 1,
+      skipped: 0,
+    });
+    expect(
+      vi.mocked(globalThis.fetch).mock.calls.filter(([input]) => {
+        const url = new URL(
+          typeof input === 'string' ? input : input instanceof URL ? input.href : input.url,
+        );
+        return url.hostname === 'www.bing.com';
+      }),
+    ).toHaveLength(6);
+  });
+
+  it('retries with a larger token budget when the router truncates the JSON', async () => {
+    routerTruncatesFirstResponse = true;
+
+    const result = await discoverScholarships();
+
+    expect(result).toMatchObject({ fetched: 1, published: 1, skipped: 0 });
+    expect(routerRequests).toBe(2);
+  });
+
+  it('surfaces provider errors when every search engine fails', async () => {
+    directSearchUnavailable = true;
+    bingUnavailable = true;
+    readerUnavailable = true;
+
+    await expect(discoverScholarships()).rejects.toThrow(
+      /^Semua kueri pencarian gagal\. kueri 1: DuckDuckGo langsung: direct search blocked; Jina Reader: Jina Reader merespons HTTP 403\.; Bing langsung: bing blocked/,
+    );
+    expect(stores.publishScholarship).not.toHaveBeenCalled();
+  });
+
+  it('skips login-gated sources so their empty pages do not consume the budget', async () => {
+    const gatedUrl = 'https://satubeasiswa.kemdiktisaintek.go.id/beasiswa';
+    const gatedHtml = `<div class="result">
+      <a class="result__a" href="https://duckduckgo.com/l/?uddg=${encodeURIComponent(gatedUrl)}">Beasiswa</a>
+      <a class="result__snippet">Daftar beasiswa.</a>
+    </div>`;
+    const fetchMock = vi.mocked(globalThis.fetch);
+    const original = fetchMock.getMockImplementation()!;
+    fetchMock.mockImplementation(async (input, init) => {
+      const url = new URL(
+        typeof input === 'string' ? input : input instanceof URL ? input.href : input.url,
+      );
+      if (url.hostname === 'html.duckduckgo.com') {
+        return new Response(gatedHtml, {
+          headers: { 'content-type': 'text/html; charset=utf-8' },
+        });
+      }
+      return original(input, init);
+    });
+
+    const result = await discoverScholarships();
+
+    expect(result).toMatchObject({ fetched: 0, published: 0, skipped: 0 });
+    expect(stores.publishScholarship).not.toHaveBeenCalled();
   });
 });
