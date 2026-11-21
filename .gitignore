@@ -25,6 +25,9 @@ skills-lock.json
 # build artifacts
 SakuKampus-*.pdf
 
+# dokumen ekspor; sumbernya docs/changelog-2026-11-21.md
+*.docx
+
 # cache tarikan PDDikti (scripts/build-catalog.mjs) — jangan di-commit
 data/.catalog-cache/
 
