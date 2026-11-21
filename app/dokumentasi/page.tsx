@@ -130,6 +130,7 @@ export default function DokumentasiPage() {
             <Karakter
               headSrc="/dokumentasi/rem-head.png"
               bodySrc="/dokumentasi/rem-body.png"
+              handsSrc="/dokumentasi/rem-hands.png"
               alt="Rem, karakter dari anime Re:Zero kara Hajimeru Isekai Seikatsu"
               caption="Rem · Re:Zero kara Hajimeru Isekai Seikatsu"
             />

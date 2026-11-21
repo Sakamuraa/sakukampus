@@ -306,18 +306,18 @@ html[data-theme='dark'] {
 
 /* ============================================================
    KARAKTER DOKUMENTASI — idle motion
-   Dua lapis gambar (kepala & badan) yang dipotong terpisah. Parallax
-   scroll-nya ditulis lewat ref di components/dokumentasi/karakter.tsx;
-   yang di sini cuma napas idle supaya karakternya tidak terasa kaku.
-   Blok prefers-reduced-motion di atas sudah mematikan keduanya.
+   Tiga lapis gambar (kepala, tangan, badan) yang dipotong terpisah.
+   Semuanya animasi CSS murni tanpa listener scroll; durasinya sengaja
+   berbeda tapi saling berkelipatan supaya tidak terasa seperti mesin.
+   Blok prefers-reduced-motion di atas sudah mematikan ketiganya.
    ============================================================ */
 @keyframes rem-bob {
   0%,
   100% {
-    transform: translate3d(0, 0, 0) rotate(-0.5deg);
+    transform: translate3d(0, 0, 0) rotate(-0.6deg);
   }
   50% {
-    transform: translate3d(0, -5px, 0) rotate(0.5deg);
+    transform: translate3d(0, -5px, 0) rotate(0.6deg);
   }
 }
 @keyframes rem-breathe {
@@ -329,6 +329,18 @@ html[data-theme='dark'] {
     transform: translate3d(0, 1.5px, 0) scale(1.004);
   }
 }
+@keyframes rem-hands {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-0.7deg);
+  }
+  35% {
+    transform: translate3d(1px, -2px, 0) rotate(0.5deg);
+  }
+  70% {
+    transform: translate3d(-1px, -1px, 0) rotate(-0.2deg);
+  }
+}
 @layer components {
   .rem-bob {
     transform-origin: 52% 100%;
@@ -337,5 +349,8 @@ html[data-theme='dark'] {
   .rem-breathe {
     transform-origin: 50% 100%;
     animation: rem-breathe 5.6s ease-in-out infinite;
+  }
+  .rem-hands {
+    animation: rem-hands 4.2s ease-in-out infinite;
   }
 }
