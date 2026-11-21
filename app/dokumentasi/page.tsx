@@ -11,12 +11,12 @@ import Karakter from '@/components/dokumentasi/karakter';
 export const metadata: Metadata = {
   title: 'Dokumentasi',
   description:
-    'Tentang SakuKampus dan tim di baliknya: Kelompok TURUNKAN UKT, Rekayasa Perangkat Lunak A, Teknik Informatika UIN Jakarta.',
+    'Tentang SakuKampus dan tim di baliknya: Kelompok TURUNKAN UKT, Rekayasa Perangkat Lunak kelas A, Teknik Informatika UIN Jakarta.',
   alternates: { canonical: '/dokumentasi' },
   openGraph: {
     title: 'Dokumentasi · SakuKampus',
     description:
-      'Tentang SakuKampus dan tim di baliknya: Kelompok TURUNKAN UKT, RPL A, Teknik Informatika UIN Jakarta.',
+      'Tentang SakuKampus dan tim di baliknya: Kelompok TURUNKAN UKT, RPL kelas A, Teknik Informatika UIN Jakarta.',
     url: '/dokumentasi',
   },
 };
@@ -74,7 +74,8 @@ const TIM = [
 
 const FAKTA = [
   { k: 'Nama kelompok', v: 'TURUNKAN UKT' },
-  { k: 'Mata kuliah', v: 'Rekayasa Perangkat Lunak (RPL) A' },
+  { k: 'Mata kuliah', v: 'Rekayasa Perangkat Lunak (RPL)' },
+  { k: 'Kelas', v: 'A' },
   { k: 'Program studi', v: 'Teknik Informatika' },
   { k: 'Institusi', v: 'UIN Syarif Hidayatullah Jakarta' },
   { k: 'Anggota', v: '5 orang' },
@@ -127,9 +128,10 @@ export default function DokumentasiPage() {
 
           <Reveal delay={0.24} y={24} className="min-w-0">
             <Karakter
-              src="/dokumentasi/karakter.svg"
-              alt="Ilustrasi karakter pendamping SakuKampus"
-              caption="Maskot SakuKampus · digambar dengan palet kertas situs ini"
+              headSrc="/dokumentasi/rem-head.png"
+              bodySrc="/dokumentasi/rem-body.png"
+              alt="Rem, karakter dari anime Re:Zero kara Hajimeru Isekai Seikatsu"
+              caption="Rem · Re:Zero kara Hajimeru Isekai Seikatsu"
             />
           </Reveal>
         </div>
@@ -193,8 +195,9 @@ export default function DokumentasiPage() {
               Kelompok TURUNKAN UKT
             </h2>
             <p className="mt-5 max-w-[62ch] text-[15px] leading-relaxed text-ink-dim">
-              SakuKampus dikerjakan sebagai proyek mata kuliah Rekayasa Perangkat Lunak (RPL) A,
-              Program Studi Teknik Informatika, UIN Syarif Hidayatullah Jakarta, oleh lima orang.
+              SakuKampus dikerjakan sebagai proyek mata kuliah Rekayasa Perangkat Lunak (RPL),
+              kelas A, Program Studi Teknik Informatika, UIN Syarif Hidayatullah Jakarta, oleh lima
+              orang.
             </p>
           </Reveal>
 

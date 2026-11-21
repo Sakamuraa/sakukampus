@@ -303,3 +303,39 @@ html[data-theme='dark'] {
     transform: scale(0.975);
   }
 }
+
+/* ============================================================
+   KARAKTER DOKUMENTASI — idle motion
+   Dua lapis gambar (kepala & badan) yang dipotong terpisah. Parallax
+   scroll-nya ditulis lewat ref di components/dokumentasi/karakter.tsx;
+   yang di sini cuma napas idle supaya karakternya tidak terasa kaku.
+   Blok prefers-reduced-motion di atas sudah mematikan keduanya.
+   ============================================================ */
+@keyframes rem-bob {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-0.5deg);
+  }
+  50% {
+    transform: translate3d(0, -5px, 0) rotate(0.5deg);
+  }
+}
+@keyframes rem-breathe {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, 1.5px, 0) scale(1.004);
+  }
+}
+@layer components {
+  .rem-bob {
+    transform-origin: 52% 100%;
+    animation: rem-bob 5.6s ease-in-out infinite;
+  }
+  .rem-breathe {
+    transform-origin: 50% 100%;
+    animation: rem-breathe 5.6s ease-in-out infinite;
+  }
+}
