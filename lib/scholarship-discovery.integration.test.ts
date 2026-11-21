@@ -28,6 +28,7 @@ let bingUnavailable = false;
 let readerUnavailable = false;
 let routerStreamsResponse = false;
 let routerTruncatesFirstResponse = false;
+let routerRateLimitsFirstResponse = false;
 let routerRequests = 0;
 
 const pageUrl = 'https://beasiswa.example.org/afirmasi-2027';
@@ -114,10 +115,12 @@ describe('automated discovery pipeline', () => {
     readerUnavailable = false;
     routerStreamsResponse = false;
     routerTruncatesFirstResponse = false;
+    routerRateLimitsFirstResponse = false;
     routerRequests = 0;
     process.env.DATABASE_URL = 'postgres://test';
     process.env.SCHOLARSHIP_LLM_API_URL = 'https://router.example/v1/chat/completions';
     process.env.SCHOLARSHIP_LLM_MODEL = 'test-model';
+    process.env.SCHOLARSHIP_LLM_RETRY_BASE_MS = '1';
     stores.getPublishedScholarships.mockResolvedValue([]);
     stores.publishScholarship.mockResolvedValue(undefined);
     stores.httpsRequest.mockImplementation((_url, _options, callback) => {
@@ -158,6 +161,12 @@ describe('automated discovery pipeline', () => {
       }
       if (url.hostname === 'router.example' && init?.method === 'POST') {
         routerRequests += 1;
+        if (routerRateLimitsFirstResponse && routerRequests === 1) {
+          return new Response(
+            JSON.stringify({ error: { message: 'another request is still using this account' } }),
+            { status: 429, headers: { 'content-type': 'application/json' } },
+          );
+        }
         if (routerTruncatesFirstResponse && routerRequests === 1) {
           return Response.json({
             choices: [{
@@ -278,6 +287,15 @@ describe('automated discovery pipeline', () => {
     const result = await discoverScholarships();
 
     expect(result).toMatchObject({ fetched: 1, published: 1, skipped: 0 });
+    expect(routerRequests).toBe(2);
+  });
+
+  it('retries a rate-limited extraction instead of dropping the whole batch', async () => {
+    routerRateLimitsFirstResponse = true;
+
+    const result = await discoverScholarships();
+
+    expect(result).toMatchObject({ fetched: 1, published: 1, skipped: 0, errors: [] });
     expect(routerRequests).toBe(2);
   });
 

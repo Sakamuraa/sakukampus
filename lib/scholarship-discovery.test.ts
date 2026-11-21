@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
+  retryDelayMs,
+  sendWithRetry,
   validateExtractedItem,
   type ExtractedItem,
   type SourcePage,
@@ -196,5 +198,83 @@ describe('automated scholarship verification', () => {
 
     const { scholarship } = validateExtractedItem(item, page, [], now);
     expect(scholarship.slug).toBe('beasiswa-afirmasi-2027');
+  });
+});
+
+describe('sendWithRetry', () => {
+  const noSleep = () => Promise.resolve();
+
+  function sequence(statuses: number[]) {
+    const calls: number[] = [];
+    const send = () => {
+      const status = statuses[Math.min(calls.length, statuses.length - 1)];
+      calls.push(status);
+      return Promise.resolve(new Response('{}', { status }));
+    };
+    return { send, calls };
+  }
+
+  it('retries a 429 and returns the following success', async () => {
+    const { send, calls } = sequence([429, 200]);
+    const response = await sendWithRetry(send, {}, noSleep);
+    expect(response.status).toBe(200);
+    expect(calls).toEqual([429, 200]);
+  });
+
+  it('retries a 503 and returns the following success', async () => {
+    const { send, calls } = sequence([503, 200]);
+    const response = await sendWithRetry(send, {}, noSleep);
+    expect(response.status).toBe(200);
+    expect(calls).toEqual([503, 200]);
+  });
+
+  it('gives up after the attempt limit and surfaces the last status', async () => {
+    const { send, calls } = sequence([429]);
+    const response = await sendWithRetry(send, {}, noSleep);
+    expect(response.status).toBe(429);
+    expect(calls).toHaveLength(3);
+  });
+
+  it('does not retry a client error such as 400', async () => {
+    const { send, calls } = sequence([400, 200]);
+    const response = await sendWithRetry(send, {}, noSleep);
+    expect(response.status).toBe(400);
+    expect(calls).toEqual([400]);
+  });
+
+  it('retries a network failure and rethrows when attempts run out', async () => {
+    let attempts = 0;
+    const send = () => {
+      attempts += 1;
+      return Promise.reject(new Error('fetch failed'));
+    };
+    await expect(sendWithRetry(send, {}, noSleep)).rejects.toThrow('fetch failed');
+    expect(attempts).toBe(3);
+  });
+
+  it('honours Retry-After in seconds', () => {
+    const response = new Response('', { status: 429, headers: { 'retry-after': '7' } });
+    expect(retryDelayMs(response, 0)).toBe(7_000);
+  });
+
+  it('caps Retry-After at the configured ceiling', () => {
+    const response = new Response('', { status: 429, headers: { 'retry-after': '600' } });
+    expect(retryDelayMs(response, 0)).toBe(20_000);
+  });
+
+  it('backs off exponentially with jitter when no header is present', () => {
+    const first = retryDelayMs(null, 0);
+    const second = retryDelayMs(null, 1);
+    expect(first).toBeGreaterThanOrEqual(3_750);
+    expect(first).toBeLessThanOrEqual(6_250);
+    expect(second).toBeGreaterThanOrEqual(7_500);
+    expect(second).toBeLessThanOrEqual(12_500);
+  });
+
+  it('stops retrying once the stage deadline has passed', async () => {
+    const { send, calls } = sequence([429]);
+    const response = await sendWithRetry(send, {}, noSleep, Date.now() - 1);
+    expect(response.status).toBe(429);
+    expect(calls).toEqual([429]);
   });
 });

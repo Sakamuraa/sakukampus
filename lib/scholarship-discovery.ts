@@ -33,6 +33,23 @@ const LLM_REQUEST_TIMEOUT_MS = 120_000;
 const LLM_MAX_TOKENS = 32_000;
 const LLM_RETRY_MAX_TOKENS = 64_000;
 const LLM_RETRY_PAGE_TEXT = 6_000;
+/**
+ * Router ini membagi satu akun upstream di antara banyak pemanggil. Saat akun
+ * sedang dipakai, bridge-nya menunggu sekitar 30 detik lalu menyerah dengan
+ * HTTP 429 ("another request is still using this FreePi account"), dan gerbang
+ * di depannya kadang meneruskannya sebagai HTTP 503. Keduanya kondisi sesaat,
+ * bukan kuota habis, jadi permintaan diulang dengan jeda yang bertambah.
+ */
+const LLM_RETRY_STATUSES = new Set([408, 425, 429, 500, 502, 503, 504]);
+const LLM_MAX_ATTEMPTS = 3;
+const LLM_RETRY_BASE_MS = 5_000;
+const LLM_RETRY_CAP_MS = 20_000;
+/**
+ * Batas total untuk seluruh tahap ekstraksi. Satu respons 429 bisa memakan
+ * 30 detik karena bridge menunggu dulu, jadi percobaan ulang dibatasi agar
+ * cron tidak berjalan tanpa ujung.
+ */
+const LLM_STAGE_BUDGET_MS = 240_000;
 const SEARCH_USER_AGENT =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
 const SOURCE_PAGE_USER_AGENT = SEARCH_USER_AGENT;
@@ -403,6 +420,18 @@ async function readLimitedBody(response: IncomingMessage) {
 }
 
 async function fetchSourcePage(result: SearchResult): Promise<SourcePage> {
+  try {
+    return await fetchSourcePageOnce(result);
+  } catch (error) {
+    // Situs kampus sering lambat pada permintaan pertama (cold cache, TLS
+    // handshake). Satu percobaan ulang menghilangkan sebagian besar kegagalan
+    // batas waktu tanpa memperpanjang jalannya discovery secara berarti.
+    if (!(error instanceof Error) || !/timeout|aborted/i.test(error.message)) throw error;
+    return fetchSourcePageOnce(result);
+  }
+}
+
+async function fetchSourcePageOnce(result: SearchResult): Promise<SourcePage> {
   let url = await assertSafeSourceUrl(result.url);
   let response: IncomingMessage | undefined;
 
@@ -870,6 +899,7 @@ async function requestExtraction(
   known: { name: string; source_url: string }[],
   maxTokens: number,
   pageTextLimit: number,
+  deadline = Number.POSITIVE_INFINITY,
 ): Promise<ChatCompletion> {
   const endpoint = process.env.SCHOLARSHIP_LLM_API_URL;
   const model = process.env.SCHOLARSHIP_LLM_MODEL;
@@ -914,13 +944,63 @@ async function requestExtraction(
 
   // `response_format` tidak didukung semua model di router; kalau ditolak,
   // ulangi tanpa parameter itu alih-alih menggagalkan seluruh discovery.
-  let response = await send({ ...body, response_format: { type: 'json_object' } });
+  let response = await sendWithRetry(
+    send,
+    { ...body, response_format: { type: 'json_object' } },
+    undefined,
+    deadline,
+  );
   if (response.status === 400 || response.status === 422) {
-    response = await send(body);
+    response = await sendWithRetry(send, body, undefined, deadline);
   }
 
   if (!response.ok) throw new Error(`Router AI merespons HTTP ${response.status}.`);
   return parseChatCompletion(await response.text());
+}
+
+export function retryDelayMs(response: Response | null, attempt: number) {
+  const header = response?.headers.get('retry-after');
+  if (header) {
+    const seconds = Number(header);
+    if (Number.isFinite(seconds) && seconds >= 0) return Math.min(seconds * 1_000, LLM_RETRY_CAP_MS);
+    const at = Date.parse(header);
+    if (Number.isFinite(at)) return Math.min(Math.max(at - Date.now(), 0), LLM_RETRY_CAP_MS);
+  }
+  // Jeda dasar bisa diturunkan lewat env supaya pengujian tidak menunggu lama.
+  const base = Number(process.env.SCHOLARSHIP_LLM_RETRY_BASE_MS) || LLM_RETRY_BASE_MS;
+  const backoff = Math.min(base * 2 ** attempt, LLM_RETRY_CAP_MS);
+  // Jitter mencegah beberapa batch yang gagal bersamaan menyerbu router lagi
+  // pada milidetik yang sama.
+  return Math.round(backoff * (0.75 + Math.random() * 0.5));
+}
+
+export async function sendWithRetry(
+  send: (payload: Record<string, unknown>) => Promise<Response>,
+  payload: Record<string, unknown>,
+  sleep: (ms: number) => Promise<unknown> = (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
+  deadline = Number.POSITIVE_INFINITY,
+): Promise<Response> {
+  let response: Response | null = null;
+  for (let attempt = 0; attempt < LLM_MAX_ATTEMPTS; attempt += 1) {
+    try {
+      response = await send(payload);
+    } catch (error) {
+      // Batas waktu dan gangguan jaringan juga layak dicoba ulang.
+      if (attempt === LLM_MAX_ATTEMPTS - 1) throw error;
+      const delay = retryDelayMs(null, attempt);
+      if (Date.now() + delay >= deadline) throw error;
+      await sleep(delay);
+      continue;
+    }
+    if (!LLM_RETRY_STATUSES.has(response.status)) return response;
+    if (attempt === LLM_MAX_ATTEMPTS - 1) return response;
+    // Body harus dibuang supaya koneksi tidak menggantung sebelum percobaan ulang.
+    await response.text().catch(() => '');
+    const delay = retryDelayMs(response, attempt);
+    if (Date.now() + delay >= deadline) return response;
+    await sleep(delay);
+  }
+  return response as Response;
 }
 
 const EXTRACTION_BATCH_SIZE = 3;
@@ -928,12 +1008,19 @@ const EXTRACTION_BATCH_SIZE = 3;
 async function extractBatch(
   pages: SourcePage[],
   known: { name: string; source_url: string }[],
+  deadline = Number.POSITIVE_INFINITY,
 ): Promise<unknown[]> {
-  let completion = await requestExtraction(pages, known, LLM_MAX_TOKENS, MAX_PAGE_TEXT);
+  let completion = await requestExtraction(pages, known, LLM_MAX_TOKENS, MAX_PAGE_TEXT, deadline);
   if (completion.finishReason === 'length') {
     // Anggaran token habis untuk reasoning: ulangi dengan halaman lebih ringkas
     // dan anggaran lebih besar supaya JSON sempat ditutup.
-    completion = await requestExtraction(pages, known, LLM_RETRY_MAX_TOKENS, LLM_RETRY_PAGE_TEXT);
+    completion = await requestExtraction(
+      pages,
+      known,
+      LLM_RETRY_MAX_TOKENS,
+      LLM_RETRY_PAGE_TEXT,
+      deadline,
+    );
   }
 
   const parsed = parseJsonObject(completion.content, completion.finishReason) as { items?: unknown };
@@ -948,14 +1035,21 @@ async function extractCandidates(
   const known = existing.map(({ name, source_url }) => ({ name, source_url })).slice(0, 100);
   const items: unknown[] = [];
   const errors: { url: string; reason: string }[] = [];
+  const deadline = Date.now() + LLM_STAGE_BUDGET_MS;
 
   // Satu permintaan untuk enam halaman membuat model kehabisan anggaran dan
   // mengabaikan sebagian halaman. Kirim per kelompok kecil supaya setiap
   // halaman benar-benar dibaca.
   for (let index = 0; index < pages.length; index += EXTRACTION_BATCH_SIZE) {
     const batch = pages.slice(index, index + EXTRACTION_BATCH_SIZE);
+    if (Date.now() >= deadline) {
+      for (const page of batch) {
+        errors.push({ url: page.url, reason: 'Waktu ekstraksi AI habis sebelum halaman ini diproses.' });
+      }
+      continue;
+    }
     try {
-      items.push(...(await extractBatch(batch, known)));
+      items.push(...(await extractBatch(batch, known, deadline)));
     } catch (error) {
       const reason = error instanceof Error ? error.message : 'Ekstraksi gagal.';
       for (const page of batch) errors.push({ url: page.url, reason });

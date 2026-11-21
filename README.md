@@ -127,6 +127,7 @@ chat.
 | `SCHOLARSHIP_LLM_API_URL` | URL lengkap endpoint Chat Completions milik router |
 | `SCHOLARSHIP_LLM_MODEL` | Nama model pada router; pilih model yang patuh instruksi JSON, mis. `claude-opus-5-5` |
 | `SCHOLARSHIP_LLM_API_KEY` | Key router; opsional jika router tidak memerlukan autentikasi |
+| `SCHOLARSHIP_LLM_RETRY_BASE_MS` | Opsional; jeda dasar percobaan ulang router, default `5000` |
 
 Jika memakai manager deployment `Vercel-Project/server.js`, scheduler internal
 akan berjalan otomatis ketika `CRON_SECRET` tersedia: run pertama sekitar dua
@@ -137,7 +138,11 @@ lokal dengan batas tunggu 300 detik, jadi tidak terkena batas timeout
 cron-job.org dan tidak memerlukan cron sistem. Cron-job.org tetap bisa dipakai
 opsional dengan method `POST` dan header `Authorization: Bearer <CRON_SECRET>`.
 Request ke router ditunggu hingga 120 detik dan mendukung respons JSON maupun
-SSE.
+SSE. Balasan `429` dan `503` dari router hampir selalu bersifat sesaat — akun
+upstream dipakai pemanggil lain — sehingga permintaan diulang hingga tiga kali
+dengan jeda yang bertambah (5 detik, 10 detik) dan menghormati header
+`Retry-After`. Seluruh tahap ekstraksi dibatasi 240 detik agar cron tidak
+berjalan tanpa ujung.
 
 Setiap pemanggilan menjalankan beberapa kueri pencarian di belakang satu request
 dan memproses paling banyak enam halaman kandidat. Pengambilan tiap halaman
