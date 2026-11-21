@@ -1,15 +1,16 @@
 /**
  * Karakter pendamping halaman dokumentasi.
  *
- * Gambarnya dipotong jadi tiga lapis — kepala, tangan, dan badan — supaya
- * masing-masing bisa bergerak sendiri: kepala mengangguk pelan, tangan ikut
- * bergerak halus seperti sedang menangkup, badan bernapas. Semuanya animasi
- * CSS murni, tidak ada listener scroll, jadi komponen ini tetap server
- * component dan markup server = markup klien.
+ * Gambarnya dipotong jadi empat lapis — kepala, kelopak mata, tangan, dan
+ * badan — supaya masing-masing bisa bergerak sendiri: kepala mengangguk,
+ * tangan bergerak seperti sedang menangkup, badan bernapas, dan mata
+ * berkedip. Semuanya animasi CSS murni, tidak ada listener scroll, jadi
+ * komponen ini tetap server component dan markup server = markup klien.
  *
  * Lapisan tangan sengaja ditaruh di dalam pembungkus napas badan, bukan
  * sebagai saudara, supaya ikut terskala bersama badan dan rim potongannya
- * tidak pernah terlihat dobel.
+ * tidak pernah terlihat dobel. Lapisan kelopak ditaruh di dalam pembungkus
+ * angguk kepala supaya ikut bergeser bersama wajah.
  *
  * Blok `prefers-reduced-motion` global di app/globals.css sudah mematikan
  * seluruh keyframe di bawah untuk pengguna yang memintanya.
@@ -29,17 +30,24 @@ const NECK_Y = 429;
 // Poros putar tangan: titik tangkup di depan dada.
 const HANDS_X = 250;
 const HANDS_Y = 560;
+// Lapisan kelopak mata: potongan kecil di dalam kanvas kepala.
+const EYES_X = 268;
+const EYES_Y = 226;
+const EYES_W = 90;
+const EYES_H = 74;
 
 const pct = (v: number, total: number) => `${((v / total) * 100).toFixed(2)}%`;
 
 export default function Karakter({
   headSrc,
+  eyesSrc,
   bodySrc,
   handsSrc,
   alt,
   caption,
 }: {
   headSrc: string;
+  eyesSrc: string;
   bodySrc: string;
   handsSrc: string;
   alt: string;
@@ -99,7 +107,7 @@ export default function Karakter({
 
           <div className="absolute inset-x-0 top-0">
             <div
-              className="rem-bob"
+              className="rem-bob relative"
               style={{ transformOrigin: `${pct(NECK_X, FRAME_W)} ${pct(NECK_Y, HEAD_H)}` }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -112,6 +120,26 @@ export default function Karakter({
                 loading="lazy"
                 decoding="async"
               />
+              <div
+                className="rem-blink absolute"
+                style={{
+                  left: pct(EYES_X, FRAME_W),
+                  top: pct(EYES_Y, HEAD_H),
+                  width: pct(EYES_W, FRAME_W),
+                }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={eyesSrc}
+                  alt=""
+                  aria-hidden
+                  width={EYES_W}
+                  height={EYES_H}
+                  className="block h-auto w-full"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
             </div>
           </div>
         </div>

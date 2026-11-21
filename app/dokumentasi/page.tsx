@@ -129,6 +129,7 @@ export default function DokumentasiPage() {
           <Reveal delay={0.24} y={24} className="min-w-0">
             <Karakter
               headSrc="/dokumentasi/rem-head.png"
+              eyesSrc="/dokumentasi/rem-eyes.png"
               bodySrc="/dokumentasi/rem-body.png"
               handsSrc="/dokumentasi/rem-hands.png"
               alt="Rem, karakter dari anime Re:Zero kara Hajimeru Isekai Seikatsu"
