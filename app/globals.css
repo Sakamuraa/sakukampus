@@ -350,29 +350,80 @@ html[data-theme='dark'] {
   }
 }
 /* Kedip: dua kali berdekatan lalu jeda panjang, meniru ritme mata asli.
-   Siklus 8.4s; tiap kedip menutup ~220ms dengan transisi ~135ms di kedua
-   sisinya, jadi totalnya ~490ms — durasi kedip manusia, bukan kedipan
-   refleks yang terasa seperti gambar berkedip. */
+   Siklus 8.4s, tiap kedip ~470ms (tutup ~100ms, tahan ~70ms, buka ~150ms).
+
+   Aset kelopak (rem-eyes.png) adalah satu gambar mata terpejam dengan garis
+   bulu mata di tengahnya. Supaya garis itu turun ke dasar mata seperti
+   kelopak yang benar-benar menutup, lapisan ini direntangkan ke bawah
+   (scaleY 0.85 -> 1.45, poros di tepi atas) sambil di-fade masuk. Jadi
+   garis bulu mata bergerak dari ~36% ke ~105% tinggi mata, bukan muncul
+   mendadak di tengah. Sembilan langkah per kedip supaya geraknya terbaca
+   sebagai kelopak turun, bukan gambar yang berkedip. */
 @keyframes rem-blink {
   0%,
-  25% {
+  25.4% {
     opacity: 0;
+    transform: scaleY(0.85);
   }
-  26.6%,
-  29.2% {
+  26.1% {
+    opacity: 0.45;
+    transform: scaleY(1);
+  }
+  26.8% {
+    opacity: 0.85;
+    transform: scaleY(1.2);
+  }
+  27.5%,
+  28.3% {
     opacity: 1;
+    transform: scaleY(1.45);
   }
-  30.8%,
-  76% {
+  29% {
+    opacity: 0.85;
+    transform: scaleY(1.26);
+  }
+  29.7% {
+    opacity: 0.55;
+    transform: scaleY(1.08);
+  }
+  30.4% {
+    opacity: 0.2;
+    transform: scaleY(0.94);
+  }
+  31.1%,
+  76.4% {
     opacity: 0;
+    transform: scaleY(0.85);
   }
-  77.6%,
-  80.2% {
+  77.1% {
+    opacity: 0.45;
+    transform: scaleY(1);
+  }
+  77.8% {
+    opacity: 0.85;
+    transform: scaleY(1.2);
+  }
+  78.5%,
+  79.3% {
     opacity: 1;
+    transform: scaleY(1.45);
   }
-  81.8%,
+  80% {
+    opacity: 0.85;
+    transform: scaleY(1.26);
+  }
+  80.7% {
+    opacity: 0.55;
+    transform: scaleY(1.08);
+  }
+  81.4% {
+    opacity: 0.2;
+    transform: scaleY(0.94);
+  }
+  82.1%,
   100% {
     opacity: 0;
+    transform: scaleY(0.85);
   }
 }
 @layer components {
@@ -389,8 +440,10 @@ html[data-theme='dark'] {
   }
   .rem-blink {
     /* opacity dasar 0 supaya lapisan kelopak tidak pernah menutup mata saat
-       animasinya dimatikan (prefers-reduced-motion) atau belum mulai. */
+       animasinya dimatikan (prefers-reduced-motion) atau belum mulai.
+       Poros di tepi atas: kelopak memanjang ke bawah, bukan ke dua arah. */
     opacity: 0;
+    transform-origin: 50% 0;
     animation: rem-blink 8.4s linear infinite;
   }
 }

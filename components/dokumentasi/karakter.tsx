@@ -30,9 +30,11 @@ const NECK_Y = 429;
 // Poros putar tangan: titik tangkup di depan dada.
 const HANDS_X = 250;
 const HANDS_Y = 560;
-// Lapisan kelopak mata: potongan kecil di dalam kanvas kepala.
+// Lapisan kelopak mata: potongan kecil di dalam kanvas kepala. Nilai Y
+// menempatkan garis bulu mata aset tepat di dasar bola mata (baris 248-290
+// pada kepala) setelah lapisan ini direntangkan oleh animasi rem-blink.
 const EYES_X = 268;
-const EYES_Y = 226;
+const EYES_Y = 238;
 const EYES_W = 90;
 const EYES_H = 74;
 
