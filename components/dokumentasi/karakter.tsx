@@ -1,12 +1,11 @@
 /**
  * Karakter pendamping halaman dokumentasi.
  *
- * Kepala, kelopak mata, tangan, dan badan bergerak pada lapisan terpisah.
+ * Kepala, tangan, dan badan bergerak pada lapisan terpisah.
  * Semuanya animasi CSS murni, tidak ada listener scroll, jadi komponen ini
  * tetap server component dan markup server = markup klien.
  *
- * Lapisan tangan berada di atas badan dan mengikuti napas badan.
- * Lapisan kelopak ditaruh di dalam pembungkus angguk kepala.
+ * Lapisan tangan dibatasi ke area tangannya dan mengikuti napas badan.
  *
  * Blok `prefers-reduced-motion` global di app/globals.css sudah mematikan
  * seluruh keyframe di bawah untuk pengguna yang memintanya.
@@ -21,30 +20,25 @@ const HEAD_H = 429;
 const BODY_H = 594;
 const BODY_TOP = 397;
 const HANDS_X = 250;
-const HANDS_Y = 560;
+const HANDS_Y = 163;
+const HANDS_W = 148;
+const HANDS_H = 183;
+const HANDS_IMAGE_X = 130;
+const HANDS_IMAGE_Y = 68;
 // Poros putar kepala: pangkal leher.
 const NECK_X = 293;
 const NECK_Y = 429;
-// Lapisan kelopak mata: potongan kecil di dalam kanvas kepala. Nilai Y
-// menempatkan garis bulu mata aset tepat di dasar bola mata (baris 248-290
-// pada kepala) setelah lapisan ini direntangkan oleh animasi rem-blink.
-const EYES_X = 268;
-const EYES_Y = 238;
-const EYES_W = 90;
-const EYES_H = 74;
 
 const pct = (v: number, total: number) => `${((v / total) * 100).toFixed(2)}%`;
 
 export default function Karakter({
   headSrc,
-  eyesSrc,
   bodySrc,
   handsSrc,
   alt,
   caption,
 }: {
   headSrc: string;
-  eyesSrc: string;
   bodySrc: string;
   handsSrc: string;
   alt: string;
@@ -72,25 +66,27 @@ export default function Karakter({
                   loading="lazy"
                   decoding="async"
                 />
-                <div className="absolute inset-0">
-                  <div
-                    className="rem-hands"
-                    style={{
-                      transformOrigin: `${pct(HANDS_X, FRAME_W)} ${pct(HANDS_Y - BODY_TOP, BODY_H)}`,
-                    }}
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={handsSrc}
-                      alt=""
-                      aria-hidden
-                      width={FRAME_W}
-                      height={BODY_H}
-                      className="block h-auto w-full"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </div>
+                <div
+                  className="rem-hands absolute"
+                  style={{
+                    left: pct(HANDS_IMAGE_X, FRAME_W),
+                    top: pct(HANDS_IMAGE_Y, BODY_H),
+                    width: pct(HANDS_W, FRAME_W),
+                    height: pct(HANDS_H, BODY_H),
+                    transformOrigin: `${pct(HANDS_X - HANDS_IMAGE_X, HANDS_W)} ${pct(HANDS_Y - HANDS_IMAGE_Y, HANDS_H)}`,
+                  }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/dokumentasi/rem-hands-layer.png"
+                    alt=""
+                    aria-hidden
+                    width={HANDS_W}
+                    height={HANDS_H}
+                    className="block h-full w-full"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
               </div>
             </div>
@@ -111,27 +107,6 @@ export default function Karakter({
                 loading="lazy"
                 decoding="async"
               />
-              <div
-                className="rem-blink absolute"
-                style={{
-                  left: pct(EYES_X, FRAME_W),
-                  top: pct(EYES_Y, HEAD_H),
-                  width: pct(EYES_W, FRAME_W),
-                  height: pct(EYES_H, HEAD_H),
-                }}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={eyesSrc}
-                  alt=""
-                  aria-hidden
-                  width={EYES_W}
-                  height={EYES_H}
-                  className="block h-auto w-full"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
             </div>
           </div>
         </div>
