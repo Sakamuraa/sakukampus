@@ -1,35 +1,30 @@
 /**
  * Karakter pendamping halaman dokumentasi.
  *
- * Gambarnya dipotong jadi empat lapis — kepala, kelopak mata, tangan, dan
- * badan — supaya masing-masing bisa bergerak sendiri: kepala mengangguk,
- * tangan bergerak seperti sedang menangkup, badan bernapas, dan mata
- * berkedip. Semuanya animasi CSS murni, tidak ada listener scroll, jadi
- * komponen ini tetap server component dan markup server = markup klien.
+ * Kepala, kelopak mata, tangan, dan badan bergerak pada lapisan terpisah.
+ * Semuanya animasi CSS murni, tidak ada listener scroll, jadi komponen ini
+ * tetap server component dan markup server = markup klien.
  *
- * Lapisan tangan sengaja ditaruh di dalam pembungkus napas badan, bukan
- * sebagai saudara, supaya ikut terskala bersama badan dan rim potongannya
- * tidak pernah terlihat dobel. Lapisan kelopak ditaruh di dalam pembungkus
- * angguk kepala supaya ikut bergeser bersama wajah.
+ * Lapisan tangan berada di atas badan dan mengikuti napas badan.
+ * Lapisan kelopak ditaruh di dalam pembungkus angguk kepala.
  *
  * Blok `prefers-reduced-motion` global di app/globals.css sudah mematikan
  * seluruh keyframe di bawah untuk pengguna yang memintanya.
  */
 
-// Geometri lapisan. rem-head.png 560x429, rem-body.png & rem-hands.png
-// 560x594, disusun dalam kanvas 560x991. Badan sengaja mulai 32px di atas
+// Geometri lapisan. rem-head.png 560x429 dan rem-body.png/rem-hands.png 560x594,
+// disusun dalam kanvas 560x991. Badan sengaja mulai 32px di atas
 // potongan leher supaya kepala yang berputar sedikit tidak membuka celah.
 const FRAME_W = 560;
 const FRAME_H = 991;
 const HEAD_H = 429;
 const BODY_H = 594;
 const BODY_TOP = 397;
+const HANDS_X = 250;
+const HANDS_Y = 560;
 // Poros putar kepala: pangkal leher.
 const NECK_X = 293;
 const NECK_Y = 429;
-// Poros putar tangan: titik tangkup di depan dada.
-const HANDS_X = 250;
-const HANDS_Y = 560;
 // Lapisan kelopak mata: potongan kecil di dalam kanvas kepala. Nilai Y
 // menempatkan garis bulu mata aset tepat di dasar bola mata (baris 248-290
 // pada kepala) setelah lapisan ini direntangkan oleh animasi rem-blink.
@@ -61,14 +56,8 @@ export default function Karakter({
         aria-hidden
         className="absolute -right-3 -top-3 h-full w-full rounded-card border border-line"
       />
-      <div className="relative overflow-hidden rounded-card border border-line-strong bg-surface-2">
+      <div className="relative overflow-hidden rounded-card border border-line-strong">
         <div className="relative w-full" style={{ aspectRatio: `${FRAME_W} / ${FRAME_H}` }}>
-          {/* halo kertas di belakang karakter */}
-          <div
-            aria-hidden
-            className="absolute inset-x-0 top-0 h-[64%] bg-[radial-gradient(ellipse_at_50%_40%,var(--color-accent-soft),transparent_70%)]"
-          />
-
           <div className="absolute inset-x-0" style={{ top: pct(BODY_TOP, FRAME_H) }}>
             <div className="rem-breathe" style={{ transformOrigin: '50% 100%' }}>
               <div className="relative">
@@ -128,6 +117,7 @@ export default function Karakter({
                   left: pct(EYES_X, FRAME_W),
                   top: pct(EYES_Y, HEAD_H),
                   width: pct(EYES_W, FRAME_W),
+                  height: pct(EYES_H, HEAD_H),
                 }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
